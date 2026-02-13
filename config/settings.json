@@ -1,0 +1,238 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(dir:*)",
+      "Bash(cmd:*)",
+      "Bash(powershell:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(dotnet:*)",
+      "Bash(npm:*)",
+      "Bash(node:*)",
+      "Bash(az:*)",
+      "Bash(kubectl:*)",
+      "Bash(curl:*)",
+      "Bash(findstr:*)",
+      "Bash(where:*)",
+      "Bash(tree:*)",
+      "Bash(xcopy:*)",
+      "Bash(robocopy:*)",
+      "Bash(ls:*)",
+      "Bash(sort:*)",
+      "Bash(choco:*)",
+      "Bash(scoop:*)",
+      "Bash(d2:*)",
+      "Bash(xargs:*)",
+      "Bash(Get-ChildItem:*)",
+      "Bash(Select-Object:*)",
+      "Bash(Sort-Object:*)",
+      "Bash(Write-Host:*)",
+      "Bash(find:*)",
+      "Bash(mv:*)",
+      "Bash(cp:*)",
+      "Bash(rm:*)",
+      "Bash(mkdir:*)",
+      "Bash(cat:*)",
+      "Bash(echo:*)",
+      "Bash(ren:*)",
+      "Bash(move:*)",
+      "Bash(copy:*)",
+      "Bash(del:*)",
+      "Bash(type:*)",
+      "Bash(md:*)",
+      "Read(//c/**)",
+      "Write(//c/**)",
+      "Edit(//c/**)",
+      "mcp__filesystem__list_directory",
+      "mcp__filesystem__read_text_file",
+      "mcp__filesystem__directory_tree",
+      "mcp__filesystem__list_allowed_directories",
+      "mcp__filesystem__read_multiple_files",
+      "mcp__filesystem__search_files",
+      "mcp__filesystem__write_file",
+      "mcp__filesystem__read_file",
+      "mcp__filesystem__list_directory_with_sizes",
+      "mcp__prompt-library__get_prompt",
+      "mcp__prompt-library__get_prompt_parameters",
+      "mcp__prompt-library__list_artifacts",
+      "Bash(python3:*)",
+      "Bash(python3 -c:*)",
+      "Bash(python3 /tmp/*)",
+      "Bash(cat > /tmp/*)",
+      "Bash(wc:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(pip:*)",
+      "Bash(pip3:*)",
+      "Bash(npx:*)",
+      "Bash(npx tsc:*)",
+      "Bash(gh:*)",
+      "Bash(docker:*)",
+      "Bash(helm:*)",
+      "Bash(ping:*)",
+      "Bash(netstat:*)",
+      "Bash(tasklist:*)",
+      "Bash(taskkill:*)",
+      "mcp__github__get_file_contents",
+      "mcp__github__search_code",
+      "mcp__github__search_repositories",
+      "mcp__github__search_issues",
+      "mcp__github__list_commits",
+      "mcp__gitmcp__fetch_generic_documentation",
+      "mcp__gitmcp__search_generic_documentation",
+      "mcp__gitmcp__search_generic_code",
+      "mcp__gitmcp__fetch_generic_url_content",
+      "mcp__prompt-library__generate_diagram",
+      "mcp__prompt-library__list_prompts",
+      "mcp__prompt-library__list_workflows",
+      "mcp__prompt-library__start_workflow",
+      "mcp__prompt-library__get_current_step",
+      "mcp__prompt-library__get_workflow_status",
+      "mcp__prompt-library__complete_step",
+      "mcp__prompt-library__save_artifact",
+      "mcp__prompt-library__get_eraser_status",
+      "mcp__prompt-library__get_library_stats",
+      "mcp__prompt-library__get_phase_info",
+      "mcp__prompt-library__list_sessions",
+      "mcp__prompt-library__get_artifact_types",
+      "mcp__prompt-library__go_to_step",
+      "mcp__qco__generate_quality_code",
+      "mcp__qco__get_qco_usage_stats",
+      "mcp__qco__get_layer_result",
+      "mcp__team-sync__startup_check",
+      "mcp__team-sync__team_status",
+      "mcp__team-sync__watch_integration",
+      "mcp__team-sync__analyze_reference",
+      "mcp__team-sync__check_impact",
+      "mcp__team-sync__sync_contracts",
+      "mcp__team-sync__self_update",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "mcp__filesystem__edit_file",
+      "mcp__filesystem__move_file",
+      "WebFetch(domain:github.com)",
+      "Bash(claude mcp add:*)",
+      "Bash(claude mcp:*)",
+      "Bash(tesseract:*)",
+      "mcp__filesystem__create_directory",
+      "mcp__filesystem__get_file_info",
+      "mcp__team-sync__get_context",
+      "Bash(python:*)",
+      "Bash(pip install:*)",
+      "Bash(pkill:*)",
+      "mcp__chrome-devtools__list_pages",
+      "mcp__chrome-devtools__evaluate_script",
+      "mcp__chrome-devtools__take_screenshot",
+      "mcp__chrome-devtools__take_snapshot",
+      "mcp__chrome-devtools__click",
+      "mcp__chrome-devtools__navigate_page",
+      "mcp__chrome-devtools__fill",
+      "mcp__chrome-devtools__hover",
+      "mcp__chrome-devtools__press_key",
+      "mcp__chrome-devtools__new_page",
+      "mcp__chrome-devtools__select_page",
+      "mcp__chrome-devtools__close_page",
+      "mcp__chrome-devtools__fill_form",
+      "mcp__chrome-devtools__handle_dialog",
+      "mcp__chrome-devtools__wait_for",
+      "mcp__chrome-devtools__drag",
+      "mcp__chrome-devtools__upload_file",
+      "mcp__chrome-devtools__resize_page",
+      "mcp__chrome-devtools__emulate",
+      "mcp__chrome-devtools__list_console_messages",
+      "mcp__chrome-devtools__get_console_message",
+      "mcp__chrome-devtools__list_network_requests",
+      "mcp__chrome-devtools__get_network_request",
+      "mcp__github__list_issues",
+      "mcp__github__list_pull_requests",
+      "mcp__github__get_pull_request",
+      "mcp__github__get_issue",
+      "mcp__github__create_issue",
+      "mcp__github__add_issue_comment",
+      "mcp__github__create_pull_request",
+      "mcp__github__get_pull_request_files",
+      "mcp__github__get_pull_request_reviews",
+      "mcp__github__get_pull_request_status",
+      "mcp__github__get_pull_request_comments",
+      "mcp__github__create_pull_request_review",
+      "mcp__github__update_pull_request_branch",
+      "mcp__github__merge_pull_request",
+      "mcp__github__create_branch",
+      "mcp__github__create_or_update_file",
+      "mcp__github__push_files",
+      "mcp__github__create_repository",
+      "mcp__github__fork_repository",
+      "mcp__github__search_users",
+      "mcp__github__update_issue",
+      "mcp__team-sync__create_issue",
+      "mcp__team-sync__self_update"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(rmdir:*)",
+      "Bash(del /s:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git push --force:*)",
+      "Bash(git clean -f:*)"
+    ],
+    "additionalDirectories": [
+      "C:\\"
+    ]
+  },
+  "model": "opus",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import sys,json; d=json.load(sys.stdin); p=d.get('tool_input',{}).get('file_path',''); exit(2) if p.endswith('.md') and '/docs/' not in p and 'CLAUDE' not in p and 'README' not in p and 'CHANGELOG' not in p and 'SKILL' not in p and 'rules/' not in p else exit(0)\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import sys,json; d=json.load(sys.stdin); p=d.get('tool_input',{}).get('file_path',''); print('TSC check recommended' if p.endswith(('.ts','.tsx')) else '',end='')\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import json,os; f=os.path.expanduser('~/.claude/projects'); print('Session ended. Instincts and memory persisted.')\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import os,glob; d=os.path.expanduser('~/.claude/sessions'); files=sorted(glob.glob(os.path.join(d,'*.md')),key=os.path.getmtime,reverse=True); print(open(files[0],'r',encoding='utf-8').read()[:500] if files else 'No previous session found')\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import os,json; print('Pre-compact: saving critical context before compaction...')\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}
