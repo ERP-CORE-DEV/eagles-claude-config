@@ -12,6 +12,18 @@ Voici les etapes pour configurer **Claude Code** avec le framework EAGLES (15 ag
 - **VS Code** avec l'extension **Claude Code**
 - **`GITHUB_PERSONAL_ACCESS_TOKEN`** defini dans vos variables d'environnement systeme
 
+## Etape 0 — Activer l'execution de scripts PowerShell
+
+> **IMPORTANT** : Cette commande doit etre executee **une seule fois** en tant qu'**Administrateur**.
+
+Ouvrez PowerShell **en tant qu'Administrateur** (clic droit > "Executer en tant qu'administrateur") puis executez :
+
+```powershell
+Set-ExecutionPolicy RemoteSigned -Scope LocalMachine -Force
+```
+
+Fermez et rouvrez PowerShell normalement apres cette commande.
+
 ## Etape 1 — Installer Claude Code CLI
 
 ```powershell
@@ -53,6 +65,12 @@ cd prompt-library-orchestrator && npm install && npm run build && cd ..
 cd team-sync && npm install && npm run build && cd ..
 cd quality-code-orchestrator && npm install && npm run build && cd ..
 ```
+
+> **Note** : Si le dossier `C:\RH-OptimERP\MCPs` existe deja, faites un `git pull` au lieu de `git clone` :
+> ```powershell
+> cd C:\RH-OptimERP\MCPs
+> git pull
+> ```
 
 ## Etape 5 — Cloner votre microservice et commencer
 
