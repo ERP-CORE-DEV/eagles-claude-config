@@ -53,16 +53,15 @@ Le script va:
 # 1. Authentification Claude AI
 claude auth login
 
-# 2. Configurer le token GitHub
-setx GITHUB_PERSONAL_ACCESS_TOKEN "ghp_votre_token"
-
-# 3. Cloner votre microservice
+# 2. Cloner votre microservice
 git clone https://github.com/ERP-CORE-DEV/rh-optimerp-votre-service.git
 
-# 4. Ouvrir dans VS Code avec l'extension Claude Code
+# 3. Ouvrir dans VS Code avec l'extension Claude Code
 
-# 5. Verifier que les 6 serveurs MCP se connectent
+# 4. Verifier que les 6 serveurs MCP se connectent
 ```
+
+> **Note**: Le token GitHub (`GITHUB_PERSONAL_ACCESS_TOKEN`) est deja configure dans le `.mcp.json` via variable d'environnement. Assurez-vous qu'il est defini dans votre systeme.
 
 ## Mise a jour
 

@@ -189,11 +189,12 @@ Write-Host "    - 6 MCP servers" -ForegroundColor White
 Write-Host ""
 Write-Host "  Next steps:" -ForegroundColor Yellow
 Write-Host "    1. Run: claude auth login" -ForegroundColor White
-Write-Host "    2. Set GitHub token:" -ForegroundColor White
-Write-Host "       setx GITHUB_PERSONAL_ACCESS_TOKEN `"ghp_your_token`"" -ForegroundColor Gray
-Write-Host "    3. Clone your microservice repo" -ForegroundColor White
-Write-Host "    4. Open in VS Code with Claude Code extension" -ForegroundColor White
-Write-Host "    5. Verify: all 6 MCP servers should connect" -ForegroundColor White
+Write-Host "    2. Clone your microservice repo" -ForegroundColor White
+Write-Host "    3. Open in VS Code with Claude Code extension" -ForegroundColor White
+Write-Host "    4. Verify: all 6 MCP servers should connect" -ForegroundColor White
+Write-Host ""
+Write-Host "  Note: GITHUB_PERSONAL_ACCESS_TOKEN is already in .mcp.json" -ForegroundColor Gray
+Write-Host "  Make sure it is set in your system environment variables." -ForegroundColor Gray
 Write-Host ""
 Write-Host "  To update later: git pull && .\setup_claude.ps1 -Update" -ForegroundColor Gray
 Write-Host ""
