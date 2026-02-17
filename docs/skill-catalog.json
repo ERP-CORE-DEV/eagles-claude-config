@@ -1,0 +1,2033 @@
+{
+  "framework_version": "1.2.0",
+  "total_skills": 140,
+  "categories": {
+    "accessibility": 2,
+    "api-design": 6,
+    "arch": 1,
+    "architecture-patterns": 4,
+    "backend": 8,
+    "cicd": 1,
+    "cloud": 2,
+    "code-review": 2,
+    "compliance": 1,
+    "data-processing": 3,
+    "database": 9,
+    "debugging": 1,
+    "deploy": 1,
+    "devops": 5,
+    "documentation": 3,
+    "error-handling": 1,
+    "framework": 1,
+    "frontend": 6,
+    "git-workflows": 3,
+    "localization": 1,
+    "messaging": 3,
+    "microservices": 4,
+    "mobile": 2,
+    "monitoring": 5,
+    "performance": 5,
+    "realtime": 3,
+    "refactoring": 5,
+    "security": 6,
+    "stack": 1,
+    "test": 1,
+    "testing": 7,
+    "workflow": 1
+  },
+  "skills": [
+    {
+      "name": "add-aria-labels",
+      "description": "Add ARIA labels and roles for screen reader accessibility",
+      "category": "accessibility",
+      "file_path": "C:/.claude/skills/accessibility/add-aria-labels.md",
+      "relative_path": "skills/accessibility/add-aria-labels.md",
+      "line_count": 161,
+      "has_self_test": true,
+      "code_blocks": 7,
+      "tags": [
+        "[accessibility",
+        " ARIA",
+        " a11y",
+        " screen-reader",
+        " WCAG",
+        " semantic-HTML]"
+      ],
+      "argument_hint": "[context: forms|navigation|tables|modals|buttons]"
+    },
+    {
+      "name": "implement-keyboard-navigation",
+      "description": "Implement keyboard navigation for interactive components (focus management, shortcuts, roving tabindex)",
+      "category": "accessibility",
+      "file_path": "C:/.claude/skills/accessibility/implement-keyboard-navigation.md",
+      "relative_path": "skills/accessibility/implement-keyboard-navigation.md",
+      "line_count": 185,
+      "has_self_test": false,
+      "code_blocks": 8,
+      "tags": [
+        "[accessibility",
+        " keyboard",
+        " a11y",
+        " focus",
+        " navigation",
+        " WCAG]"
+      ],
+      "argument_hint": "[component: table|menu|dialog|tabs|tree]"
+    },
+    {
+      "name": "add-api-documentation",
+      "description": "Generate OpenAPI/Swagger documentation for REST APIs",
+      "category": "api-design",
+      "file_path": "C:/.claude/skills/api-design/add-api-documentation.md",
+      "relative_path": "skills/api-design/add-api-documentation.md",
+      "line_count": 847,
+      "has_self_test": true,
+      "code_blocks": 28,
+      "tags": [],
+      "argument_hint": ""
+    },
+    {
+      "name": "design-pagination",
+      "description": "Implement API pagination with offset, cursor, or page-based approaches",
+      "category": "api-design",
+      "file_path": "C:/.claude/skills/api-design/design-pagination.md",
+      "relative_path": "skills/api-design/design-pagination.md",
+      "line_count": 186,
+      "has_self_test": true,
+      "code_blocks": 8,
+      "tags": [],
+      "argument_hint": "[type: offset|cursor|page]"
+    },
+    {
+      "name": "implement-graphql",
+      "description": "Implement GraphQL API with schema design, resolvers, pagination, and subscriptions",
+      "category": "api-design",
+      "file_path": "C:/.claude/skills/api-design/implement-graphql.md",
+      "relative_path": "skills/api-design/implement-graphql.md",
+      "line_count": 245,
+      "has_self_test": true,
+      "code_blocks": 10,
+      "tags": [
+        "[api",
+        " graphql",
+        " schema",
+        " resolvers",
+        " subscriptions",
+        " federation]"
+      ],
+      "argument_hint": "[stack: dotnet|node|python] [approach: schema-first|code-first]"
+    },
+    {
+      "name": "implement-rate-limiting",
+      "description": "Add rate limiting to API endpoints to prevent abuse",
+      "category": "api-design",
+      "file_path": "C:/.claude/skills/api-design/implement-rate-limiting.md",
+      "relative_path": "skills/api-design/implement-rate-limiting.md",
+      "line_count": 211,
+      "has_self_test": true,
+      "code_blocks": 8,
+      "tags": [],
+      "argument_hint": "[strategy: fixed-window|sliding-window|token-bucket]"
+    },
+    {
+      "name": "implement-webhooks",
+      "description": "Implement webhook system for event-driven integrations",
+      "category": "api-design",
+      "file_path": "C:/.claude/skills/api-design/implement-webhooks.md",
+      "relative_path": "skills/api-design/implement-webhooks.md",
+      "line_count": 268,
+      "has_self_test": true,
+      "code_blocks": 4,
+      "tags": [],
+      "argument_hint": ""
+    },
+    {
+      "name": "version-api",
+      "description": "Implement API versioning with URL, header, and query string strategies",
+      "category": "api-design",
+      "file_path": "C:/.claude/skills/api-design/version-api.md",
+      "relative_path": "skills/api-design/version-api.md",
+      "line_count": 444,
+      "has_self_test": true,
+      "code_blocks": 17,
+      "tags": [
+        "[api",
+        " versioning",
+        " rest",
+        " backward-compatibility]"
+      ],
+      "argument_hint": "[strategy: url|header|query] [framework: dotnet|express|fastapi]"
+    },
+    {
+      "name": "arch",
+      "description": "Load architecture patterns from the Claude Code Optimization Framework. Supports hybrid, mono, ms (microservices), and sls (serverless) patterns.",
+      "category": "arch",
+      "file_path": "C:/.claude/skills/arch/SKILL.md",
+      "relative_path": "skills/arch/SKILL.md",
+      "line_count": 61,
+      "has_self_test": false,
+      "code_blocks": 0,
+      "tags": [],
+      "argument_hint": "<pattern> - Choose: hybrid, mono, ms, sls"
+    },
+    {
+      "name": "add-mediator-pattern",
+      "description": "Implement MediatR for loose coupling between application layers with command/query pipeline behaviors",
+      "category": "architecture-patterns",
+      "file_path": "C:/.claude/skills/architecture-patterns/add-mediator-pattern.md",
+      "relative_path": "skills/architecture-patterns/add-mediator-pattern.md",
+      "line_count": 506,
+      "has_self_test": true,
+      "code_blocks": 11,
+      "tags": [
+        "[architecture-patterns",
+        " mediator",
+        " cqrs",
+        " pipeline",
+        " decoupling]"
+      ],
+      "argument_hint": "[pipeline-behaviors]"
+    },
+    {
+      "name": "add-repository-unitofwork",
+      "description": "Implement Repository and Unit of Work patterns for data access abstraction with CosmosDB transactional batch",
+      "category": "architecture-patterns",
+      "file_path": "C:/.claude/skills/architecture-patterns/add-repository-unitofwork.md",
+      "relative_path": "skills/architecture-patterns/add-repository-unitofwork.md",
+      "line_count": 448,
+      "has_self_test": true,
+      "code_blocks": 8,
+      "tags": [
+        "[architecture-patterns",
+        " repository",
+        " unit-of-work",
+        " data-access",
+        " cosmos-db]"
+      ],
+      "argument_hint": "[db-provider] [transaction-scope]"
+    },
+    {
+      "name": "implement-clean-architecture",
+      "description": "Implement Clean Architecture (Onion Architecture) with strict dependency inversion and domain-centric design",
+      "category": "architecture-patterns",
+      "file_path": "C:/.claude/skills/architecture-patterns/implement-clean-architecture.md",
+      "relative_path": "skills/architecture-patterns/implement-clean-architecture.md",
+      "line_count": 470,
+      "has_self_test": true,
+      "code_blocks": 9,
+      "tags": [
+        "[architecture-patterns",
+        " clean-architecture",
+        " onion",
+        " ddd",
+        " solid]"
+      ],
+      "argument_hint": "[layers] [ddd-level]"
+    },
+    {
+      "name": "implement-cqrs",
+      "description": "Implement Command Query Responsibility Segregation pattern to separate read and write operations for scalability",
+      "category": "architecture-patterns",
+      "file_path": "C:/.claude/skills/architecture-patterns/implement-cqrs.md",
+      "relative_path": "skills/architecture-patterns/implement-cqrs.md",
+      "line_count": 515,
+      "has_self_test": true,
+      "code_blocks": 14,
+      "tags": [
+        "[architecture-patterns",
+        " cqrs",
+        " event-sourcing",
+        " scalability",
+        " ddd]"
+      ],
+      "argument_hint": "[event-sourcing] [read-model-strategy]"
+    },
+    {
+      "name": "add-caching",
+      "description": "Implement caching strategies to improve performance (in-memory, Redis, distributed)",
+      "category": "backend",
+      "file_path": "C:/.claude/skills/backend/add-caching.md",
+      "relative_path": "skills/backend/add-caching.md",
+      "line_count": 316,
+      "has_self_test": true,
+      "code_blocks": 10,
+      "tags": [],
+      "argument_hint": "[type: memory|redis|distributed] [pattern: cache-aside|read-through|write-through]"
+    },
+    {
+      "name": "add-dependency-injection",
+      "description": "Setup dependency injection container for IoC",
+      "category": "backend",
+      "file_path": "C:/.claude/skills/backend/add-dependency-injection.md",
+      "relative_path": "skills/backend/add-dependency-injection.md",
+      "line_count": 110,
+      "has_self_test": false,
+      "code_blocks": 4,
+      "tags": [
+        "[backend",
+        " DI",
+        " IoC",
+        " dependency-injection",
+        " SOLID]"
+      ],
+      "argument_hint": "[stack: dotnet|node|python]"
+    },
+    {
+      "name": "add-dto-mapping",
+      "description": "Map between DTOs and domain models using AutoMapper or manual mapping",
+      "category": "backend",
+      "file_path": "C:/.claude/skills/backend/add-dto-mapping.md",
+      "relative_path": "skills/backend/add-dto-mapping.md",
+      "line_count": 144,
+      "has_self_test": false,
+      "code_blocks": 7,
+      "tags": [
+        "[backend",
+        " dto",
+        " mapping",
+        " AutoMapper",
+        " Mapster",
+        " data-transfer]"
+      ],
+      "argument_hint": "[approach: automapper|manual|mapster]"
+    },
+    {
+      "name": "add-validation",
+      "description": "Add comprehensive input validation with clear error messages and business rule enforcement",
+      "category": "backend",
+      "file_path": "C:/.claude/skills/backend/add-validation.md",
+      "relative_path": "skills/backend/add-validation.md",
+      "line_count": 265,
+      "has_self_test": true,
+      "code_blocks": 4,
+      "tags": [],
+      "argument_hint": "[type: input|business|security] [stack: dotnet|node|python|java]"
+    },
+    {
+      "name": "create-rest-endpoint",
+      "description": "Create a new REST API endpoint with routing, validation, error handling, and documentation",
+      "category": "backend",
+      "file_path": "C:/.claude/skills/backend/create-rest-endpoint.md",
+      "relative_path": "skills/backend/create-rest-endpoint.md",
+      "line_count": 214,
+      "has_self_test": true,
+      "code_blocks": 2,
+      "tags": [],
+      "argument_hint": "[method: GET|POST|PUT|PATCH|DELETE] [stack: dotnet|node|python|java|go]"
+    },
+    {
+      "name": "implement-auth",
+      "description": "Implement authentication system with JWT tokens, refresh tokens, and secure password handling",
+      "category": "backend",
+      "file_path": "C:/.claude/skills/backend/implement-auth.md",
+      "relative_path": "skills/backend/implement-auth.md",
+      "line_count": 253,
+      "has_self_test": true,
+      "code_blocks": 3,
+      "tags": [],
+      "argument_hint": "[type: jwt|oauth|saml|apikey] [stack: dotnet|node|python|java]"
+    },
+    {
+      "name": "implement-middleware",
+      "description": "Create custom middleware for request/response processing",
+      "category": "backend",
+      "file_path": "C:/.claude/skills/backend/implement-middleware.md",
+      "relative_path": "skills/backend/implement-middleware.md",
+      "line_count": 147,
+      "has_self_test": false,
+      "code_blocks": 5,
+      "tags": [
+        "[backend",
+        " middleware",
+        " pipeline",
+        " request-processing",
+        " cross-cutting]"
+      ],
+      "argument_hint": "[stack: dotnet|node|python]"
+    },
+    {
+      "name": "implement-repository-pattern",
+      "description": "Implement repository pattern for data access abstraction",
+      "category": "backend",
+      "file_path": "C:/.claude/skills/backend/implement-repository-pattern.md",
+      "relative_path": "skills/backend/implement-repository-pattern.md",
+      "line_count": 167,
+      "has_self_test": false,
+      "code_blocks": 6,
+      "tags": [
+        "[backend",
+        " repository",
+        " data-access",
+        " pattern",
+        " SOLID]"
+      ],
+      "argument_hint": "[database: cosmos|postgres|mongodb|sqlserver]"
+    },
+    {
+      "name": "create-github-actions",
+      "description": "Create GitHub Actions workflow for CI/CD pipeline with build, test, and deploy",
+      "category": "cicd",
+      "file_path": "C:/.claude/skills/cicd/create-github-actions.md",
+      "relative_path": "skills/cicd/create-github-actions.md",
+      "line_count": 130,
+      "has_self_test": false,
+      "code_blocks": 3,
+      "tags": [],
+      "argument_hint": "[platform: azure|aws|docker]"
+    },
+    {
+      "name": "deploy-to-aws",
+      "description": "Deploy application to AWS (ECS, Lambda, EC2, CloudFormation)",
+      "category": "cloud",
+      "file_path": "C:/.claude/skills/cloud/deploy-to-aws.md",
+      "relative_path": "skills/cloud/deploy-to-aws.md",
+      "line_count": 130,
+      "has_self_test": false,
+      "code_blocks": 7,
+      "tags": [
+        "[cloud",
+        " AWS",
+        " deployment",
+        " ECS",
+        " Lambda",
+        " CloudFormation",
+        " CDK]"
+      ],
+      "argument_hint": "[service: ecs|lambda|ec2|eks] [iac: cloudformation|cdk|terraform]"
+    },
+    {
+      "name": "deploy-to-azure",
+      "description": "Deploy application to Azure (App Service, AKS, Functions, Container Apps)",
+      "category": "cloud",
+      "file_path": "C:/.claude/skills/cloud/deploy-to-azure.md",
+      "relative_path": "skills/cloud/deploy-to-azure.md",
+      "line_count": 122,
+      "has_self_test": false,
+      "code_blocks": 8,
+      "tags": [
+        "[cloud",
+        " Azure",
+        " deployment",
+        " AKS",
+        " App-Service",
+        " Bicep",
+        " Functions]"
+      ],
+      "argument_hint": "[service: appservice|aks|functions|containerapp] [iac: bicep|arm|terraform]"
+    },
+    {
+      "name": "review-pull-request",
+      "description": "Review pull requests for code quality, security, and best practices",
+      "category": "code-review",
+      "file_path": "C:/.claude/skills/code-review/review-pull-request.md",
+      "relative_path": "skills/code-review/review-pull-request.md",
+      "line_count": 87,
+      "has_self_test": true,
+      "code_blocks": 1,
+      "tags": [
+        "[code-review",
+        " PR",
+        " pull-request",
+        " quality",
+        " best-practices]"
+      ],
+      "argument_hint": "[focus: security|performance|architecture|all]"
+    },
+    {
+      "name": "write-code-comments",
+      "description": "Write clear, helpful code comments and documentation",
+      "category": "code-review",
+      "file_path": "C:/.claude/skills/code-review/write-code-comments.md",
+      "relative_path": "skills/code-review/write-code-comments.md",
+      "line_count": 113,
+      "has_self_test": true,
+      "code_blocks": 4,
+      "tags": [
+        "[code-review",
+        " comments",
+        " documentation",
+        " JSDoc",
+        " XMLDoc",
+        " docstrings]"
+      ],
+      "argument_hint": "[style: jsdoc|xmldoc|docstring|inline]"
+    },
+    {
+      "name": "french-hr-compliance",
+      "description": "Implement French HR regulatory compliance including CNIL, GDPR, Code du travail, CPF, OPCO, and DSN integration",
+      "category": "compliance",
+      "file_path": "C:/.claude/skills/compliance/french-hr-compliance.md",
+      "relative_path": "skills/compliance/french-hr-compliance.md",
+      "line_count": 491,
+      "has_self_test": true,
+      "code_blocks": 10,
+      "tags": [
+        "[compliance",
+        " french-hr",
+        " cnil",
+        " gdpr",
+        " code-du-travail",
+        " cpf",
+        " opco",
+        " dsn]"
+      ],
+      "argument_hint": "[compliance-scope] [data-category]"
+    },
+    {
+      "name": "add-data-validation",
+      "description": "Add input data validation using FluentValidation, Zod, or Pydantic",
+      "category": "data-processing",
+      "file_path": "C:/.claude/skills/data-processing/add-data-validation.md",
+      "relative_path": "skills/data-processing/add-data-validation.md",
+      "line_count": 172,
+      "has_self_test": true,
+      "code_blocks": 7,
+      "tags": [
+        "[validation",
+        " data-processing",
+        " input",
+        " FluentValidation",
+        " Zod",
+        " Pydantic",
+        " security]"
+      ],
+      "argument_hint": "[stack: dotnet|node|python] [library: fluentvalidation|zod|joi|pydantic]"
+    },
+    {
+      "name": "implement-batch-processing",
+      "description": "Implement batch processing for large-scale data operations (matching, ETL, reports)",
+      "category": "data-processing",
+      "file_path": "C:/.claude/skills/data-processing/implement-batch-processing.md",
+      "relative_path": "skills/data-processing/implement-batch-processing.md",
+      "line_count": 195,
+      "has_self_test": false,
+      "code_blocks": 8,
+      "tags": [
+        "[data-processing",
+        " batch",
+        " background-jobs",
+        " Hangfire",
+        " Bull",
+        " Celery",
+        " scheduling]"
+      ],
+      "argument_hint": "[stack: dotnet|node|python] [tool: hangfire|bull|celery]"
+    },
+    {
+      "name": "implement-etl-pipeline",
+      "description": "Implement ETL (Extract, Transform, Load) pipelines for data integration",
+      "category": "data-processing",
+      "file_path": "C:/.claude/skills/data-processing/implement-etl-pipeline.md",
+      "relative_path": "skills/data-processing/implement-etl-pipeline.md",
+      "line_count": 178,
+      "has_self_test": true,
+      "code_blocks": 4,
+      "tags": [
+        "[data-processing",
+        " ETL",
+        " pipeline",
+        " Pandas",
+        " Azure-Data-Factory",
+        " Airflow",
+        " integration]"
+      ],
+      "argument_hint": "[tool: pandas|adf|airflow|spark] [source: csv|api|database]"
+    },
+    {
+      "name": "add-audit-fields",
+      "description": "Add audit fields (CreatedAt, CreatedBy, UpdatedAt, UpdatedBy) to entities for CNIL compliance tracking",
+      "category": "database",
+      "file_path": "C:/.claude/skills/database/add-audit-fields.md",
+      "relative_path": "skills/database/add-audit-fields.md",
+      "line_count": 245,
+      "has_self_test": true,
+      "code_blocks": 7,
+      "tags": [
+        "[database",
+        " audit",
+        " cnil",
+        " gdpr",
+        " tracking",
+        " compliance]"
+      ],
+      "argument_hint": "[audit-level] [storage-strategy]"
+    },
+    {
+      "name": "create-indexes",
+      "description": "Design and create database indexes for optimal query performance",
+      "category": "database",
+      "file_path": "C:/.claude/skills/database/create-indexes.md",
+      "relative_path": "skills/database/create-indexes.md",
+      "line_count": 89,
+      "has_self_test": false,
+      "code_blocks": 4,
+      "tags": [],
+      "argument_hint": "[index-type: single|composite|covering|unique|fulltext]"
+    },
+    {
+      "name": "create-migration",
+      "description": "Generate database migration scripts with rollback support",
+      "category": "database",
+      "file_path": "C:/.claude/skills/database/create-migration.md",
+      "relative_path": "skills/database/create-migration.md",
+      "line_count": 188,
+      "has_self_test": true,
+      "code_blocks": 4,
+      "tags": [],
+      "argument_hint": "[type: schema|data|index] [database: ef-core|flyway|liquibase|knex|prisma]"
+    },
+    {
+      "name": "implement-change-tracking",
+      "description": "Implement change data capture (CDC) for full audit trail with before/after values using CosmosDB Change Feed",
+      "category": "database",
+      "file_path": "C:/.claude/skills/database/implement-change-tracking.md",
+      "relative_path": "skills/database/implement-change-tracking.md",
+      "line_count": 340,
+      "has_self_test": true,
+      "code_blocks": 5,
+      "tags": [
+        "[database",
+        " change-tracking",
+        " cdc",
+        " audit-trail",
+        " cosmos-db",
+        " gdpr]"
+      ],
+      "argument_hint": "[tracking-level] [retention-days]"
+    },
+    {
+      "name": "implement-soft-deletes",
+      "description": "Implement soft delete pattern with IsDeleted flag, query filters, and GDPR-aware retention",
+      "category": "database",
+      "file_path": "C:/.claude/skills/database/implement-soft-deletes.md",
+      "relative_path": "skills/database/implement-soft-deletes.md",
+      "line_count": 175,
+      "has_self_test": false,
+      "code_blocks": 6,
+      "tags": [
+        "[database",
+        " soft-delete",
+        " GDPR",
+        " data-retention",
+        " query-filters",
+        " audit]"
+      ],
+      "argument_hint": "[stack: dotnet|node|python] [database: cosmosdb|postgres|sqlserver]"
+    },
+    {
+      "name": "optimize-queries",
+      "description": "Analyze and optimize slow database queries with indexing and query rewriting",
+      "category": "database",
+      "file_path": "C:/.claude/skills/database/optimize-queries.md",
+      "relative_path": "skills/database/optimize-queries.md",
+      "line_count": 161,
+      "has_self_test": true,
+      "code_blocks": 4,
+      "tags": [],
+      "argument_hint": "[database-type: cosmos|postgres|mongodb|sqlserver|mysql]"
+    },
+    {
+      "name": "schema-design",
+      "description": "Design database schema with best practices for normalization, indexing, and relationships",
+      "category": "database",
+      "file_path": "C:/.claude/skills/database/schema-design.md",
+      "relative_path": "skills/database/schema-design.md",
+      "line_count": 201,
+      "has_self_test": true,
+      "code_blocks": 4,
+      "tags": [],
+      "argument_hint": "[database-type: cosmos|postgres|mongodb|sqlserver|mysql]"
+    },
+    {
+      "name": "setup-backup-strategy",
+      "description": "Implement backup and disaster recovery strategy for Azure CosmosDB with CNIL-compliant data retention policies",
+      "category": "database",
+      "file_path": "C:/.claude/skills/database/setup-backup-strategy.md",
+      "relative_path": "skills/database/setup-backup-strategy.md",
+      "line_count": 307,
+      "has_self_test": true,
+      "code_blocks": 8,
+      "tags": [
+        "[database",
+        " backup",
+        " disaster-recovery",
+        " azure",
+        " cosmos-db",
+        " compliance]"
+      ],
+      "argument_hint": "[rto-minutes] [rpo-minutes]"
+    },
+    {
+      "name": "setup-transactions",
+      "description": "Implement database transactions with proper isolation levels and rollback handling",
+      "category": "database",
+      "file_path": "C:/.claude/skills/database/setup-transactions.md",
+      "relative_path": "skills/database/setup-transactions.md",
+      "line_count": 118,
+      "has_self_test": false,
+      "code_blocks": 3,
+      "tags": [],
+      "argument_hint": "[isolation: read-uncommitted|read-committed|repeatable-read|serializable]"
+    },
+    {
+      "name": "analyze-performance-bottleneck",
+      "description": "Profile and identify performance bottlenecks using profiling tools, metrics, and analysis techniques",
+      "category": "debugging",
+      "file_path": "C:/.claude/skills/debugging/analyze-performance-bottleneck.md",
+      "relative_path": "skills/debugging/analyze-performance-bottleneck.md",
+      "line_count": 409,
+      "has_self_test": true,
+      "code_blocks": 18,
+      "tags": [],
+      "argument_hint": "[type: cpu|memory|network|database] [stack: dotnet|node|python]"
+    },
+    {
+      "name": "deploy",
+      "description": "Load deployment strategies with rollout patterns and IaC templates. Supports k8s, docker, sls (serverless), vm.",
+      "category": "deploy",
+      "file_path": "C:/.claude/skills/deploy/SKILL.md",
+      "relative_path": "skills/deploy/SKILL.md",
+      "line_count": 86,
+      "has_self_test": false,
+      "code_blocks": 0,
+      "tags": [],
+      "argument_hint": "<strategy> - Choose: k8s, docker, sls, vm"
+    },
+    {
+      "name": "configure-monitoring",
+      "description": "Configure full-stack observability with Prometheus, Grafana, and AlertManager covering golden signals, SLI/SLO, and business metrics",
+      "category": "devops",
+      "file_path": "C:/.claude/skills/devops/configure-monitoring.md",
+      "relative_path": "skills/devops/configure-monitoring.md",
+      "line_count": 100,
+      "has_self_test": false,
+      "code_blocks": 1,
+      "tags": [
+        "[devops",
+        " monitoring",
+        " prometheus",
+        " grafana",
+        " alertmanager",
+        " observability",
+        " sli",
+        " slo]"
+      ],
+      "argument_hint": ""
+    },
+    {
+      "name": "create-dockerfile",
+      "description": "Create optimized Dockerfile with multi-stage builds, layer caching, and security best practices",
+      "category": "devops",
+      "file_path": "C:/.claude/skills/devops/create-dockerfile.md",
+      "relative_path": "skills/devops/create-dockerfile.md",
+      "line_count": 442,
+      "has_self_test": false,
+      "code_blocks": 12,
+      "tags": [],
+      "argument_hint": "[stack: dotnet|node|python|java|go]"
+    },
+    {
+      "name": "implement-blue-green-deploy",
+      "description": "Implement blue-green deployment for zero-downtime releases",
+      "category": "devops",
+      "file_path": "C:/.claude/skills/devops/implement-blue-green-deploy.md",
+      "relative_path": "skills/devops/implement-blue-green-deploy.md",
+      "line_count": 683,
+      "has_self_test": true,
+      "code_blocks": 23,
+      "tags": [],
+      "argument_hint": ""
+    },
+    {
+      "name": "setup-ci-pipeline",
+      "description": "Setup CI pipeline with build, test, and deploy stages",
+      "category": "devops",
+      "file_path": "C:/.claude/skills/devops/setup-ci-pipeline.md",
+      "relative_path": "skills/devops/setup-ci-pipeline.md",
+      "line_count": 720,
+      "has_self_test": false,
+      "code_blocks": 3,
+      "tags": [],
+      "argument_hint": ""
+    },
+    {
+      "name": "setup-kubernetes",
+      "description": "Setup Kubernetes deployment with Helm charts, HPA, probes, and namespace strategy",
+      "category": "devops",
+      "file_path": "C:/.claude/skills/devops/setup-kubernetes.md",
+      "relative_path": "skills/devops/setup-kubernetes.md",
+      "line_count": 272,
+      "has_self_test": false,
+      "code_blocks": 8,
+      "tags": [
+        "[devops",
+        " kubernetes",
+        " k8s",
+        " AKS",
+        " Helm",
+        " deployment",
+        " HPA",
+        " probes]"
+      ],
+      "argument_hint": "[provider: aks|eks|gke|k3s] [tool: helm|kustomize|kubectl]"
+    },
+    {
+      "name": "add-architecture-diagrams",
+      "description": "Add architecture diagrams using C4 model, Mermaid, or PlantUML",
+      "category": "documentation",
+      "file_path": "C:/.claude/skills/documentation/add-architecture-diagrams.md",
+      "relative_path": "skills/documentation/add-architecture-diagrams.md",
+      "line_count": 81,
+      "has_self_test": false,
+      "code_blocks": 3,
+      "tags": [
+        "[documentation",
+        " architecture",
+        " C4",
+        " Mermaid",
+        " PlantUML",
+        " diagrams]"
+      ],
+      "argument_hint": "[tool: mermaid|plantuml|c4|drawio]"
+    },
+    {
+      "name": "create-readme",
+      "description": "Create comprehensive README with setup, usage, and contribution guidelines",
+      "category": "documentation",
+      "file_path": "C:/.claude/skills/documentation/create-readme.md",
+      "relative_path": "skills/documentation/create-readme.md",
+      "line_count": 93,
+      "has_self_test": false,
+      "code_blocks": 1,
+      "tags": [
+        "[documentation",
+        " README",
+        " onboarding",
+        " setup",
+        " contributing]"
+      ],
+      "argument_hint": "[type: library|api|fullstack|microservice]"
+    },
+    {
+      "name": "generate-api-docs",
+      "description": "Generate API documentation automatically from code",
+      "category": "documentation",
+      "file_path": "C:/.claude/skills/documentation/generate-api-docs.md",
+      "relative_path": "skills/documentation/generate-api-docs.md",
+      "line_count": 105,
+      "has_self_test": false,
+      "code_blocks": 6,
+      "tags": [
+        "[documentation",
+        " API",
+        " Swagger",
+        " OpenAPI",
+        " ReDoc",
+        " Postman]"
+      ],
+      "argument_hint": "[tool: swagger|redoc|postman] [stack: dotnet|node|python]"
+    },
+    {
+      "name": "implement-global-exception-handler",
+      "description": "Create global exception handling middleware to catch and log all unhandled exceptions",
+      "category": "error-handling",
+      "file_path": "C:/.claude/skills/error-handling/implement-global-exception-handler.md",
+      "relative_path": "skills/error-handling/implement-global-exception-handler.md",
+      "line_count": 97,
+      "has_self_test": true,
+      "code_blocks": 3,
+      "tags": [],
+      "argument_hint": "[stack: dotnet|node|python]"
+    },
+    {
+      "name": "framework",
+      "description": "Display Claude Code Optimization Framework status and available configurations. Shows all DSL shortcuts, loaded configs, and project detection.",
+      "category": "framework",
+      "file_path": "C:/.claude/skills/framework/SKILL.md",
+      "relative_path": "skills/framework/SKILL.md",
+      "line_count": 79,
+      "has_self_test": false,
+      "code_blocks": 1,
+      "tags": [],
+      "argument_hint": ""
+    },
+    {
+      "name": "add-form-validation",
+      "description": "Add client-side form validation with error messages",
+      "category": "frontend",
+      "file_path": "C:/.claude/skills/frontend/add-form-validation.md",
+      "relative_path": "skills/frontend/add-form-validation.md",
+      "line_count": 129,
+      "has_self_test": true,
+      "code_blocks": 4,
+      "tags": [
+        "[frontend",
+        " forms",
+        " validation",
+        " react-hook-form",
+        " zod",
+        " yup]"
+      ],
+      "argument_hint": "[library: react-hook-form|formik|vee-validate] [schema: zod|yup|joi]"
+    },
+    {
+      "name": "create-react-component",
+      "description": "Create a React component with TypeScript, hooks, props validation, and styling",
+      "category": "frontend",
+      "file_path": "C:/.claude/skills/frontend/create-react-component.md",
+      "relative_path": "skills/frontend/create-react-component.md",
+      "line_count": 433,
+      "has_self_test": true,
+      "code_blocks": 3,
+      "tags": [],
+      "argument_hint": "[type: functional|form|table|modal|layout] [styling: css-modules|styled-components|tailwind]"
+    },
+    {
+      "name": "implement-lazy-loading",
+      "description": "Implement lazy loading for routes and components",
+      "category": "frontend",
+      "file_path": "C:/.claude/skills/frontend/implement-lazy-loading.md",
+      "relative_path": "skills/frontend/implement-lazy-loading.md",
+      "line_count": 142,
+      "has_self_test": false,
+      "code_blocks": 8,
+      "tags": [
+        "[frontend",
+        " performance",
+        " lazy-loading",
+        " code-splitting",
+        " React",
+        " Suspense]"
+      ],
+      "argument_hint": "[framework: react|vue|angular]"
+    },
+    {
+      "name": "implement-routing",
+      "description": "Implement client-side routing (React Router, Vue Router, Angular Router)",
+      "category": "frontend",
+      "file_path": "C:/.claude/skills/frontend/implement-routing.md",
+      "relative_path": "skills/frontend/implement-routing.md",
+      "line_count": 102,
+      "has_self_test": false,
+      "code_blocks": 4,
+      "tags": [
+        "[frontend",
+        " routing",
+        " SPA",
+        " react-router",
+        " navigation",
+        " guards]"
+      ],
+      "argument_hint": "[framework: react|vue|angular]"
+    },
+    {
+      "name": "setup-redux",
+      "description": "Setup Redux Toolkit with slices, async thunks, and TypeScript for state management",
+      "category": "frontend",
+      "file_path": "C:/.claude/skills/frontend/setup-redux.md",
+      "relative_path": "skills/frontend/setup-redux.md",
+      "line_count": 378,
+      "has_self_test": false,
+      "code_blocks": 6,
+      "tags": [],
+      "argument_hint": "[feature: users|products|auth|general]"
+    },
+    {
+      "name": "setup-state-management",
+      "description": "Setup state management (Redux Toolkit, Zustand, Pinia, Context)",
+      "category": "frontend",
+      "file_path": "C:/.claude/skills/frontend/setup-state-management.md",
+      "relative_path": "skills/frontend/setup-state-management.md",
+      "line_count": 145,
+      "has_self_test": false,
+      "code_blocks": 6,
+      "tags": [
+        "[frontend",
+        " state",
+        " Redux",
+        " Zustand",
+        " Pinia",
+        " React",
+        " Vue]"
+      ],
+      "argument_hint": "[library: redux|zustand|pinia|context|jotai]"
+    },
+    {
+      "name": "configure-branch-protection",
+      "description": "Configure branch protection rules for main/develop branches",
+      "category": "git-workflows",
+      "file_path": "C:/.claude/skills/git-workflows/configure-branch-protection.md",
+      "relative_path": "skills/git-workflows/configure-branch-protection.md",
+      "line_count": 113,
+      "has_self_test": true,
+      "code_blocks": 4,
+      "tags": [
+        "[git",
+        " branch-protection",
+        " CI",
+        " code-review",
+        " governance]"
+      ],
+      "argument_hint": "[platform: github|gitlab|azure-devops]"
+    },
+    {
+      "name": "create-feature-branch",
+      "description": "Create and manage feature branches following Git Flow or GitHub Flow",
+      "category": "git-workflows",
+      "file_path": "C:/.claude/skills/git-workflows/create-feature-branch.md",
+      "relative_path": "skills/git-workflows/create-feature-branch.md",
+      "line_count": 192,
+      "has_self_test": true,
+      "code_blocks": 12,
+      "tags": [],
+      "argument_hint": "[workflow: gitflow|githubflow|trunk]"
+    },
+    {
+      "name": "setup-git-hooks",
+      "description": "Setup Git hooks for linting, formatting, tests, and commit message validation",
+      "category": "git-workflows",
+      "file_path": "C:/.claude/skills/git-workflows/setup-git-hooks.md",
+      "relative_path": "skills/git-workflows/setup-git-hooks.md",
+      "line_count": 193,
+      "has_self_test": true,
+      "code_blocks": 14,
+      "tags": [
+        "[git",
+        " hooks",
+        " husky",
+        " pre-commit",
+        " linting",
+        " conventional-commits]"
+      ],
+      "argument_hint": "[tool: husky|pre-commit|dotnet-format|lefthook]"
+    },
+    {
+      "name": "setup-i18n",
+      "description": "Setup internationalization with translation files and language switching",
+      "category": "localization",
+      "file_path": "C:/.claude/skills/localization/setup-i18n.md",
+      "relative_path": "skills/localization/setup-i18n.md",
+      "line_count": 114,
+      "has_self_test": false,
+      "code_blocks": 7,
+      "tags": [
+        "[localization",
+        " i18n",
+        " translations",
+        " internationalization",
+        " multi-language]"
+      ],
+      "argument_hint": "[framework: react|vue|angular] [library: i18next|vue-i18n|ngx-translate]"
+    },
+    {
+      "name": "implement-event-sourcing",
+      "description": "Implement event sourcing with event store, projections, and snapshots",
+      "category": "messaging",
+      "file_path": "C:/.claude/skills/messaging/implement-event-sourcing.md",
+      "relative_path": "skills/messaging/implement-event-sourcing.md",
+      "line_count": 223,
+      "has_self_test": false,
+      "code_blocks": 9,
+      "tags": [
+        "[messaging",
+        " event-sourcing",
+        " CQRS",
+        " domain-events",
+        " audit-trail",
+        " projections]"
+      ],
+      "argument_hint": "[stack: dotnet|node|python] [store: eventstore|marten|custom]"
+    },
+    {
+      "name": "implement-rabbitmq",
+      "description": "Set up RabbitMQ message queue with publishers and consumers",
+      "category": "messaging",
+      "file_path": "C:/.claude/skills/messaging/implement-rabbitmq.md",
+      "relative_path": "skills/messaging/implement-rabbitmq.md",
+      "line_count": 100,
+      "has_self_test": false,
+      "code_blocks": 3,
+      "tags": [],
+      "argument_hint": "[pattern: publish-subscribe|work-queue|rpc]"
+    },
+    {
+      "name": "setup-azure-service-bus",
+      "description": "Configure Azure Service Bus for async messaging (queues, topics, dead-letter)",
+      "category": "messaging",
+      "file_path": "C:/.claude/skills/messaging/setup-azure-service-bus.md",
+      "relative_path": "skills/messaging/setup-azure-service-bus.md",
+      "line_count": 228,
+      "has_self_test": false,
+      "code_blocks": 9,
+      "tags": [
+        "[messaging",
+        " azure",
+        " service-bus",
+        " async",
+        " queues",
+        " topics",
+        " dead-letter]"
+      ],
+      "argument_hint": "[pattern: queue|topic|session] [stack: dotnet|node|python]"
+    },
+    {
+      "name": "add-service-discovery",
+      "description": "Add service discovery with Consul, Azure Service Fabric, or Eureka for microservices",
+      "category": "microservices",
+      "file_path": "C:/.claude/skills/microservices/add-service-discovery.md",
+      "relative_path": "skills/microservices/add-service-discovery.md",
+      "line_count": 586,
+      "has_self_test": true,
+      "code_blocks": 9,
+      "tags": [
+        "[microservices",
+        " service-discovery",
+        " consul",
+        " azure",
+        " health-checks",
+        " load-balancing]"
+      ],
+      "argument_hint": ""
+    },
+    {
+      "name": "implement-api-gateway",
+      "description": "Implement API Gateway pattern with Azure API Management, YARP, or Ocelot",
+      "category": "microservices",
+      "file_path": "C:/.claude/skills/microservices/implement-api-gateway.md",
+      "relative_path": "skills/microservices/implement-api-gateway.md",
+      "line_count": 707,
+      "has_self_test": true,
+      "code_blocks": 10,
+      "tags": [
+        "[microservices",
+        " api-gateway",
+        " azure-apim",
+        " yarp",
+        " rate-limiting",
+        " authentication]"
+      ],
+      "argument_hint": ""
+    },
+    {
+      "name": "implement-circuit-breaker",
+      "description": "Implement circuit breaker pattern to handle service failures gracefully",
+      "category": "microservices",
+      "file_path": "C:/.claude/skills/microservices/implement-circuit-breaker.md",
+      "relative_path": "skills/microservices/implement-circuit-breaker.md",
+      "line_count": 174,
+      "has_self_test": true,
+      "code_blocks": 5,
+      "tags": [],
+      "argument_hint": "[library: polly|resilience4j|hystrix]"
+    },
+    {
+      "name": "implement-saga-pattern",
+      "description": "Implement Saga pattern for distributed transactions across microservices",
+      "category": "microservices",
+      "file_path": "C:/.claude/skills/microservices/implement-saga-pattern.md",
+      "relative_path": "skills/microservices/implement-saga-pattern.md",
+      "line_count": 799,
+      "has_self_test": true,
+      "code_blocks": 11,
+      "tags": [
+        "[microservices",
+        " saga",
+        " distributed-transactions",
+        " choreography",
+        " orchestration",
+        " event-driven]"
+      ],
+      "argument_hint": ""
+    },
+    {
+      "name": "create-responsive-design",
+      "description": "Create responsive layouts using CSS Grid, Flexbox, and media queries",
+      "category": "mobile",
+      "file_path": "C:/.claude/skills/mobile/create-responsive-design.md",
+      "relative_path": "skills/mobile/create-responsive-design.md",
+      "line_count": 120,
+      "has_self_test": false,
+      "code_blocks": 6,
+      "tags": [
+        "[mobile",
+        " responsive",
+        " CSS",
+        " Grid",
+        " Flexbox",
+        " media-queries",
+        " Tailwind]"
+      ],
+      "argument_hint": "[approach: mobile-first|desktop-first] [framework: tailwind|css-modules|styled]"
+    },
+    {
+      "name": "implement-pwa",
+      "description": "Convert web app to Progressive Web App with service workers and manifest",
+      "category": "mobile",
+      "file_path": "C:/.claude/skills/mobile/implement-pwa.md",
+      "relative_path": "skills/mobile/implement-pwa.md",
+      "line_count": 119,
+      "has_self_test": false,
+      "code_blocks": 6,
+      "tags": [
+        "[mobile",
+        " PWA",
+        " service-worker",
+        " offline",
+        " manifest",
+        " push-notifications]"
+      ],
+      "argument_hint": "[framework: react|vue|angular|vite]"
+    },
+    {
+      "name": "add-application-insights",
+      "description": "Add Application Insights telemetry for Azure-hosted applications",
+      "category": "monitoring",
+      "file_path": "C:/.claude/skills/monitoring/add-application-insights.md",
+      "relative_path": "skills/monitoring/add-application-insights.md",
+      "line_count": 547,
+      "has_self_test": false,
+      "code_blocks": 19,
+      "tags": [],
+      "argument_hint": ""
+    },
+    {
+      "name": "add-health-checks",
+      "description": "Implement health check endpoints for liveness and readiness probes",
+      "category": "monitoring",
+      "file_path": "C:/.claude/skills/monitoring/add-health-checks.md",
+      "relative_path": "skills/monitoring/add-health-checks.md",
+      "line_count": 642,
+      "has_self_test": true,
+      "code_blocks": 13,
+      "tags": [],
+      "argument_hint": "[type: liveness|readiness|startup] [stack: dotnet|node|python]"
+    },
+    {
+      "name": "implement-distributed-tracing",
+      "description": "Implement distributed tracing with OpenTelemetry across microservices",
+      "category": "monitoring",
+      "file_path": "C:/.claude/skills/monitoring/implement-distributed-tracing.md",
+      "relative_path": "skills/monitoring/implement-distributed-tracing.md",
+      "line_count": 529,
+      "has_self_test": true,
+      "code_blocks": 16,
+      "tags": [],
+      "argument_hint": ""
+    },
+    {
+      "name": "setup-error-tracking",
+      "description": "Setup error tracking with Sentry for real-time crash reporting",
+      "category": "monitoring",
+      "file_path": "C:/.claude/skills/monitoring/setup-error-tracking.md",
+      "relative_path": "skills/monitoring/setup-error-tracking.md",
+      "line_count": 644,
+      "has_self_test": false,
+      "code_blocks": 23,
+      "tags": [],
+      "argument_hint": ""
+    },
+    {
+      "name": "setup-logging",
+      "description": "Configure structured logging with correlation IDs, log levels, and log aggregation",
+      "category": "monitoring",
+      "file_path": "C:/.claude/skills/monitoring/setup-logging.md",
+      "relative_path": "skills/monitoring/setup-logging.md",
+      "line_count": 64,
+      "has_self_test": false,
+      "code_blocks": 2,
+      "tags": [],
+      "argument_hint": "[library: serilog|winston|loguru|log4j]"
+    },
+    {
+      "name": "add-compression",
+      "description": "Add HTTP response compression (Gzip, Brotli, Zstd) to reduce payload size",
+      "category": "performance",
+      "file_path": "C:/.claude/skills/performance/add-compression.md",
+      "relative_path": "skills/performance/add-compression.md",
+      "line_count": 119,
+      "has_self_test": false,
+      "code_blocks": 6,
+      "tags": [
+        "[performance",
+        " compression",
+        " gzip",
+        " brotli",
+        " http",
+        " middleware]"
+      ],
+      "argument_hint": "[stack: dotnet|node|python|nginx] [algorithm: gzip|brotli|zstd]"
+    },
+    {
+      "name": "implement-caching-strategy",
+      "description": "Implement multi-layer caching with Redis, in-memory, and CDN",
+      "category": "performance",
+      "file_path": "C:/.claude/skills/performance/implement-caching-strategy.md",
+      "relative_path": "skills/performance/implement-caching-strategy.md",
+      "line_count": 524,
+      "has_self_test": true,
+      "code_blocks": 14,
+      "tags": [
+        "[caching",
+        " redis",
+        " in-memory",
+        " cdn",
+        " performance",
+        " distributed-cache]"
+      ],
+      "argument_hint": ""
+    },
+    {
+      "name": "implement-cdn",
+      "description": "Configure CDN for static assets, SPA deployment, and API caching",
+      "category": "performance",
+      "file_path": "C:/.claude/skills/performance/implement-cdn.md",
+      "relative_path": "skills/performance/implement-cdn.md",
+      "line_count": 187,
+      "has_self_test": true,
+      "code_blocks": 8,
+      "tags": [
+        "[performance",
+        " CDN",
+        " caching",
+        " static-assets",
+        " edge",
+        " deployment]"
+      ],
+      "argument_hint": "[provider: azure-cdn|cloudflare|cloudfront|akamai]"
+    },
+    {
+      "name": "optimize-bundle-size",
+      "description": "Reduce frontend bundle size through code splitting, tree shaking, and lazy loading",
+      "category": "performance",
+      "file_path": "C:/.claude/skills/performance/optimize-bundle-size.md",
+      "relative_path": "skills/performance/optimize-bundle-size.md",
+      "line_count": 635,
+      "has_self_test": true,
+      "code_blocks": 25,
+      "tags": [],
+      "argument_hint": "[framework: react|vue|angular]"
+    },
+    {
+      "name": "optimize-database-queries",
+      "description": "Optimize database queries for performance (indexes, partition keys, N+1 prevention, RU optimization)",
+      "category": "performance",
+      "file_path": "C:/.claude/skills/performance/optimize-database-queries.md",
+      "relative_path": "skills/performance/optimize-database-queries.md",
+      "line_count": 204,
+      "has_self_test": false,
+      "code_blocks": 11,
+      "tags": [
+        "[performance",
+        " database",
+        " queries",
+        " indexing",
+        " CosmosDB",
+        " optimization]"
+      ],
+      "argument_hint": "[database: cosmosdb|postgres|sqlserver|mongodb]"
+    },
+    {
+      "name": "implement-signalr",
+      "description": "Implement real-time communication with ASP.NET Core SignalR (hubs, groups, streaming)",
+      "category": "realtime",
+      "file_path": "C:/.claude/skills/realtime/implement-signalr.md",
+      "relative_path": "skills/realtime/implement-signalr.md",
+      "line_count": 174,
+      "has_self_test": false,
+      "code_blocks": 9,
+      "tags": [
+        "[realtime",
+        " signalr",
+        " websocket",
+        " dotnet",
+        " push",
+        " notifications]"
+      ],
+      "argument_hint": "[transport: websocket|sse|longpolling] [client: javascript|dotnet]"
+    },
+    {
+      "name": "implement-sse",
+      "description": "Implement Server-Sent Events for one-way real-time updates",
+      "category": "realtime",
+      "file_path": "C:/.claude/skills/realtime/implement-sse.md",
+      "relative_path": "skills/realtime/implement-sse.md",
+      "line_count": 144,
+      "has_self_test": false,
+      "code_blocks": 5,
+      "tags": [
+        "[realtime",
+        " SSE",
+        " server-sent-events",
+        " streaming",
+        " push",
+        " notifications]"
+      ],
+      "argument_hint": "[stack: dotnet|node|python]"
+    },
+    {
+      "name": "implement-websockets",
+      "description": "Implement WebSocket communication for real-time bidirectional data",
+      "category": "realtime",
+      "file_path": "C:/.claude/skills/realtime/implement-websockets.md",
+      "relative_path": "skills/realtime/implement-websockets.md",
+      "line_count": 544,
+      "has_self_test": true,
+      "code_blocks": 11,
+      "tags": [],
+      "argument_hint": ""
+    },
+    {
+      "name": "extract-method",
+      "description": "Refactor long methods by extracting smaller, focused methods to improve readability and reusability",
+      "category": "refactoring",
+      "file_path": "C:/.claude/skills/refactoring/extract-method.md",
+      "relative_path": "skills/refactoring/extract-method.md",
+      "line_count": 452,
+      "has_self_test": true,
+      "code_blocks": 8,
+      "tags": [],
+      "argument_hint": "[language: csharp|typescript|python|java]"
+    },
+    {
+      "name": "introduce-design-pattern",
+      "description": "Introduce a design pattern to solve a recurring structural or behavioral problem",
+      "category": "refactoring",
+      "file_path": "C:/.claude/skills/refactoring/introduce-design-pattern.md",
+      "relative_path": "skills/refactoring/introduce-design-pattern.md",
+      "line_count": 276,
+      "has_self_test": true,
+      "code_blocks": 9,
+      "tags": [
+        "[refactoring",
+        " design-patterns",
+        " GoF",
+        " architecture",
+        " clean-code]"
+      ],
+      "argument_hint": "[pattern: strategy|factory|observer|decorator|adapter|singleton|builder]"
+    },
+    {
+      "name": "remove-code-duplication",
+      "description": "Remove code duplication following DRY principle",
+      "category": "refactoring",
+      "file_path": "C:/.claude/skills/refactoring/remove-code-duplication.md",
+      "relative_path": "skills/refactoring/remove-code-duplication.md",
+      "line_count": 488,
+      "has_self_test": true,
+      "code_blocks": 15,
+      "tags": [
+        "[refactoring",
+        " dry",
+        " code-quality",
+        " patterns]"
+      ],
+      "argument_hint": ""
+    },
+    {
+      "name": "rename-variable",
+      "description": "Safely rename variables, methods, and classes across the codebase",
+      "category": "refactoring",
+      "file_path": "C:/.claude/skills/refactoring/rename-variable.md",
+      "relative_path": "skills/refactoring/rename-variable.md",
+      "line_count": 136,
+      "has_self_test": true,
+      "code_blocks": 8,
+      "tags": [
+        "[refactoring",
+        " naming",
+        " clean-code",
+        " readability",
+        " maintainability]"
+      ],
+      "argument_hint": "[scope: local|file|project] [tool: ide|regex|ast]"
+    },
+    {
+      "name": "simplify-conditional",
+      "description": "Simplify complex conditional logic using guard clauses, pattern matching, and lookup tables",
+      "category": "refactoring",
+      "file_path": "C:/.claude/skills/refactoring/simplify-conditional.md",
+      "relative_path": "skills/refactoring/simplify-conditional.md",
+      "line_count": 229,
+      "has_self_test": false,
+      "code_blocks": 12,
+      "tags": [
+        "[refactoring",
+        " conditionals",
+        " clean-code",
+        " readability",
+        " cyclomatic-complexity]"
+      ],
+      "argument_hint": "[technique: guard-clause|pattern-match|lookup-table|polymorphism|early-return]"
+    },
+    {
+      "name": "add-data-encryption",
+      "description": "Implement data encryption at rest and in transit with Azure Key Vault integration for French CNIL/GDPR compliance",
+      "category": "security",
+      "file_path": "C:/.claude/skills/security/add-data-encryption.md",
+      "relative_path": "skills/security/add-data-encryption.md",
+      "line_count": 532,
+      "has_self_test": true,
+      "code_blocks": 13,
+      "tags": [
+        "[security",
+        " encryption",
+        " gdpr",
+        " azure-key-vault",
+        " data-protection]"
+      ],
+      "argument_hint": "[encryption-scope] [key-rotation-days]"
+    },
+    {
+      "name": "add-role-based-auth",
+      "description": "Implement role-based access control (RBAC) with hierarchical permissions and French HR organizational structures",
+      "category": "security",
+      "file_path": "C:/.claude/skills/security/add-role-based-auth.md",
+      "relative_path": "skills/security/add-role-based-auth.md",
+      "line_count": 484,
+      "has_self_test": true,
+      "code_blocks": 10,
+      "tags": [
+        "[security",
+        " authorization",
+        " rbac",
+        " permissions",
+        " access-control]"
+      ],
+      "argument_hint": "[role-model] [hierarchy-depth]"
+    },
+    {
+      "name": "implement-cors",
+      "description": "Configure CORS (Cross-Origin Resource Sharing) securely for API endpoints",
+      "category": "security",
+      "file_path": "C:/.claude/skills/security/implement-cors.md",
+      "relative_path": "skills/security/implement-cors.md",
+      "line_count": 462,
+      "has_self_test": true,
+      "code_blocks": 18,
+      "tags": [],
+      "argument_hint": "[policy: restrictive|permissive|custom] [stack: dotnet|node|python]"
+    },
+    {
+      "name": "implement-jwt-auth",
+      "description": "Implement JWT-based authentication with token generation, validation, and refresh mechanisms",
+      "category": "security",
+      "file_path": "C:/.claude/skills/security/implement-jwt-auth.md",
+      "relative_path": "skills/security/implement-jwt-auth.md",
+      "line_count": 457,
+      "has_self_test": true,
+      "code_blocks": 10,
+      "tags": [
+        "[security",
+        " authentication",
+        " jwt",
+        " tokens",
+        " web-api]"
+      ],
+      "argument_hint": "[security-level] [token-expiry]"
+    },
+    {
+      "name": "implement-oauth",
+      "description": "Integrate OAuth 2.0 / OpenID Connect authentication with Microsoft Entra ID (Azure AD) for enterprise SSO",
+      "category": "security",
+      "file_path": "C:/.claude/skills/security/implement-oauth.md",
+      "relative_path": "skills/security/implement-oauth.md",
+      "line_count": 392,
+      "has_self_test": true,
+      "code_blocks": 11,
+      "tags": [
+        "[security",
+        " oauth",
+        " sso",
+        " azure-ad",
+        " authentication]"
+      ],
+      "argument_hint": "[provider] [scopes]"
+    },
+    {
+      "name": "prevent-sql-injection",
+      "description": "Implement SQL injection prevention using parameterized queries, ORMs, and input sanitization",
+      "category": "security",
+      "file_path": "C:/.claude/skills/security/prevent-sql-injection.md",
+      "relative_path": "skills/security/prevent-sql-injection.md",
+      "line_count": 354,
+      "has_self_test": true,
+      "code_blocks": 17,
+      "tags": [],
+      "argument_hint": "[database: sql-server|postgres|mysql|oracle]"
+    },
+    {
+      "name": "stack",
+      "description": "Load technology stack configurations with project templates, dependencies, and best practices. Supports dotnet, node, python, java, go.",
+      "category": "stack",
+      "file_path": "C:/.claude/skills/stack/SKILL.md",
+      "relative_path": "skills/stack/SKILL.md",
+      "line_count": 90,
+      "has_self_test": true,
+      "code_blocks": 5,
+      "tags": [],
+      "argument_hint": "<tech> - Choose: dotnet, node, python, java, go"
+    },
+    {
+      "name": "test",
+      "description": "Load testing framework configurations with patterns, tools, and examples. Supports unit, int (integration), e2e, bdd, perf (performance).",
+      "category": "test",
+      "file_path": "C:/.claude/skills/test/SKILL.md",
+      "relative_path": "skills/test/SKILL.md",
+      "line_count": 111,
+      "has_self_test": true,
+      "code_blocks": 1,
+      "tags": [],
+      "argument_hint": "<type> - Choose: unit, int, e2e, bdd, perf"
+    },
+    {
+      "name": "create-integration-tests",
+      "description": "Create integration tests for API endpoints, database operations, and external services",
+      "category": "testing",
+      "file_path": "C:/.claude/skills/testing/create-integration-tests.md",
+      "relative_path": "skills/testing/create-integration-tests.md",
+      "line_count": 593,
+      "has_self_test": true,
+      "code_blocks": 3,
+      "tags": [],
+      "argument_hint": "[type: api|database|messaging|external] [stack: dotnet|node|python]"
+    },
+    {
+      "name": "create-mocks",
+      "description": "Create test mocks and stubs for dependencies",
+      "category": "testing",
+      "file_path": "C:/.claude/skills/testing/create-mocks.md",
+      "relative_path": "skills/testing/create-mocks.md",
+      "line_count": 115,
+      "has_self_test": true,
+      "code_blocks": 5,
+      "tags": [
+        "[testing",
+        " mocks",
+        " stubs",
+        " Moq",
+        " jest",
+        " unit-testing]"
+      ],
+      "argument_hint": "[stack: dotnet|node|python] [library: moq|nsubstitute|jest|pytest]"
+    },
+    {
+      "name": "create-snapshot-tests",
+      "description": "Create snapshot tests for UI components",
+      "category": "testing",
+      "file_path": "C:/.claude/skills/testing/create-snapshot-tests.md",
+      "relative_path": "skills/testing/create-snapshot-tests.md",
+      "line_count": 81,
+      "has_self_test": false,
+      "code_blocks": 4,
+      "tags": [
+        "[testing",
+        " snapshots",
+        " UI",
+        " jest",
+        " regression",
+        " components]"
+      ],
+      "argument_hint": "[framework: jest|vitest|storybook]"
+    },
+    {
+      "name": "implement-bdd-tests",
+      "description": "Write BDD tests using Gherkin syntax (Given-When-Then)",
+      "category": "testing",
+      "file_path": "C:/.claude/skills/testing/implement-bdd-tests.md",
+      "relative_path": "skills/testing/implement-bdd-tests.md",
+      "line_count": 150,
+      "has_self_test": true,
+      "code_blocks": 6,
+      "tags": [
+        "[testing",
+        " BDD",
+        " Gherkin",
+        " SpecFlow",
+        " Cucumber",
+        " Given-When-Then]"
+      ],
+      "argument_hint": "[stack: dotnet|node|python] [framework: specflow|cucumber|behave]"
+    },
+    {
+      "name": "setup-e2e-tests",
+      "description": "Setup end-to-end tests with Playwright, Cypress, or Selenium",
+      "category": "testing",
+      "file_path": "C:/.claude/skills/testing/setup-e2e-tests.md",
+      "relative_path": "skills/testing/setup-e2e-tests.md",
+      "line_count": 128,
+      "has_self_test": true,
+      "code_blocks": 5,
+      "tags": [
+        "[testing",
+        " e2e",
+        " Playwright",
+        " Cypress",
+        " end-to-end",
+        " integration]"
+      ],
+      "argument_hint": "[framework: playwright|cypress|selenium]"
+    },
+    {
+      "name": "setup-test-coverage",
+      "description": "Configure code coverage reporting for tests",
+      "category": "testing",
+      "file_path": "C:/.claude/skills/testing/setup-test-coverage.md",
+      "relative_path": "skills/testing/setup-test-coverage.md",
+      "line_count": 115,
+      "has_self_test": false,
+      "code_blocks": 7,
+      "tags": [
+        "[testing",
+        " coverage",
+        " quality",
+        " CI",
+        " metrics]"
+      ],
+      "argument_hint": "[stack: dotnet|node|python]"
+    },
+    {
+      "name": "write-unit-tests",
+      "description": "Generate unit tests with mocking, assertions, and edge case coverage",
+      "category": "testing",
+      "file_path": "C:/.claude/skills/testing/write-unit-tests.md",
+      "relative_path": "skills/testing/write-unit-tests.md",
+      "line_count": 626,
+      "has_self_test": true,
+      "code_blocks": 3,
+      "tags": [],
+      "argument_hint": "[framework: xunit|jest|pytest|junit|go-test] [type: service|controller|component|util]"
+    },
+    {
+      "name": "workflow",
+      "description": "Load development methodology workflows. Supports agile, devops, vmodel, and kanban methodologies.",
+      "category": "workflow",
+      "file_path": "C:/.claude/skills/workflow/SKILL.md",
+      "relative_path": "skills/workflow/SKILL.md",
+      "line_count": 87,
+      "has_self_test": true,
+      "code_blocks": 0,
+      "tags": [],
+      "argument_hint": "<methodology> - Choose: agile, devops, vmodel, kanban"
+    },
+    {
+      "name": "gitleaks",
+      "category": "security",
+      "description": "Scan repository for hardcoded secrets and credentials",
+      "tags": [
+        "security",
+        "secrets",
+        "devsecops",
+        "pre-commit"
+      ]
+    },
+    {
+      "name": "repo-map",
+      "category": "navigation",
+      "description": "Generate a ranked codebase map showing key files and relationships",
+      "tags": [
+        "navigation",
+        "codebase",
+        "architecture",
+        "productivity"
+      ]
+    },
+    {
+      "name": "generate-api-client",
+      "category": "codegen",
+      "description": "Generate typed API client from OpenAPI/Swagger specification",
+      "tags": [
+        "codegen",
+        "openapi",
+        "api",
+        "client"
+      ]
+    },
+    {
+      "name": "generate-typed-client",
+      "category": "codegen",
+      "description": "Generate typed HTTP client with Microsoft Kiota",
+      "tags": [
+        "codegen",
+        "kiota",
+        "api",
+        "microsoft"
+      ]
+    },
+    {
+      "name": "mutation-test",
+      "category": "testing",
+      "description": "Run mutation testing to validate test suite quality",
+      "tags": [
+        "testing",
+        "mutation",
+        "quality",
+        "stryker"
+      ]
+    },
+    {
+      "name": "api-test",
+      "category": "testing",
+      "description": "Generate and run API integration tests with Hurl",
+      "tags": [
+        "testing",
+        "api",
+        "integration",
+        "hurl"
+      ]
+    },
+    {
+      "name": "gsd-plan",
+      "category": "orchestration",
+      "description": "Create a phased execution plan with fresh-context architecture",
+      "tags": [
+        "orchestration",
+        "planning",
+        "gsd",
+        "context-engineering"
+      ]
+    },
+    {
+      "name": "gsd-execute",
+      "category": "orchestration",
+      "description": "Execute a planned phase in a fresh agent context",
+      "tags": [
+        "orchestration",
+        "execution",
+        "gsd",
+        "context-engineering"
+      ]
+    },
+    {
+      "name": "gsd-verify",
+      "category": "orchestration",
+      "description": "Verify completed work against plan requirements",
+      "tags": [
+        "orchestration",
+        "verification",
+        "gsd",
+        "quality"
+      ]
+    },
+    {
+      "name": "scaffold-microservice",
+      "category": "codegen",
+      "description": "Scaffold a complete microservice with Controller-Service-Repository pattern",
+      "tags": [
+        "scaffold",
+        "microservice",
+        "dotnet",
+        "architecture",
+        "codegen"
+      ]
+    },
+    {
+      "name": "semgrep-scan",
+      "category": "security",
+      "tags": [
+        "security",
+        "sast"
+      ]
+    },
+    {
+      "name": "trivy-scan",
+      "category": "security",
+      "tags": [
+        "security",
+        "container"
+      ]
+    },
+    {
+      "name": "dependabot-check",
+      "category": "security",
+      "tags": [
+        "security",
+        "dependencies"
+      ]
+    },
+    {
+      "name": "codeql-scan",
+      "category": "security",
+      "tags": [
+        "security",
+        "sast"
+      ]
+    },
+    {
+      "name": "sonarcloud-gate",
+      "category": "quality",
+      "tags": [
+        "quality",
+        "gate"
+      ]
+    },
+    {
+      "name": "owasp-zap",
+      "category": "security",
+      "tags": [
+        "security",
+        "dast"
+      ]
+    },
+    {
+      "name": "semantic-release",
+      "category": "cicd",
+      "tags": [
+        "release",
+        "versioning"
+      ]
+    },
+    {
+      "name": "argocd-deploy",
+      "category": "deploy",
+      "tags": [
+        "deploy",
+        "gitops"
+      ]
+    },
+    {
+      "name": "generate-crud",
+      "category": "codegen",
+      "tags": [
+        "codegen",
+        "crud"
+      ]
+    },
+    {
+      "name": "generate-component",
+      "category": "codegen",
+      "tags": [
+        "codegen",
+        "react"
+      ]
+    },
+    {
+      "name": "generate-service",
+      "category": "codegen",
+      "tags": [
+        "codegen",
+        "dotnet"
+      ]
+    },
+    {
+      "name": "generate-endpoint",
+      "category": "codegen",
+      "tags": [
+        "codegen",
+        "api"
+      ]
+    },
+    {
+      "name": "generate-dockerfile",
+      "category": "codegen",
+      "tags": [
+        "codegen",
+        "docker"
+      ]
+    },
+    {
+      "name": "generate-helm-chart",
+      "category": "codegen",
+      "tags": [
+        "codegen",
+        "helm"
+      ]
+    },
+    {
+      "name": "property-test",
+      "category": "testing",
+      "tags": [
+        "testing",
+        "property-based"
+      ]
+    },
+    {
+      "name": "load-test",
+      "category": "testing",
+      "tags": [
+        "testing",
+        "load",
+        "k6"
+      ]
+    },
+    {
+      "name": "generate-test-data",
+      "category": "testing",
+      "tags": [
+        "testing",
+        "data"
+      ]
+    },
+    {
+      "name": "db-test",
+      "category": "testing",
+      "tags": [
+        "testing",
+        "database"
+      ]
+    },
+    {
+      "name": "arch-test",
+      "category": "testing",
+      "tags": [
+        "testing",
+        "architecture"
+      ]
+    },
+    {
+      "name": "contract-test-v2",
+      "category": "testing",
+      "tags": [
+        "testing",
+        "contract"
+      ]
+    },
+    {
+      "name": "snapshot-test-v2",
+      "category": "testing",
+      "tags": [
+        "testing",
+        "snapshot"
+      ]
+    },
+    {
+      "name": "gsd-quick",
+      "category": "orchestration",
+      "tags": [
+        "orchestration",
+        "gsd"
+      ]
+    },
+    {
+      "name": "gsd-map-codebase",
+      "category": "orchestration",
+      "tags": [
+        "orchestration",
+        "gsd"
+      ]
+    },
+    {
+      "name": "gsd-progress",
+      "category": "orchestration",
+      "tags": [
+        "orchestration",
+        "gsd"
+      ]
+    },
+    {
+      "name": "drift-detect",
+      "category": "quality",
+      "tags": [
+        "quality",
+        "architecture"
+      ]
+    },
+    {
+      "name": "deslop",
+      "category": "quality",
+      "tags": [
+        "quality",
+        "cleanup"
+      ]
+    }
+  ]
+}
