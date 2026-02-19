@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EAGLES Pro v2.1.0 - How It Works</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0a0a0f;color:#e2e8f0;overflow:hidden;height:100vh;width:100vw}
+
+/* Progress */
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#6366f1,#10b981);z-index:200;transition:width 0.6s ease;box-shadow:0 0 15px rgba(99,102,241,0.4)}
+#step-label{position:fixed;top:10px;left:20px;font-size:11px;color:#6366f1;z-index:200;font-weight:600}
+#step-count{position:fixed;top:10px;right:20px;font-size:11px;color:#4b5563;z-index:200}
+
+/* Controls */
+#controls{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:200;background:rgba(10,10,15,0.92);backdrop-filter:blur(20px);border:1px solid rgba(99,102,241,0.25);border-radius:50px;padding:8px 20px;align-items:center}
+.cb{background:none;border:none;color:#818cf8;cursor:pointer;font-size:16px;padding:5px 8px;border-radius:8px;transition:all 0.15s;font-family:inherit}
+.cb:hover{background:rgba(99,102,241,0.15);color:#c7d2fe}
+.cb.on{color:#10b981}
+#tmr{font-size:10px;color:#4b5563;min-width:50px;text-align:center;font-variant-numeric:tabular-nums;font-family:'JetBrains Mono',monospace}
+.speed-btn{font-size:10px;padding:3px 8px;border-radius:4px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);color:#818cf8;cursor:pointer;font-family:'JetBrains Mono',monospace}
+.speed-btn.active{background:rgba(99,102,241,0.25);color:#c7d2fe}
+
+/* Canvas */
+#canvas{width:100vw;height:100vh;position:relative;overflow:hidden}
+
+/* Scene layout */
+.scene{position:absolute;inset:0;display:flex;opacity:0;pointer-events:none;transition:opacity 0.7s ease}
+.scene.active{opacity:1;pointer-events:auto}
+
+/* IDE mock */
+.ide{width:100%;height:100%;display:grid;grid-template-columns:48px 240px 1fr 320px;grid-template-rows:36px 1fr 28px;background:#0d1117;overflow:hidden}
+.ide-bar{grid-column:1/-1;background:#161b22;display:flex;align-items:center;padding:0 12px;gap:8px;border-bottom:1px solid #21262d}
+.ide-dot{width:10px;height:10px;border-radius:50%}
+.ide-sidebar{background:#0d1117;border-right:1px solid #21262d;display:flex;flex-direction:column;align-items:center;padding-top:10px;gap:14px}
+.ide-sidebar .si{width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:11px;color:#6b7280}
+.ide-sidebar .si.active{background:rgba(99,102,241,0.2);color:#818cf8}
+.ide-explorer{background:#0d1117;border-right:1px solid #21262d;padding:10px;overflow-y:auto}
+.ide-explorer .title{font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.file-tree{font-size:11px;font-family:'JetBrains Mono',monospace}
+.file-tree .dir{color:#818cf8;padding:2px 0;cursor:pointer}
+.file-tree .file{color:#6b7280;padding:2px 0 2px 16px}
+.file-tree .file.active{color:#e2e8f0;background:rgba(99,102,241,0.1);border-radius:4px;padding-left:14px;border-left:2px solid #6366f1}
+.ide-editor{background:#0d1117;display:flex;flex-direction:column;overflow:hidden}
+.editor-tabs{display:flex;background:#161b22;border-bottom:1px solid #21262d}
+.tab{padding:6px 14px;font-size:11px;color:#6b7280;border-right:1px solid #21262d;font-family:'JetBrains Mono',monospace;display:flex;align-items:center;gap:6px}
+.tab.active{color:#e2e8f0;background:#0d1117;border-bottom:2px solid #6366f1}
+.tab .lang{font-size:8px;padding:1px 4px;border-radius:3px}
+.editor-content{flex:1;padding:12px;overflow-y:auto;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7}
+.line{display:flex;gap:12px}
+.ln{color:#3b4048;min-width:28px;text-align:right;user-select:none;font-size:11px}
+.code{color:#abb2bf}
+.kw{color:#c678dd}.fn{color:#61afef}.str{color:#98c379}.cm{color:#5c6370;font-style:italic}.tp{color:#e5c07b}.op{color:#56b6c2}.num{color:#d19a66}.err{color:#e06c75}
+.ide-panel{background:#0d1117;border-left:1px solid #21262d;display:flex;flex-direction:column;overflow:hidden}
+.panel-header{padding:8px 12px;background:#161b22;border-bottom:1px solid #21262d;font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;gap:6px}
+.panel-content{flex:1;padding:10px;overflow-y:auto;font-size:11px;font-family:'JetBrains Mono',monospace}
+.ide-status{grid-column:1/-1;background:#161b22;border-top:1px solid #21262d;display:flex;align-items:center;padding:0 10px;font-size:10px;color:#6b7280;gap:12px;font-family:'JetBrains Mono',monospace}
+
+/* Chat panel in IDE */
+.chat-msg{margin-bottom:12px;opacity:0;transform:translateY(10px);animation:msgIn 0.4s ease forwards}
+@keyframes msgIn{to{opacity:1;transform:translateY(0)}}
+.chat-user{padding:8px 10px;border-radius:8px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);color:#c7d2fe;font-size:11px;line-height:1.5}
+.chat-agent{padding:8px 10px;border-radius:8px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.15);color:#a7f3d0;font-size:11px;line-height:1.5}
+.chat-system{padding:6px 10px;border-radius:6px;background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.15);color:#fed7aa;font-size:10px}
+.chat-hook{padding:6px 10px;border-radius:6px;background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.15);color:#fda4af;font-size:10px}
+
+/* Typing cursor */
+.cursor{display:inline-block;width:7px;height:14px;background:#6366f1;animation:blink 1s step-end infinite;vertical-align:middle;margin-left:2px}
+@keyframes blink{50%{opacity:0}}
+
+/* Layer indicator */
+.layer-badge{position:absolute;top:48px;left:50%;transform:translateX(-50%);padding:4px 14px;border-radius:20px;font-size:10px;font-weight:700;z-index:50;letter-spacing:1px;text-transform:uppercase;opacity:0;transition:opacity 0.4s}
+.scene.active .layer-badge{opacity:1}
+
+/* Glow effects on active components */
+.glow-blue{box-shadow:0 0 20px rgba(96,165,250,0.3);border-color:rgba(96,165,250,0.5) !important}
+.glow-purple{box-shadow:0 0 20px rgba(167,139,250,0.3);border-color:rgba(167,139,250,0.5) !important}
+.glow-green{box-shadow:0 0 20px rgba(52,211,153,0.3);border-color:rgba(52,211,153,0.5) !important}
+.glow-orange{box-shadow:0 0 20px rgba(251,146,60,0.3);border-color:rgba(251,146,60,0.5) !important}
+.glow-rose{box-shadow:0 0 20px rgba(244,63,94,0.3);border-color:rgba(244,63,94,0.5) !important}
+
+/* Fullscreen slides (intro/outro) */
+.fs-slide{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px}
+.fs-logo{width:100px;height:100px;border-radius:24px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:900;color:white;box-shadow:0 0 60px rgba(99,102,241,0.35);animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.fs-title{font-size:clamp(28px,4.5vw,48px);font-weight:900;margin-top:20px;background:linear-gradient(135deg,#c7d2fe,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* Narration */
+#narration{position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:rgba(10,10,15,0.88);backdrop-filter:blur(20px);border:1px solid rgba(99,102,241,0.15);border-radius:10px;padding:10px 20px;font-size:12px;color:#a5b4fc;max-width:650px;text-align:center;z-index:199;opacity:0;transition:opacity 0.4s;line-height:1.5}
+#narration.show{opacity:1}
+
+/* Animated connector lines */
+.connector{position:absolute;pointer-events:none}
+.connector .line{stroke:#6366f1;stroke-width:2;stroke-dasharray:6;animation:dash 1s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-12}}
+
+/* Pulse dot */
+.pulse-dot{width:8px;height:8px;border-radius:50%;position:relative}
+.pulse-dot::after{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid currentColor;animation:ripple 1.5s ease infinite}
+@keyframes ripple{0%{transform:scale(0.8);opacity:1}100%{transform:scale(2);opacity:0}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="step-label"></div>
+<div id="step-count"></div>
+<div id="canvas"></div>
+<div id="narration"></div>
+<div id="controls">
+  <button class="cb" id="prev" title="Previous (Left Arrow)">&#x23EE;</button>
+  <button class="cb on" id="play" title="Play/Pause (Space)">&#x23F8;</button>
+  <button class="cb" id="next" title="Next (Right Arrow)">&#x23ED;</button>
+  <span id="tmr">0:00</span>
+  <button class="speed-btn active" data-speed="1">1x</button>
+  <button class="speed-btn" data-speed="2">2x</button>
+  <button class="speed-btn" data-speed="0.5">0.5x</button>
+  <button class="cb" id="restart" title="Restart (R)">&#x21BB;</button>
+</div>
+
+<script>
+(function(){
+// =============================================
+// SCENARIO: Developer uses /tdd to add a feature
+// =============================================
+const SCENES = [
+  // 0 - INTRO
+  {
+    type: 'fullscreen',
+    label: 'EAGLES Pro v2.1.0',
+    narration: 'Let\'s see EAGLES in action. A developer wants to add a Salary Validation feature to their .NET microservice using Test-Driven Development.',
+    duration: 5000,
+    render: () => `
+      <div class="fs-slide">
+        <div class="fs-logo">E</div>
+        <div class="fs-title">EAGLES in Action</div>
+        <div style="color:#6b7280;margin-top:8px;font-size:14px;letter-spacing:1px">USE CASE: Adding a Feature with /tdd</div>
+        <div style="margin-top:28px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center">
+          <div style="padding:8px 16px;border-radius:8px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);font-size:12px;color:#818cf8">141 Skills</div>
+          <div style="padding:8px 16px;border-radius:8px;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2);font-size:12px;color:#a78bfa">20 Agents</div>
+          <div style="padding:8px 16px;border-radius:8px;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);font-size:12px;color:#34d399">10 MCPs</div>
+          <div style="padding:8px 16px;border-radius:8px;background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.2);font-size:12px;color:#fb923c">9 Hooks</div>
+        </div>
+        <div style="margin-top:32px;font-size:11px;color:#374151">Press Space to pause/resume | Arrow keys to navigate | R to restart</div>
+      </div>`
+  },
+  // 1 - DEVELOPER TYPES COMMAND
+  {
+    type: 'ide',
+    label: 'Step 1: Developer Types /tdd',
+    layerBadge: { text: 'Layer 1: Developer Interface', color: '#60a5fa', bg: 'rgba(96,165,250,0.1)' },
+    narration: 'The developer opens the Claude Code chat panel in VSCode and types /tdd to start a Test-Driven Development workflow for salary validation.',
+    duration: 6000,
+    chat: [
+      { delay: 500, type: 'user', text: '<span style="color:#818cf8;font-weight:700">/tdd</span> Add SMIC salary validation to SalaryService - ensure minimum wage compliance for CDI and CDD contracts per French labor law' },
+    ],
+    editor: {
+      file: 'SalaryService.cs',
+      lang: 'C#',
+      lines: [
+        { ln: 1, code: '<span class="kw">namespace</span> <span class="tp">Sourcing.CandidateAttraction.Services</span>;' },
+        { ln: 2, code: '' },
+        { ln: 3, code: '<span class="kw">public class</span> <span class="tp">SalaryService</span> : <span class="tp">ISalaryService</span>' },
+        { ln: 4, code: '{' },
+        { ln: 5, code: '    <span class="kw">private readonly</span> <span class="tp">ISalaryRepository</span> <span class="fn">_repository</span>;' },
+        { ln: 6, code: '' },
+        { ln: 7, code: '    <span class="kw">public</span> <span class="fn">SalaryService</span>(<span class="tp">ISalaryRepository</span> repository)' },
+        { ln: 8, code: '    {' },
+        { ln: 9, code: '        _repository = repository;' },
+        { ln: 10, code: '    }' },
+        { ln: 11, code: '' },
+        { ln: 12, code: '    <span class="cm">// TODO: Add SMIC validation</span>' },
+        { ln: 13, code: '}' },
+      ]
+    },
+    fileTree: ['src/backend/', '  Services/', '    SalaryService.cs *', '    ISalaryService.cs', '  Models/', '    Salary.cs', '  Tests/', '    SalaryServiceTests.cs']
+  },
+  // 2 - DSL ENGINE PARSES
+  {
+    type: 'ide',
+    label: 'Step 2: DSL Engine Parses',
+    layerBadge: { text: 'Layer 1: DSL Engine', color: '#60a5fa', bg: 'rgba(96,165,250,0.1)' },
+    narration: 'The DSL Engine parses /tdd - it\'s a registered slash command mapped to the tdd-guide agent. The engine resolves the skill definition from the catalog.',
+    duration: 5000,
+    chat: [
+      { delay: 0, type: 'system', text: '<span style="color:#fb923c">DSL Engine</span> Parsing: <span style="color:#818cf8">/tdd</span> => Skill <span style="color:#34d399">tdd-guide</span> (category: testing)' },
+      { delay: 800, type: 'system', text: '<span style="color:#fb923c">DSL Engine</span> Resolved: ~/.claude/skills/tdd/SKILL.md => agent: <span style="color:#a78bfa">tdd-guide</span>' },
+      { delay: 1600, type: 'system', text: '<span style="color:#fb923c">DSL Engine</span> Context: .NET 8, xUnit, FluentAssertions (from rules/dotnet/testing.md)' },
+    ],
+    editor: {
+      file: 'SKILL.md (tdd)',
+      lang: 'YAML',
+      lines: [
+        { ln: 1, code: '<span class="cm">---</span>' },
+        { ln: 2, code: '<span class="fn">name</span>: <span class="str">tdd</span>' },
+        { ln: 3, code: '<span class="fn">description</span>: <span class="str">Start TDD workflow for a feature</span>' },
+        { ln: 4, code: '<span class="fn">argument-hint</span>: <span class="str">"<feature-description>"</span>' },
+        { ln: 5, code: '<span class="fn">tags</span>: [<span class="str">testing</span>, <span class="str">tdd</span>, <span class="str">quality</span>]' },
+        { ln: 6, code: '<span class="cm">---</span>' },
+        { ln: 7, code: '' },
+        { ln: 8, code: '<span class="cm"># TDD Workflow</span>' },
+        { ln: 9, code: '<span class="cm">## RED-GREEN-REFACTOR cycle</span>' },
+        { ln: 10, code: '<span class="cm">1. Write failing test first</span>' },
+        { ln: 11, code: '<span class="cm">2. Implement minimal code to pass</span>' },
+        { ln: 12, code: '<span class="cm">3. Refactor with confidence</span>' },
+      ]
+    },
+    fileTree: ['~/.claude/skills/', '  tdd/ *', '    SKILL.md', '  plan/', '  e2e/', '  gsd-execute/', '  security-scan/', '  generate-crud/', '  ... (72 total)']
+  },
+  // 3 - PRETOOLUSE HOOKS FIRE
+  {
+    type: 'ide',
+    label: 'Step 3: PreToolUse Hooks Fire',
+    layerBadge: { text: 'Layer 4: Hooks (PreToolUse)', color: '#fb923c', bg: 'rgba(251,146,60,0.1)' },
+    narration: 'Before execution, 3 PreToolUse hooks fire as guards. Doc-blocker checks file paths, coverage-gate ensures tests include coverage collection, and compact-suggestion monitors context size.',
+    duration: 6000,
+    chat: [
+      { delay: 300, type: 'hook', text: '<span style="color:#f87171">HOOK</span> <span style="color:#fbbf24">PreToolUse</span> doc-blocker => <span style="color:#34d399">PASS</span> (no .md write outside allowed paths)' },
+      { delay: 1000, type: 'hook', text: '<span style="color:#f87171">HOOK</span> <span style="color:#fbbf24">PreToolUse</span> coverage-gate => <span style="color:#34d399">PASS</span> (test command includes --collect:"XPlat Code Coverage")' },
+      { delay: 1700, type: 'hook', text: '<span style="color:#f87171">HOOK</span> <span style="color:#fbbf24">PreToolUse</span> compact-suggestion => <span style="color:#34d399">PASS</span> (context: 12% used, threshold: 60%)' },
+      { delay: 2500, type: 'system', text: 'All 3 PreToolUse guards passed. Proceeding to agent dispatch...' },
+    ],
+    editor: {
+      file: 'settings.json (hooks)',
+      lang: 'JSON',
+      lines: [
+        { ln: 1, code: '<span class="str">"hooks"</span>: {' },
+        { ln: 2, code: '  <span class="str">"PreToolUse"</span>: [' },
+        { ln: 3, code: '    { <span class="str">"matcher"</span>: <span class="str">"Write|Edit"</span>,' },
+        { ln: 4, code: '      <span class="cm">// doc-blocker: blocks .md outside paths</span>' },
+        { ln: 5, code: '      <span class="str">"command"</span>: <span class="str">"python3 doc-blocker.py"</span> },' },
+        { ln: 6, code: '    { <span class="str">"matcher"</span>: <span class="str">"Bash"</span>,' },
+        { ln: 7, code: '      <span class="cm">// coverage-gate: warn if no --collect</span>' },
+        { ln: 8, code: '      <span class="str">"command"</span>: <span class="str">"python3 coverage-gate.py"</span> },' },
+        { ln: 9, code: '    { <span class="str">"matcher"</span>: <span class="str">"*"</span>,' },
+        { ln: 10, code: '      <span class="cm">// compact-suggestion: context rot check</span>' },
+        { ln: 11, code: '      <span class="str">"command"</span>: <span class="str">"python3 compact.py"</span> }' },
+        { ln: 12, code: '  ]' },
+        { ln: 13, code: '}' },
+      ]
+    },
+    fileTree: ['~/.claude/', '  settings.json *', '  hooks/', '    doc-blocker.py', '    coverage-gate.py', '    compact-suggestion.py']
+  },
+  // 4 - RULES CHECK
+  {
+    type: 'ide',
+    label: 'Step 4: Rules Enforcement',
+    layerBadge: { text: 'Layer 6: Rules Engine', color: '#fb7185', bg: 'rgba(244,63,94,0.1)' },
+    narration: 'The Rules Engine automatically injects coding standards. The .NET testing rules enforce xUnit, FluentAssertions, and the Arrange-Act-Assert pattern. French HR rules add SMIC validation requirements.',
+    duration: 5500,
+    chat: [
+      { delay: 300, type: 'system', text: '<span style="color:#f87171">RULES</span> Loaded: <span style="color:#818cf8">dotnet/testing.md</span> => xUnit + FluentAssertions + AAA pattern' },
+      { delay: 1000, type: 'system', text: '<span style="color:#f87171">RULES</span> Loaded: <span style="color:#818cf8">dotnet/coding-style.md</span> => PascalCase, _camelCase, IOptions&lt;T&gt;' },
+      { delay: 1700, type: 'system', text: '<span style="color:#f87171">RULES</span> Loaded: <span style="color:#818cf8">common/security.md</span> => GDPR, no PII in logs, parameterized queries' },
+      { delay: 2400, type: 'system', text: '<span style="color:#f87171">RULES</span> French HR: SMIC = 1,766.92 EUR/month (2026), CDI/CDD contract validation required' },
+    ],
+    editor: {
+      file: 'rules/dotnet/testing.md',
+      lang: 'Markdown',
+      lines: [
+        { ln: 1, code: '<span class="cm"># .NET Testing Rules</span>' },
+        { ln: 2, code: '' },
+        { ln: 3, code: '<span class="cm">## Framework</span>' },
+        { ln: 4, code: '- xUnit for test framework' },
+        { ln: 5, code: '- FluentAssertions for assertions' },
+        { ln: 6, code: '- Moq or NSubstitute for mocking' },
+        { ln: 7, code: '' },
+        { ln: 8, code: '<span class="cm">## Conventions</span>' },
+        { ln: 9, code: '- Test method: <span class="str">{Method}_{Scenario}_{Expected}</span>' },
+        { ln: 10, code: '- Arrange-Act-Assert pattern' },
+        { ln: 11, code: '- One assertion per test' },
+        { ln: 12, code: '- Min 80% coverage on changed files' },
+      ]
+    },
+    fileTree: ['~/.claude/rules/', '  common/', '    security.md', '    coding-style.md', '    testing.md', '    patterns.md', '    performance.md', '  dotnet/ *', '    coding-style.md', '    testing.md']
+  },
+  // 5 - AGENT DISPATCHED
+  {
+    type: 'ide',
+    label: 'Step 5: TDD Agent Dispatched',
+    layerBadge: { text: 'Layer 2: Agent Orchestration', color: '#a78bfa', bg: 'rgba(167,139,250,0.1)' },
+    narration: 'The tdd-guide agent is dispatched with its own isolated context window. It starts the RED phase - writing a failing test first, following Arrange-Act-Assert pattern.',
+    duration: 7000,
+    chat: [
+      { delay: 300, type: 'agent', text: '<span style="color:#a78bfa;font-weight:700">tdd-guide</span> Starting RED phase: Writing failing test for SMIC salary validation...' },
+      { delay: 1500, type: 'agent', text: '<span style="color:#a78bfa;font-weight:700">tdd-guide</span> Creating test: <span style="color:#818cf8">ValidateSalary_BelowSMIC_ThrowsValidationException</span>' },
+      { delay: 3000, type: 'agent', text: '<span style="color:#a78bfa;font-weight:700">tdd-guide</span> Using MCP: <span style="color:#34d399">Filesystem</span> to write SalaryServiceTests.cs' },
+    ],
+    editor: {
+      file: 'SalaryServiceTests.cs',
+      lang: 'C#',
+      lines: [
+        { ln: 1, code: '<span class="kw">public class</span> <span class="tp">SalaryServiceTests</span>' },
+        { ln: 2, code: '{' },
+        { ln: 3, code: '    [<span class="tp">Fact</span>]' },
+        { ln: 4, code: '    <span class="kw">public void</span> <span class="fn">ValidateSalary_BelowSMIC_ThrowsException</span>()' },
+        { ln: 5, code: '    {' },
+        { ln: 6, code: '        <span class="cm">// Arrange</span>' },
+        { ln: 7, code: '        <span class="kw">var</span> service = <span class="kw">new</span> <span class="tp">SalaryService</span>(Mock.Of&lt;<span class="tp">ISalaryRepository</span>&gt;());' },
+        { ln: 8, code: '        <span class="kw">var</span> salary = <span class="num">1500.00m</span>; <span class="cm">// Below SMIC</span>' },
+        { ln: 9, code: '' },
+        { ln: 10, code: '        <span class="cm">// Act & Assert</span>' },
+        { ln: 11, code: '        service.Invoking(s => s.ValidateSalary(salary, <span class="tp">ContractType</span>.CDI))' },
+        { ln: 12, code: '            .Should().Throw&lt;<span class="tp">ValidationException</span>&gt;()' },
+        { ln: 13, code: '            .WithMessage(<span class="str">"*SMIC*"</span>);' },
+        { ln: 14, code: '    }' },
+        { ln: 15, code: '}' },
+      ]
+    },
+    fileTree: ['src/backend/Tests/', '  SalaryServiceTests.cs *', '  MatchingServiceTests.cs', 'src/backend/Services/', '  SalaryService.cs', '  ISalaryService.cs']
+  },
+  // 6 - MCP SERVERS CALLED
+  {
+    type: 'ide',
+    label: 'Step 6: MCP Servers Execute',
+    layerBadge: { text: 'Layer 3: MCP Servers', color: '#34d399', bg: 'rgba(52,211,153,0.1)' },
+    narration: 'The agent calls MCP servers: Filesystem writes the test file, Context7 fetches latest FluentAssertions docs, and Memory stores the SMIC constant for reuse across sessions.',
+    duration: 6000,
+    chat: [
+      { delay: 300, type: 'system', text: '<span style="color:#34d399">MCP</span> <span style="font-weight:700">Filesystem</span> => Write: Tests/SalaryServiceTests.cs (15 lines)' },
+      { delay: 1000, type: 'system', text: '<span style="color:#34d399">MCP</span> <span style="font-weight:700">Context7</span> => Query: "FluentAssertions Throw assertion .NET 8" => 3 code examples' },
+      { delay: 1800, type: 'system', text: '<span style="color:#34d399">MCP</span> <span style="font-weight:700">Memory</span> => Store: SMIC_2026 = 1766.92 EUR (persistent across sessions)' },
+      { delay: 2600, type: 'system', text: '<span style="color:#34d399">MCP</span> <span style="font-weight:700">GitMCP</span> => Fetch: French labor law SMIC validation patterns from reference repos' },
+    ],
+    editor: {
+      file: 'Terminal',
+      lang: 'bash',
+      lines: [
+        { ln: 1, code: '<span class="fn">$</span> dotnet test --filter "ValidateSalary_BelowSMIC"' },
+        { ln: 2, code: '  --collect:<span class="str">"XPlat Code Coverage"</span>' },
+        { ln: 3, code: '' },
+        { ln: 4, code: '<span class="err">Failed!</span> - Failed: 1, Passed: 0, Total: 1' },
+        { ln: 5, code: '' },
+        { ln: 6, code: '<span class="err">  X ValidateSalary_BelowSMIC_ThrowsException</span>' },
+        { ln: 7, code: '<span class="err">    System.MissingMethodException:</span>' },
+        { ln: 8, code: '<span class="err">    Method \'ValidateSalary\' not found</span>' },
+        { ln: 9, code: '' },
+        { ln: 10, code: '<span class="cm">// RED phase complete - test fails as expected!</span>' },
+        { ln: 11, code: '<span class="str">// Proceeding to GREEN phase...</span>' },
+      ]
+    },
+    fileTree: ['MCP Servers (active):', '  Filesystem (write)', '  Context7 (docs)', '  Memory (store)', '  GitMCP (patterns)', '  ---', '  GitHub', '  Chrome DevTools', '  QCO Pipeline', '  Team Sync', '  Seq. Thinking', '  Prompt Library']
+  },
+  // 7 - GREEN PHASE - IMPLEMENTATION
+  {
+    type: 'ide',
+    label: 'Step 7: GREEN Phase',
+    layerBadge: { text: 'Layer 2: Agent (GREEN phase)', color: '#10b981', bg: 'rgba(16,185,129,0.1)' },
+    narration: 'GREEN phase: The agent implements the minimum code to make the test pass. It adds ValidateSalary() with SMIC constant and contract type validation, following the Controller-Service-Repository pattern.',
+    duration: 7000,
+    chat: [
+      { delay: 300, type: 'agent', text: '<span style="color:#10b981;font-weight:700">tdd-guide</span> GREEN phase: Implementing ValidateSalary() with minimal code to pass...' },
+      { delay: 2000, type: 'agent', text: '<span style="color:#10b981;font-weight:700">tdd-guide</span> Added SMIC constant: 1,766.92 EUR/month (2026)' },
+      { delay: 3500, type: 'agent', text: '<span style="color:#10b981;font-weight:700">tdd-guide</span> Running test... <span style="color:#34d399;font-weight:700">PASSED!</span>' },
+    ],
+    editor: {
+      file: 'SalaryService.cs',
+      lang: 'C#',
+      lines: [
+        { ln: 1, code: '<span class="kw">public class</span> <span class="tp">SalaryService</span> : <span class="tp">ISalaryService</span>' },
+        { ln: 2, code: '{' },
+        { ln: 3, code: '    <span class="kw">private const decimal</span> <span class="fn">SmicMonthly2026</span> = <span class="num">1766.92m</span>;' },
+        { ln: 4, code: '' },
+        { ln: 5, code: '    <span class="kw">public void</span> <span class="fn">ValidateSalary</span>(' },
+        { ln: 6, code: '        <span class="kw">decimal</span> monthlySalary,' },
+        { ln: 7, code: '        <span class="tp">ContractType</span> contractType)' },
+        { ln: 8, code: '    {' },
+        { ln: 9, code: '        <span class="kw">if</span> (monthlySalary < SmicMonthly2026)' },
+        { ln: 10, code: '            <span class="kw">throw new</span> <span class="tp">ValidationException</span>(' },
+        { ln: 11, code: '                <span class="str">$"Salary {monthlySalary} is below SMIC"</span>);' },
+        { ln: 12, code: '    }' },
+        { ln: 13, code: '}' },
+      ]
+    },
+    fileTree: ['src/backend/', '  Services/', '    SalaryService.cs *', '    ISalaryService.cs', '  Tests/', '    SalaryServiceTests.cs']
+  },
+  // 8 - POSTTOOLUSE HOOKS AUDIT
+  {
+    type: 'ide',
+    label: 'Step 8: PostToolUse Hooks Audit',
+    layerBadge: { text: 'Layer 4: Hooks (PostToolUse)', color: '#fb923c', bg: 'rgba(251,146,60,0.1)' },
+    narration: 'After code is written, 3 PostToolUse hooks audit the output. Prettier validates formatting, console-log-warning checks for debug leftovers, and dependency-audit scans for new packages.',
+    duration: 5500,
+    chat: [
+      { delay: 300, type: 'hook', text: '<span style="color:#f87171">HOOK</span> <span style="color:#fbbf24">PostToolUse</span> prettier-check => <span style="color:#34d399">PASS</span> (C# formatting OK)' },
+      { delay: 1000, type: 'hook', text: '<span style="color:#f87171">HOOK</span> <span style="color:#fbbf24">PostToolUse</span> console-log-warning => <span style="color:#34d399">PASS</span> (no Console.Write found)' },
+      { delay: 1700, type: 'hook', text: '<span style="color:#f87171">HOOK</span> <span style="color:#fbbf24">PostToolUse</span> dependency-audit => <span style="color:#34d399">PASS</span> (no new packages added)' },
+      { delay: 2500, type: 'agent', text: '<span style="color:#10b981;font-weight:700">tdd-guide</span> All hooks passed. REFACTOR phase: code is already minimal, no refactoring needed.' },
+      { delay: 3500, type: 'agent', text: '<span style="color:#10b981;font-weight:700">tdd-guide</span> TDD cycle complete! 1 test passing, coverage: 100% on ValidateSalary()' },
+    ],
+    editor: {
+      file: 'Terminal',
+      lang: 'bash',
+      lines: [
+        { ln: 1, code: '<span class="fn">$</span> dotnet test --collect:<span class="str">"XPlat Code Coverage"</span>' },
+        { ln: 2, code: '' },
+        { ln: 3, code: '<span class="str">Passed!</span> - Failed: 0, Passed: 1, Total: 1' },
+        { ln: 4, code: '' },
+        { ln: 5, code: '  <span class="str">V ValidateSalary_BelowSMIC_ThrowsException</span> (12ms)' },
+        { ln: 6, code: '' },
+        { ln: 7, code: 'Code Coverage: <span class="str">100%</span> (SalaryService.cs)' },
+        { ln: 8, code: 'Branch Coverage: <span class="str">100%</span>' },
+        { ln: 9, code: '' },
+        { ln: 10, code: '<span class="cm">TDD Cycle: RED -> GREEN -> REFACTOR [DONE]</span>' },
+      ]
+    },
+    fileTree: ['PostToolUse hooks:', '  prettier-check [PASS]', '  console-log-warning [PASS]', '  dependency-audit [PASS]', '---', 'Lifecycle hooks:', '  session-auto-save', '  memory-snapshot']
+  },
+  // 9 - OUTRO
+  {
+    type: 'fullscreen',
+    label: 'Complete',
+    narration: 'That\'s EAGLES in action. From a single /tdd command, 6 layers worked together: DSL parsing, hook guards, rule enforcement, agent orchestration, MCP tool execution, and post-audit. All automated.',
+    duration: 7000,
+    render: () => `
+      <div class="fs-slide">
+        <div class="fs-logo">E</div>
+        <div class="fs-title">TDD Cycle Complete</div>
+        <div style="color:#10b981;font-size:16px;margin-top:8px;font-weight:600">1 command => 6 layers => automated quality</div>
+        <div style="margin-top:28px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:700px">
+          <div style="padding:6px 14px;border-radius:20px;font-size:11px;color:#60a5fa;background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.2)">1. DSL Parse</div>
+          <div style="font-size:18px;color:#3b4048;line-height:28px">&rarr;</div>
+          <div style="padding:6px 14px;border-radius:20px;font-size:11px;color:#fb923c;background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.2)">2. Hook Guards</div>
+          <div style="font-size:18px;color:#3b4048;line-height:28px">&rarr;</div>
+          <div style="padding:6px 14px;border-radius:20px;font-size:11px;color:#fb7185;background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.2)">3. Rules Check</div>
+          <div style="font-size:18px;color:#3b4048;line-height:28px">&rarr;</div>
+          <div style="padding:6px 14px;border-radius:20px;font-size:11px;color:#a78bfa;background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2)">4. Agent Work</div>
+          <div style="font-size:18px;color:#3b4048;line-height:28px">&rarr;</div>
+          <div style="padding:6px 14px;border-radius:20px;font-size:11px;color:#34d399;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2)">5. MCP Tools</div>
+          <div style="font-size:18px;color:#3b4048;line-height:28px">&rarr;</div>
+          <div style="padding:6px 14px;border-radius:20px;font-size:11px;color:#fbbf24;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2)">6. Post-Audit</div>
+        </div>
+        <div style="margin-top:32px;padding:16px 28px;border-radius:12px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);text-align:center">
+          <div style="font-size:24px;font-weight:800;color:#34d399">EAGLES Pro v2.1.0</div>
+          <div style="font-size:12px;color:#6b7280;margin-top:4px">141 Skills | 20 Agents | 10 MCPs | 9 Hooks | 10 Rules</div>
+          <div style="font-size:11px;color:#4f46e5;margin-top:8px">github.com/ERP-CORE-DEV/eagles-claude-config</div>
+        </div>
+      </div>`
+  }
+];
+
+const canvas = document.getElementById('canvas');
+const progressEl = document.getElementById('progress');
+const stepLabel = document.getElementById('step-label');
+const stepCount = document.getElementById('step-count');
+const narrationEl = document.getElementById('narration');
+const playBtn = document.getElementById('play');
+
+let current = 0;
+let playing = true;
+let speed = 1;
+let autoTimer = null;
+let elapsed = 0;
+let tickTimer = null;
+
+function renderIDE(scene) {
+  const e = scene.editor;
+  const ft = scene.fileTree || [];
+  const lb = scene.layerBadge || null;
+  return `
+    ${lb ? `<div class="layer-badge" style="color:${lb.color};background:${lb.bg};border:1px solid ${lb.color}30">${lb.text}</div>` : ''}
+    <div class="ide">
+      <div class="ide-bar">
+        <div class="ide-dot" style="background:#ff5f57"></div>
+        <div class="ide-dot" style="background:#ffbd2e"></div>
+        <div class="ide-dot" style="background:#28c840"></div>
+        <span style="margin-left:12px;font-size:11px;color:#6b7280">EAGLES Pro v2.1.0</span>
+        <span style="margin-left:auto;font-size:10px;color:#4f46e5">hatim branch</span>
+      </div>
+      <div class="ide-sidebar">
+        <div class="si active" title="Explorer">&#x1F4C1;</div>
+        <div class="si" title="Search">&#x1F50D;</div>
+        <div class="si" title="Git">&#x1F500;</div>
+        <div class="si" title="Debug">&#x1F41E;</div>
+        <div class="si" title="Claude">&#x1F916;</div>
+      </div>
+      <div class="ide-explorer">
+        <div class="title">Explorer</div>
+        <div class="file-tree">${ft.map(f => {
+          const isActive = f.includes('*');
+          const clean = f.replace(' *', '').replace('*', '');
+          const isDir = clean.endsWith('/');
+          return isDir
+            ? `<div class="dir">${clean}</div>`
+            : `<div class="file${isActive ? ' active' : ''}">${clean}</div>`;
+        }).join('')}</div>
+      </div>
+      <div class="ide-editor">
+        <div class="editor-tabs">
+          <div class="tab active"><span class="lang" style="background:${e.lang==='C#'?'#68217a':e.lang==='JSON'?'#f5a623':e.lang==='YAML'?'#cb171e':e.lang==='bash'?'#4eaa25':'#6b7280'};color:white">${e.lang}</span>${e.file}</div>
+        </div>
+        <div class="editor-content">${e.lines.map(l => `<div class="line"><span class="ln">${l.ln}</span><span class="code">${l.code}</span></div>`).join('')}</div>
+      </div>
+      <div class="ide-panel">
+        <div class="panel-header">&#x1F916; Claude Code Chat</div>
+        <div class="panel-content" id="chat-area"></div>
+      </div>
+      <div class="ide-status">
+        <span style="color:#10b981">&#x25CF;</span>
+        <span>EAGLES Pro v2.1.0</span>
+        <span style="color:#818cf8">hatim</span>
+        <span style="margin-left:auto">Score: 92/120</span>
+      </div>
+    </div>`;
+}
+
+function showScene(idx) {
+  if (idx < 0 || idx >= SCENES.length) return;
+  current = idx;
+  const scene = SCENES[current];
+
+  // Clear and render
+  canvas.innerHTML = '';
+  const div = document.createElement('div');
+  div.className = 'scene active';
+
+  if (scene.type === 'fullscreen') {
+    div.innerHTML = scene.render();
+  } else {
+    div.innerHTML = renderIDE(scene);
+  }
+
+  canvas.appendChild(div);
+
+  // Animate chat messages
+  if (scene.chat) {
+    const chatArea = document.getElementById('chat-area');
+    if (chatArea) {
+      scene.chat.forEach(msg => {
+        setTimeout(() => {
+          if (current !== idx) return; // scene changed
+          const m = document.createElement('div');
+          m.className = `chat-msg chat-${msg.type}`;
+          m.innerHTML = msg.text;
+          chatArea.appendChild(m);
+          chatArea.scrollTop = chatArea.scrollHeight;
+        }, msg.delay / speed);
+      });
+    }
+  }
+
+  // Update UI
+  progressEl.style.width = ((current + 1) / SCENES.length * 100) + '%';
+  stepLabel.textContent = scene.label;
+  stepCount.textContent = (current + 1) + ' / ' + SCENES.length;
+  narrationEl.textContent = scene.narration || '';
+  narrationEl.classList.toggle('show', !!scene.narration);
+}
+
+function nextScene() {
+  if (current < SCENES.length - 1) showScene(current + 1);
+  else pause();
+}
+function prevScene() {
+  if (current > 0) showScene(current - 1);
+}
+
+function play() {
+  playing = true;
+  playBtn.innerHTML = '&#x23F8;';
+  playBtn.classList.add('on');
+  scheduleNext();
+}
+function pause() {
+  playing = false;
+  playBtn.innerHTML = '&#x25B6;';
+  playBtn.classList.remove('on');
+  clearTimeout(autoTimer);
+}
+function scheduleNext() {
+  clearTimeout(autoTimer);
+  if (!playing) return;
+  const dur = SCENES[current].duration / speed;
+  autoTimer = setTimeout(() => { nextScene(); if (playing) scheduleNext(); }, dur);
+}
+
+// Controls
+playBtn.addEventListener('click', () => playing ? pause() : play());
+document.getElementById('next').addEventListener('click', () => { nextScene(); if (playing) scheduleNext(); });
+document.getElementById('prev').addEventListener('click', () => { prevScene(); if (playing) scheduleNext(); });
+document.getElementById('restart').addEventListener('click', () => { elapsed = 0; showScene(0); if (!playing) play(); else scheduleNext(); });
+
+// Speed buttons
+document.querySelectorAll('.speed-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    speed = parseFloat(btn.dataset.speed);
+    document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (playing) scheduleNext();
+  });
+});
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextScene(); if (playing) scheduleNext(); }
+  if (e.key === 'ArrowLeft') { prevScene(); if (playing) scheduleNext(); }
+  if (e.key === 'p' || e.key === 'k') { playing ? pause() : play(); }
+  if (e.key === 'r') { elapsed = 0; showScene(0); if (!playing) play(); else scheduleNext(); }
+});
+
+// Timer
+tickTimer = setInterval(() => {
+  if (playing) elapsed++;
+  document.getElementById('tmr').textContent =
+    Math.floor(elapsed/60) + ':' + String(elapsed%60).padStart(2,'0');
+}, 1000);
+
+// Start
+showScene(0);
+play();
+})();
+</script>
+</body>
+</html>
