@@ -1,0 +1,52 @@
+[
+  {
+    "event": "PreToolUse",
+    "matcher": "tool_name == \"Write\" and tool_input.file_path matches \"\\.md$\" and not (tool_input.file_path matches \"(README|CLAUDE|CONTRIBUTING|CHANGELOG|DELETION_LOG)\")",
+    "hooks": [
+      {
+        "type": "command",
+        "command": "echo [EAGLES] Blocked: Only README/CLAUDE/CONTRIBUTING/CHANGELOG .md files allowed >&2 && exit 2"
+      }
+    ]
+  },
+  {
+    "event": "PreToolUse",
+    "matcher": "tool_name == \"Edit\" or tool_name == \"Write\"",
+    "hooks": [
+      {
+        "type": "command",
+        "command": "echo [EAGLES] Tool call logged >&2"
+      }
+    ]
+  },
+  {
+    "event": "PostToolUse",
+    "matcher": "tool_name == \"Edit\" and tool_input.file_path matches \"\\.tsx?$\"",
+    "hooks": [
+      {
+        "type": "command",
+        "command": "echo [EAGLES] TypeScript edited - consider tsc --noEmit >&2"
+      }
+    ]
+  },
+  {
+    "event": "PostToolUse",
+    "matcher": "tool_name == \"Edit\" and tool_input.new_string matches \"console\\.(log|debug|info)\"",
+    "hooks": [
+      {
+        "type": "command",
+        "command": "echo [EAGLES] WARNING: console.log detected. Remove before commit. >&2"
+      }
+    ]
+  },
+  {
+    "event": "PostToolUse",
+    "matcher": "tool_name == \"Bash\" and tool_output.output matches \"https://github\\.com/.*/pull/\\d+\"",
+    "hooks": [
+      {
+        "type": "command",
+        "command": "echo [EAGLES] PR created\\! Request review from team. >&2"
+      }
+    ]
+  }
+]

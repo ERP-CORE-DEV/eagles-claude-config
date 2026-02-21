@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code Optimization Framework</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script>
+        // Apply theme immediately to prevent flash
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+</head>
+<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans min-h-screen transition-colors duration-300">
+    <!-- Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass border-b border-slate-800/50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-xl">⚡</div>
+                <h1 class="text-xl font-bold gradient-text">Claude Code Framework</h1>
+            </div>
+            <nav class="hidden md:flex items-center gap-1">
+                <a href="architectures.html" class="nav-link">Architectures</a>
+                <a href="workflows.html" class="nav-link">Workflows</a>
+                <a href="stacks.html" class="nav-link">Stacks</a>
+                <a href="deployments.html" class="nav-link">Deployments</a>
+                <a href="testing.html" class="nav-link">Testing</a>
+                <a href="integration.html" class="nav-link text-yellow-400">Integration 🆕</a>
+                <a href="debugging.html" class="nav-link text-yellow-400">Debugging 🆕</a>
+            </nav>
+            <div class="flex items-center gap-3">
+                <button onclick="openSearch()" class="hidden md:flex items-center gap-2 px-3 py-1.5 text-sm text-slate-400 bg-slate-800/50 rounded-lg border border-slate-700 hover:border-slate-600 transition">
+                    <span>Search</span>
+                    <kbd class="px-1.5 py-0.5 text-xs bg-slate-700 rounded">⌘K</kbd>
+                </button>
+                <button id="theme-toggle" class="p-2 rounded-lg hover:bg-slate-800 transition">
+                    <span class="dark:hidden">🌙</span>
+                    <span class="hidden dark:inline">☀️</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-6 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-indigo-500/10 via-transparent to-transparent"></div>
+        <div class="max-w-4xl mx-auto text-center relative">
+            <div class="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-sm text-indigo-400">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                Version 1.2.0 • 103 Skills • Production Ready
+            </div>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+                <span class="gradient-text">Claude Code</span><br>
+                <span class="text-slate-300">Optimization Framework</span>
+            </h1>
+            <p class="text-xl text-slate-400 mb-8 max-w-2xl mx-auto">
+                A comprehensive, modular configuration framework for optimizing Claude Code across architectures, workflows, technology stacks, and deployments.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <div class="code-example">
+                    <code class="text-sm">@arch:ms @dotnet @agile @deploy:k8s @test:unit</code>
+                    <button onclick="copyCode(this)" class="copy-btn">Copy</button>
+                </div>
+            </div>
+            <div class="flex flex-wrap justify-center gap-3">
+                <a href="#quick-start" class="px-6 py-3 bg-gradient-to-r from-indigo-500 to-violet-600 rounded-lg font-medium hover:opacity-90 transition shadow-lg shadow-indigo-500/25">
+                    Get Started
+                </a>
+                <a href="#dsl-reference" class="px-6 py-3 bg-slate-800 border border-slate-700 rounded-lg font-medium hover:bg-slate-700 transition">
+                    DSL Reference
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Cards -->
+    <section id="quick-start" class="py-16 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold mb-4 text-center">Quick Start</h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">Combine DSL shortcuts to configure Claude Code for your project in seconds.</p>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Architecture Card -->
+                <div class="card group">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400">🏗️</div>
+                        <h3 class="text-lg font-semibold">Architecture</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="dsl-row">
+                            <span class="dsl-badge" onclick="copyDSL(this)">@arch:hybrid</span>
+                            <span class="text-slate-500 text-sm">Multi-tier hybrid</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge" onclick="copyDSL(this)">@arch:ms</span>
+                            <span class="text-slate-500 text-sm">Microservices</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge" onclick="copyDSL(this)">@arch:mono</span>
+                            <span class="text-slate-500 text-sm">Monolithic</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge" onclick="copyDSL(this)">@arch:sls</span>
+                            <span class="text-slate-500 text-sm">Serverless</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Workflows Card -->
+                <div class="card group">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center text-green-400">📋</div>
+                        <h3 class="text-lg font-semibold">Workflows</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="dsl-row">
+                            <span class="dsl-badge green" onclick="copyDSL(this)">@agile</span>
+                            <span class="text-slate-500 text-sm">Agile/Scrum</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge green" onclick="copyDSL(this)">@devops</span>
+                            <span class="text-slate-500 text-sm">DevOps/CI-CD</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge green" onclick="copyDSL(this)">@vmodel</span>
+                            <span class="text-slate-500 text-sm">V-Model</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge green" onclick="copyDSL(this)">@kanban</span>
+                            <span class="text-slate-500 text-sm">Kanban flow</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stacks Card -->
+                <div class="card group">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center text-orange-400">💻</div>
+                        <h3 class="text-lg font-semibold">Tech Stacks</h3>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="stack-badge dotnet" onclick="copyDSL(this)">@dotnet</span>
+                        <span class="stack-badge node" onclick="copyDSL(this)">@node</span>
+                        <span class="stack-badge python" onclick="copyDSL(this)">@python</span>
+                        <span class="stack-badge java" onclick="copyDSL(this)">@java</span>
+                        <span class="stack-badge go" onclick="copyDSL(this)">@go</span>
+                    </div>
+                </div>
+
+                <!-- Deployment Card -->
+                <div class="card group">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400">🚀</div>
+                        <h3 class="text-lg font-semibold">Deployment</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="dsl-row">
+                            <span class="dsl-badge purple" onclick="copyDSL(this)">@deploy:k8s</span>
+                            <span class="text-slate-500 text-sm">Kubernetes</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge purple" onclick="copyDSL(this)">@deploy:docker</span>
+                            <span class="text-slate-500 text-sm">Docker</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge purple" onclick="copyDSL(this)">@deploy:sls</span>
+                            <span class="text-slate-500 text-sm">Serverless</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge purple" onclick="copyDSL(this)">@deploy:vm</span>
+                            <span class="text-slate-500 text-sm">Virtual Machine</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testing Card -->
+                <div class="card group">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center text-cyan-400">🧪</div>
+                        <h3 class="text-lg font-semibold">Testing</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="dsl-row">
+                            <span class="dsl-badge cyan" onclick="copyDSL(this)">@test:unit</span>
+                            <span class="text-slate-500 text-sm">Unit tests</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge cyan" onclick="copyDSL(this)">@test:int</span>
+                            <span class="text-slate-500 text-sm">Integration</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge cyan" onclick="copyDSL(this)">@test:e2e</span>
+                            <span class="text-slate-500 text-sm">End-to-end</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge cyan" onclick="copyDSL(this)">@test:bdd</span>
+                            <span class="text-slate-500 text-sm">BDD</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Integration Contracts Card (NEW v1.1.0) -->
+                <div class="card group border-2 border-yellow-500/30">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center text-yellow-400">🔗</div>
+                        <h3 class="text-lg font-semibold">Integration <span class="text-xs px-2 py-0.5 bg-yellow-500/20 rounded text-yellow-400">NEW</span></h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="dsl-row">
+                            <span class="dsl-badge yellow" onclick="copyDSL(this)">@api:{service}</span>
+                            <span class="text-slate-500 text-sm">API contracts</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge yellow" onclick="copyDSL(this)">@transform:dotnet-typescript</span>
+                            <span class="text-slate-500 text-sm">Type transforms</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge yellow" onclick="copyDSL(this)">@component:form</span>
+                            <span class="text-slate-500 text-sm">Component patterns</span>
+                        </div>
+                    </div>
+                    <a href="integration.html" class="mt-4 inline-block text-sm text-yellow-400 hover:text-yellow-300">Learn more →</a>
+                </div>
+
+                <!-- Debugging Tools Card (NEW v1.1.0) -->
+                <div class="card group border-2 border-yellow-500/30">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center text-red-400">🐛</div>
+                        <h3 class="text-lg font-semibold">Debugging <span class="text-xs px-2 py-0.5 bg-yellow-500/20 rounded text-yellow-400">NEW</span></h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="dsl-row">
+                            <span class="dsl-badge red" onclick="copyDSL(this)">@troubleshoot:cors</span>
+                            <span class="text-slate-500 text-sm">CORS issues</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge red" onclick="copyDSL(this)">@troubleshoot:database</span>
+                            <span class="text-slate-500 text-sm">DB connection</span>
+                        </div>
+                        <div class="dsl-row">
+                            <span class="dsl-badge red" onclick="copyDSL(this)">@debug:issues</span>
+                            <span class="text-slate-500 text-sm">Issue tracking</span>
+                        </div>
+                    </div>
+                    <a href="debugging.html" class="mt-4 inline-block text-sm text-red-400 hover:text-red-300">Learn more →</a>
+                </div>
+
+                <!-- Combination Examples Card -->
+                <div class="card group bg-gradient-to-br from-slate-800/50 to-slate-900/50">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-pink-500/20 flex items-center justify-center text-pink-400">✨</div>
+                        <h3 class="text-lg font-semibold">Combinations</h3>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div>
+                            <p class="text-slate-400 mb-1">Enterprise Modernization</p>
+                            <code class="text-xs text-indigo-400">@arch:hybrid @dotnet @devops @deploy:k8s</code>
+                        </div>
+                        <div>
+                            <p class="text-slate-400 mb-1">Startup Greenfield</p>
+                            <code class="text-xs text-indigo-400">@arch:ms @node @agile @deploy:k8s</code>
+                        </div>
+                        <div>
+                            <p class="text-slate-400 mb-1">French HR ERP</p>
+                            <code class="text-xs text-indigo-400">@arch:ms @dotnet @agile @test:unit</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Library Showcase (NEW v1.2.0) -->
+    <section class="py-20 px-6 bg-gradient-to-b from-indigo-500/5 to-transparent">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center gap-2 px-4 py-2 mb-4 bg-green-500/10 border border-green-500/20 rounded-full text-sm text-green-400">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    Version 1.2.0 • 103 Production-Ready Skills
+                </div>
+                <h2 class="text-4xl font-bold mb-4">
+                    <span class="gradient-text">Complete Skills Library</span>
+                </h2>
+                <p class="text-xl text-slate-400 max-w-3xl mx-auto">
+                    103 actionable skills covering the entire software development lifecycle,
+                    from database design to cloud deployment
+                </p>
+            </div>
+
+            <!-- Skills Stats Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="glass rounded-xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1">
+                    <div class="text-4xl font-bold gradient-text mb-2">103</div>
+                    <div class="text-slate-400">Total Skills</div>
+                </div>
+                <div class="glass rounded-xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1">
+                    <div class="text-4xl font-bold gradient-text mb-2">31</div>
+                    <div class="text-slate-400">Categories</div>
+                </div>
+                <div class="glass rounded-xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1">
+                    <div class="text-4xl font-bold gradient-text mb-2">5</div>
+                    <div class="text-slate-400">Tech Stacks</div>
+                </div>
+                <div class="glass rounded-xl p-6 text-center hover:shadow-xl transition-all hover:-translate-y-1">
+                    <div class="text-4xl font-bold gradient-text mb-2">100%</div>
+                    <div class="text-slate-400">Production Ready</div>
+                </div>
+            </div>
+
+            <!-- Top Skill Categories -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Database Skills -->
+                <div class="card border-2 border-blue-500/30 hover:border-blue-500/50 transition-all">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center text-2xl">🗄️</div>
+                        <div>
+                            <h3 class="font-semibold">Database</h3>
+                            <span class="text-xs text-slate-400">9 skills</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-3">Schema design, migrations, query optimization, transactions, backups</p>
+                    <div class="flex flex-wrap gap-1">
+                        <span class="px-2 py-1 text-xs bg-blue-500/10 text-blue-400 rounded">SQL</span>
+                        <span class="px-2 py-1 text-xs bg-blue-500/10 text-blue-400 rounded">NoSQL</span>
+                        <span class="px-2 py-1 text-xs bg-blue-500/10 text-blue-400 rounded">Cosmos</span>
+                    </div>
+                </div>
+
+                <!-- Backend Skills -->
+                <div class="card border-2 border-green-500/30 hover:border-green-500/50 transition-all">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center text-2xl">⚙️</div>
+                        <div>
+                            <h3 class="font-semibold">Backend</h3>
+                            <span class="text-xs text-slate-400">8 skills</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-3">REST APIs, validation, authentication, caching, middleware, DI</p>
+                    <div class="flex flex-wrap gap-1">
+                        <span class="px-2 py-1 text-xs bg-green-500/10 text-green-400 rounded">.NET</span>
+                        <span class="px-2 py-1 text-xs bg-green-500/10 text-green-400 rounded">Node.js</span>
+                        <span class="px-2 py-1 text-xs bg-green-500/10 text-green-400 rounded">Python</span>
+                    </div>
+                </div>
+
+                <!-- Testing Skills -->
+                <div class="card border-2 border-purple-500/30 hover:border-purple-500/50 transition-all">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-2xl">🧪</div>
+                        <div>
+                            <h3 class="font-semibold">Testing</h3>
+                            <span class="text-xs text-slate-400">7 skills</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-3">Unit, integration, E2E, mocks, coverage, BDD, snapshots</p>
+                    <div class="flex flex-wrap gap-1">
+                        <span class="px-2 py-1 text-xs bg-purple-500/10 text-purple-400 rounded">xUnit</span>
+                        <span class="px-2 py-1 text-xs bg-purple-500/10 text-purple-400 rounded">Jest</span>
+                        <span class="px-2 py-1 text-xs bg-purple-500/10 text-purple-400 rounded">Playwright</span>
+                    </div>
+                </div>
+
+                <!-- Security Skills -->
+                <div class="card border-2 border-red-500/30 hover:border-red-500/50 transition-all">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center text-2xl">🔒</div>
+                        <div>
+                            <h3 class="font-semibold">Security</h3>
+                            <span class="text-xs text-slate-400">6 skills</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-3">SQL injection, CORS, JWT, OAuth, RBAC, encryption</p>
+                    <div class="flex flex-wrap gap-1">
+                        <span class="px-2 py-1 text-xs bg-red-500/10 text-red-400 rounded">OWASP</span>
+                        <span class="px-2 py-1 text-xs bg-red-500/10 text-red-400 rounded">Auth</span>
+                        <span class="px-2 py-1 text-xs bg-red-500/10 text-red-400 rounded">Crypto</span>
+                    </div>
+                </div>
+
+                <!-- DevOps Skills -->
+                <div class="card border-2 border-orange-500/30 hover:border-orange-500/50 transition-all">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center text-2xl">🚀</div>
+                        <div>
+                            <h3 class="font-semibold">DevOps</h3>
+                            <span class="text-xs text-slate-400">5 skills</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-3">Docker, Kubernetes, monitoring, CI/CD, deployments</p>
+                    <div class="flex flex-wrap gap-1">
+                        <span class="px-2 py-1 text-xs bg-orange-500/10 text-orange-400 rounded">K8s</span>
+                        <span class="px-2 py-1 text-xs bg-orange-500/10 text-orange-400 rounded">Docker</span>
+                        <span class="px-2 py-1 text-xs bg-orange-500/10 text-orange-400 rounded">GitHub</span>
+                    </div>
+                </div>
+
+                <!-- API Design Skills -->
+                <div class="card border-2 border-cyan-500/30 hover:border-cyan-500/50 transition-all">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center text-2xl">🌐</div>
+                        <div>
+                            <h3 class="font-semibold">API Design</h3>
+                            <span class="text-xs text-slate-400">6 skills</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-3">Pagination, versioning, rate limiting, GraphQL, webhooks</p>
+                    <div class="flex flex-wrap gap-1">
+                        <span class="px-2 py-1 text-xs bg-cyan-500/10 text-cyan-400 rounded">REST</span>
+                        <span class="px-2 py-1 text-xs bg-cyan-500/10 text-cyan-400 rounded">GraphQL</span>
+                        <span class="px-2 py-1 text-xs bg-cyan-500/10 text-cyan-400 rounded">OpenAPI</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View All Skills CTA -->
+            <div class="mt-12 text-center">
+                <a href="skills.html" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-600 hover:to-violet-700 rounded-xl text-white font-semibold text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                    <span>Explore All 103 Skills</span>
+                    <span>→</span>
+                </a>
+                <p class="text-sm text-slate-500 mt-3">Complete reference with examples for all tech stacks</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills & Agents Section -->
+    <section class="py-16 px-6">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold mb-4 text-center">Skills & Agents</h2>
+            <p class="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                Powerful slash commands and AI agents for intelligent project analysis
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Skills Card -->
+                <div class="card group bg-gradient-to-br from-green-500/10 to-emerald-600/10 border border-green-500/20">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center text-2xl">⚡</div>
+                        <div>
+                            <h3 class="text-xl font-bold">Framework Skills</h3>
+                            <p class="text-sm text-slate-400">Quick configuration with slash commands</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 mb-6">
+                        <div class="flex items-center gap-3">
+                            <code class="px-3 py-1.5 bg-green-500/20 rounded-lg font-mono text-sm text-green-400">/framework</code>
+                            <span class="text-sm text-slate-400">Display framework status</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <code class="px-3 py-1.5 bg-green-500/20 rounded-lg font-mono text-sm text-green-400">/arch ms</code>
+                            <span class="text-sm text-slate-400">Load microservices architecture</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <code class="px-3 py-1.5 bg-green-500/20 rounded-lg font-mono text-sm text-green-400">/stack dotnet</code>
+                            <span class="text-sm text-slate-400">Load .NET 8 stack</span>
+                        </div>
+                    </div>
+
+                    <a href="skills.html" class="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 hover:bg-green-500/30 rounded-lg text-green-400 transition">
+                        <span>Explore All Skills</span>
+                        <span>→</span>
+                    </a>
+                </div>
+
+                <!-- Agents Card -->
+                <div class="card group bg-gradient-to-br from-orange-500/10 to-amber-600/10 border border-orange-500/20">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center text-2xl">🤖</div>
+                        <div>
+                            <h3 class="text-xl font-bold">Framework Agents</h3>
+                            <p class="text-sm text-slate-400">Intelligent codebase analysis</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3 mb-6">
+                        <div>
+                            <div class="font-semibold text-orange-400 mb-1">framework-advisor</div>
+                            <p class="text-sm text-slate-400">Analyzes projects and recommends configurations</p>
+                        </div>
+                        <div>
+                            <div class="font-semibold text-orange-400 mb-1">architecture-explorer</div>
+                            <p class="text-sm text-slate-400">Deep architecture pattern detection and health assessment</p>
+                        </div>
+                    </div>
+
+                    <a href="agents.html" class="inline-flex items-center gap-2 px-4 py-2 bg-orange-500/20 hover:bg-orange-500/30 rounded-lg text-orange-400 transition">
+                        <span>Explore Agents</span>
+                        <span>→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DSL Reference Table -->
+    <section id="dsl-reference" class="py-16 px-6 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold mb-4 text-center">DSL Shortcuts Reference</h2>
+            <p class="text-slate-400 text-center mb-12">Complete reference of all available DSL shortcuts</p>
+
+            <div class="overflow-x-auto rounded-xl border border-slate-800">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-slate-800/80">
+                            <th class="px-6 py-4 text-left font-semibold">Category</th>
+                            <th class="px-6 py-4 text-left font-semibold">Shortcut</th>
+                            <th class="px-6 py-4 text-left font-semibold">Description</th>
+                            <th class="px-6 py-4 text-left font-semibold">Config File</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800">
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="px-6 py-4 text-slate-400">Architecture</td>
+                            <td class="px-6 py-4"><code class="dsl-badge small" onclick="copyDSL(this)">@arch:ms</code></td>
+                            <td class="px-6 py-4">Microservices architecture</td>
+                            <td class="px-6 py-4 text-slate-500 text-sm font-mono">architectures/microservices.yaml</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="px-6 py-4 text-slate-400">Architecture</td>
+                            <td class="px-6 py-4"><code class="dsl-badge small" onclick="copyDSL(this)">@arch:mono</code></td>
+                            <td class="px-6 py-4">Monolithic architecture (5 variants)</td>
+                            <td class="px-6 py-4 text-slate-500 text-sm font-mono">architectures/monolith.yaml</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="px-6 py-4 text-slate-400">Workflow</td>
+                            <td class="px-6 py-4"><code class="dsl-badge small green" onclick="copyDSL(this)">@agile</code></td>
+                            <td class="px-6 py-4">Agile/Scrum methodology</td>
+                            <td class="px-6 py-4 text-slate-500 text-sm font-mono">workflows/agile-scrum.yaml</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="px-6 py-4 text-slate-400">Workflow</td>
+                            <td class="px-6 py-4"><code class="dsl-badge small green" onclick="copyDSL(this)">@devops</code></td>
+                            <td class="px-6 py-4">DevOps/CI-CD patterns</td>
+                            <td class="px-6 py-4 text-slate-500 text-sm font-mono">workflows/devops-cicd.yaml</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="px-6 py-4 text-slate-400">Stack</td>
+                            <td class="px-6 py-4"><code class="stack-badge small dotnet" onclick="copyDSL(this)">@dotnet</code></td>
+                            <td class="px-6 py-4">.NET 8 / ASP.NET Core</td>
+                            <td class="px-6 py-4 text-slate-500 text-sm font-mono">stacks/tech-stacks.yaml</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="px-6 py-4 text-slate-400">Stack</td>
+                            <td class="px-6 py-4"><code class="stack-badge small node" onclick="copyDSL(this)">@node</code></td>
+                            <td class="px-6 py-4">Node.js 20.x / TypeScript</td>
+                            <td class="px-6 py-4 text-slate-500 text-sm font-mono">stacks/tech-stacks.yaml</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="px-6 py-4 text-slate-400">Deploy</td>
+                            <td class="px-6 py-4"><code class="dsl-badge small purple" onclick="copyDSL(this)">@deploy:k8s</code></td>
+                            <td class="px-6 py-4">Kubernetes / AKS</td>
+                            <td class="px-6 py-4 text-slate-500 text-sm font-mono">deployments/deployment-strategies.yaml</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="px-6 py-4 text-slate-400">Testing</td>
+                            <td class="px-6 py-4"><code class="dsl-badge small cyan" onclick="copyDSL(this)">@test:unit</code></td>
+                            <td class="px-6 py-4">Unit testing patterns</td>
+                            <td class="px-6 py-4 text-slate-500 text-sm font-mono">testing/testing-frameworks.yaml</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Framework Structure -->
+    <section class="py-16 px-6">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center">Framework Structure</h2>
+            <div class="code-block">
+                <div class="lang-badge">plaintext</div>
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+<pre><code>C:\.claude\
+├── FRAMEWORK-MANIFEST.yaml    # Master index (v1.1.0)
+├── README.md                  # Documentation
+├── architectures/
+│   ├── hybrid.yaml           # Multi-tier hybrid
+│   ├── monolith.yaml         # 5 monolithic patterns
+│   ├── microservices.yaml    # Distributed services
+│   └── serverless.yaml       # Event-driven
+├── workflows/
+│   ├── agile-scrum.yaml      # Agile/Scrum
+│   ├── devops-cicd.yaml      # DevOps/CI-CD
+│   ├── waterfall-vmodel.yaml # V-Model
+│   └── kanban-flow.yaml      # Kanban
+├── stacks/
+│   └── tech-stacks.yaml      # .NET, Node, Python, Java, Go
+├── deployments/
+│   └── deployment-strategies.yaml
+├── testing/
+│   └── testing-frameworks.yaml
+├── integration/              # 🆕 NEW in v1.1.0
+│   ├── api-contracts.yaml   # Universal API templates
+│   ├── data-transformations.yaml # Type coercion rules
+│   └── component-contracts.yaml # Frontend patterns
+├── debugging/                # 🆕 NEW in v1.1.0
+│   ├── known-issues.yaml    # Issue tracking template
+│   └── troubleshooting-runbooks.yaml # 7 runbooks
+├── skills/                   # Claude Code skills
+│   ├── framework/
+│   ├── arch/
+│   ├── workflow/
+│   ├── stack/
+│   ├── deploy/
+│   └── test/
+├── agents/                   # Claude Code agents
+│   ├── framework-advisor.md
+│   └── architecture-explorer.md
+└── docs/                     # Modern HTML documentation
+    ├── index.html
+    ├── architectures.html
+    ├── workflows.html
+    ├── stacks.html
+    ├── deployments.html
+    ├── testing.html
+    ├── integration.html      # 🆕 NEW in v1.1.0
+    ├── debugging.html        # 🆕 NEW in v1.1.0
+    ├── skills.html
+    ├── agents.html
+    └── complete-guide.html</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documentation Hub -->
+    <section class="py-16 px-6 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold mb-4 text-center">📚 Documentation Hub</h2>
+            <p class="text-slate-400 text-center mb-12">Explore comprehensive guides for each framework aspect</p>
+
+            <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <a href="architectures.html" class="card group hover:border-blue-500/30 transition-all">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center text-xl">🏗️</div>
+                        <h3 class="font-semibold">Architectures</h3>
+                    </div>
+                    <p class="text-sm text-slate-400">4 patterns with best practices</p>
+                </a>
+
+                <a href="workflows.html" class="card group hover:border-green-500/30 transition-all">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center text-xl">📋</div>
+                        <h3 class="font-semibold">Workflows</h3>
+                    </div>
+                    <p class="text-sm text-slate-400">4 development methodologies</p>
+                </a>
+
+                <a href="stacks.html" class="card group hover:border-orange-500/30 transition-all">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center text-xl">💻</div>
+                        <h3 class="font-semibold">Tech Stacks</h3>
+                    </div>
+                    <p class="text-sm text-slate-400">5 technology ecosystems</p>
+                </a>
+
+                <a href="deployments.html" class="card group hover:border-purple-500/30 transition-all">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-xl">🚀</div>
+                        <h3 class="font-semibold">Deployments</h3>
+                    </div>
+                    <p class="text-sm text-slate-400">4 deployment strategies</p>
+                </a>
+
+                <a href="testing.html" class="card group hover:border-cyan-500/30 transition-all">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center text-xl">🧪</div>
+                        <h3 class="font-semibold">Testing</h3>
+                    </div>
+                    <p class="text-sm text-slate-400">6 testing frameworks</p>
+                </a>
+
+                <a href="integration.html" class="card group hover:border-yellow-500/30 transition-all border-2 border-yellow-500/20">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center text-xl">🔗</div>
+                        <h3 class="font-semibold">Integration <span class="text-xs px-1.5 py-0.5 bg-yellow-500/20 rounded text-yellow-400">NEW</span></h3>
+                    </div>
+                    <p class="text-sm text-slate-400">API contracts & transformations</p>
+                </a>
+
+                <a href="debugging.html" class="card group hover:border-red-500/30 transition-all border-2 border-yellow-500/20">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center text-xl">🐛</div>
+                        <h3 class="font-semibold">Debugging <span class="text-xs px-1.5 py-0.5 bg-yellow-500/20 rounded text-yellow-400">NEW</span></h3>
+                    </div>
+                    <p class="text-sm text-slate-400">7 troubleshooting runbooks</p>
+                </a>
+
+                <a href="skills.html" class="card group hover:border-green-500/30 transition-all">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center text-xl">⚡</div>
+                        <h3 class="font-semibold">Skills</h3>
+                    </div>
+                    <p class="text-sm text-slate-400">6 slash command skills</p>
+                </a>
+
+                <a href="agents.html" class="card group hover:border-orange-500/30 transition-all">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center text-xl">🤖</div>
+                        <h3 class="font-semibold">Agents</h3>
+                    </div>
+                    <p class="text-sm text-slate-400">2 intelligent analysis agents</p>
+                </a>
+
+                <a href="complete-guide.html" class="card group hover:border-indigo-500/30 transition-all">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center text-xl">📖</div>
+                        <h3 class="font-semibold">Complete Guide</h3>
+                    </div>
+                    <p class="text-sm text-slate-400">Comprehensive reference</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-slate-800">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-sm">⚡</div>
+                    <span class="font-semibold">Claude Code Framework</span>
+                </div>
+                <p class="text-slate-500 text-sm">v1.2.0 • 103 Skills • Part of the RH-OptimERP ecosystem</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast notification -->
+    <div id="toast" class="toast">Copied to clipboard!</div>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -196,7 +196,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ~/.claude/hooks/doc-blocker.py"
+            "command": "python3 -c \"import sys,json,os; exec(open(os.path.join(os.path.expanduser('~'),'.claude','hooks','doc-blocker.py')).read())\""
           }
         ]
       },
@@ -205,7 +205,16 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 -c \"import sys,json; d=json.load(sys.stdin); cmd=d.get('tool_input',{}).get('command',''); exit(2) if 'git commit' in cmd and 'gitleaks' not in cmd and '--no-verify' not in cmd else exit(0)\" 2>/dev/null || true"
+            "command": "python3 -c \"import sys,json; d=json.load(sys.stdin); cmd=d.get('tool_input',{}).get('command',''); exit(2) if 'git commit' in cmd and 'gitleaks' not in cmd and '--no-verify' not in cmd else exit(0)\" 2>NUL || ver>NUL"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import sys,json; d=json.load(sys.stdin); cmd=d.get('tool_input',{}).get('command',''); print('[coverage-gate] Consider adding --collect:\\\"XPlat Code Coverage\\\" for coverage tracking') if 'dotnet test' in cmd and 'collect' not in cmd and 'filter' not in cmd else None\" 2>NUL || ver>NUL"
           }
         ]
       }
@@ -216,7 +225,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 -c \"import sys,json; d=json.load(sys.stdin); p=d.get('tool_input',{}).get('file_path',''); print('TSC check recommended' if p.endswith(('.ts','.tsx')) else '',end='')\" 2>/dev/null || true"
+            "command": "python3 -c \"import sys,json; d=json.load(sys.stdin); p=d.get('tool_input',{}).get('file_path',''); print('TSC check recommended' if p.endswith(('.ts','.tsx')) else '',end='')\" 2>NUL || ver>NUL"
           }
         ]
       },
@@ -225,7 +234,16 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 -c \"import os; f=os.path.expanduser('~/.claude/.tool-count'); c=int(open(f).read()) if os.path.exists(f) else 0; c+=1; open(f,'w').write(str(c)); print(f'[context-rot] Tool calls: {c}. Consider /compact if >50.') if c%25==0 else None\" 2>/dev/null || true"
+            "command": "python3 -c \"import os; f=os.path.expanduser('~/.claude/.tool-count'); c=int(open(f).read()) if os.path.exists(f) else 0; c+=1; open(f,'w').write(str(c)); print(f'[context-rot] Tool calls: {c}. Consider /compact if >50.') if c%25==0 else None\" 2>NUL || ver>NUL"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import sys,json; d=json.load(sys.stdin); r=d.get('tool_result',{}).get('stdout',''); cmd=d.get('tool_input',{}).get('command',''); w=[]; w.append('[dependency-audit] New dependency added. Run /security-scan before committing.') if any(x in cmd for x in ['npm install','dotnet add package','pip install']) and 'node_modules' not in cmd else None; print('\\n'.join(w)) if w else None\" 2>NUL || ver>NUL"
           }
         ]
       }
@@ -235,7 +253,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 -c \"import json,os; f=os.path.expanduser('~/.claude/projects'); print('Session ended. Instincts and memory persisted.')\" 2>/dev/null || true"
+            "command": "python3 -c \"import json,os; f=os.path.expanduser('~/.claude/projects'); print('Session ended. Instincts and memory persisted.')\" 2>NUL || ver>NUL"
           }
         ]
       }
@@ -246,7 +264,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 -c \"import os,glob; d=os.path.expanduser('~/.claude/sessions'); files=sorted(glob.glob(os.path.join(d,'*.md')),key=os.path.getmtime,reverse=True); print(open(files[0],'r',encoding='utf-8').read()[:500] if files else 'No previous session found')\" 2>/dev/null || true"
+            "command": "python3 -c \"import os,glob; d=os.path.expanduser('~/.claude/sessions'); files=sorted(glob.glob(os.path.join(d,'*.md')),key=os.path.getmtime,reverse=True); print(open(files[0],'r',encoding='utf-8').read()[:500] if files else 'No previous session found')\" 2>NUL || ver>NUL"
           }
         ]
       }
@@ -256,7 +274,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 -c \"import os,json; print('Pre-compact: saving critical context before compaction...')\" 2>/dev/null || true"
+            "command": "python3 -c \"import os,json; print('Pre-compact: saving critical context before compaction...')\" 2>NUL || ver>NUL"
           }
         ]
       }

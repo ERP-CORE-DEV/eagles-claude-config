@@ -2,8 +2,8 @@
 .SYNOPSIS
     EAGLES Team - Claude Code Configuration Setup
 .DESCRIPTION
-    Sets up Claude Code config (~/.claude/) with shared EAGLES framework:
-    15 agents, 35 skills, 10 rules, 5 hooks, 6 MCP servers.
+    Sets up Claude Code config (~/.claude/) with shared EAGLES Pro v2.1.0:
+    25 agents, 103 skills, 10 rules, 9 hooks, 10 MCP servers.
     Team: HATIM, MOHAMMED-REDA, HOUSSINE, HOUDAIFA, LAHCEN
 .PARAMETER Update
     Skip backup, only overwrite agents/skills/rules/settings.
@@ -22,7 +22,7 @@ $Date = Get-Date -Format "yyyy-MM-dd"
 
 Write-Host ""
 Write-Host "=============================================" -ForegroundColor Cyan
-Write-Host "  EAGLES - Claude Code Config Setup" -ForegroundColor Cyan
+Write-Host "  EAGLES Pro v2.1.0 - Claude Code Config Setup" -ForegroundColor Cyan
 Write-Host "  Team: RH-OptimERP (12 microservices)" -ForegroundColor Cyan
 Write-Host "=============================================" -ForegroundColor Cyan
 Write-Host ""
@@ -90,6 +90,8 @@ $dirs = @(
     (Join-Path $ClaudeDir "rules"),
     (Join-Path $ClaudeDir "rules\common"),
     (Join-Path $ClaudeDir "rules\dotnet"),
+    (Join-Path $ClaudeDir "hooks"),
+    (Join-Path $ClaudeDir "docs"),
     (Join-Path $ClaudeDir "sessions"),
     (Join-Path $ClaudeDir "plans")
 )
@@ -102,7 +104,7 @@ Write-Host "  OK - Directory structure created" -ForegroundColor Green
 
 # --- Step 5: Copy agents ---
 Write-Host ""
-Write-Host "[5/8] Copying agents (15)..." -ForegroundColor Yellow
+Write-Host "[5/10] Copying agents..." -ForegroundColor Yellow
 
 $agentsSrc = Join-Path $ScriptDir "agents"
 $agentsDst = Join-Path $ClaudeDir "agents"
@@ -112,7 +114,7 @@ Write-Host "  OK - $agentCount agents installed" -ForegroundColor Green
 
 # --- Step 6: Copy skills ---
 Write-Host ""
-Write-Host "[6/8] Copying skills (35)..." -ForegroundColor Yellow
+Write-Host "[6/10] Copying skills..." -ForegroundColor Yellow
 
 $skillsSrc = Join-Path $ScriptDir "skills"
 $skillsDst = Join-Path $ClaudeDir "skills"
@@ -130,7 +132,7 @@ Write-Host "  OK - $skillCount skills installed" -ForegroundColor Green
 
 # --- Step 7: Copy rules + config ---
 Write-Host ""
-Write-Host "[7/8] Copying rules (10) and config files..." -ForegroundColor Yellow
+Write-Host "[7/10] Copying rules and config files..." -ForegroundColor Yellow
 
 # Rules
 Copy-Item -Path (Join-Path $ScriptDir "rules\common\*.md") -Destination (Join-Path $ClaudeDir "rules\common") -Force
@@ -145,9 +147,37 @@ Copy-Item -Path (Join-Path $configSrc "settings.local.json") -Destination (Join-
 Copy-Item -Path (Join-Path $configSrc "mcp.json") -Destination (Join-Path $ClaudeDir ".mcp.json") -Force
 Write-Host "  OK - settings.json, .mcp.json, settings.local.json installed" -ForegroundColor Green
 
-# --- Step 8: Build MCP servers ---
+# --- Step 8: Copy hooks ---
 Write-Host ""
-Write-Host "[8/8] Checking MCP servers..." -ForegroundColor Yellow
+Write-Host "[8/10] Copying hooks..." -ForegroundColor Yellow
+
+$hooksSrc = Join-Path $ScriptDir "hooks"
+$hooksDst = Join-Path $ClaudeDir "hooks"
+if (Test-Path $hooksSrc) {
+    Copy-Item -Path "$hooksSrc\*" -Destination $hooksDst -Recurse -Force
+    $hookCount = (Get-ChildItem -Path $hooksDst -File).Count
+    Write-Host "  OK - $hookCount hook files installed" -ForegroundColor Green
+} else {
+    Write-Host "  SKIP - No hooks directory found" -ForegroundColor Yellow
+}
+
+# --- Step 9: Copy docs ---
+Write-Host ""
+Write-Host "[9/10] Copying documentation site..." -ForegroundColor Yellow
+
+$docsSrc = Join-Path $ScriptDir "docs"
+$docsDst = Join-Path $ClaudeDir "docs"
+if (Test-Path $docsSrc) {
+    Copy-Item -Path "$docsSrc\*" -Destination $docsDst -Recurse -Force
+    $docCount = (Get-ChildItem -Path $docsDst -File -Recurse).Count
+    Write-Host "  OK - $docCount doc files installed (open docs/index.html in browser)" -ForegroundColor Green
+} else {
+    Write-Host "  SKIP - No docs directory found" -ForegroundColor Yellow
+}
+
+# --- Step 10: Build MCP servers ---
+Write-Host ""
+Write-Host "[10/10] Checking MCP servers..." -ForegroundColor Yellow
 
 $mcpBase = "C:\RH-OptimERP\MCPs"
 $mcpServers = @("prompt-library-orchestrator", "team-sync", "quality-code-orchestrator")
@@ -183,15 +213,17 @@ Write-Host "  Installed:" -ForegroundColor White
 Write-Host "    - $agentCount agents" -ForegroundColor White
 Write-Host "    - $skillCount skills" -ForegroundColor White
 Write-Host "    - $ruleCount rules" -ForegroundColor White
-Write-Host "    - 165 permissions (6 deny rules)" -ForegroundColor White
-Write-Host "    - 5 hooks" -ForegroundColor White
-Write-Host "    - 6 MCP servers" -ForegroundColor White
+Write-Host "    - 177 permissions (6 deny rules)" -ForegroundColor White
+Write-Host "    - 9 hooks" -ForegroundColor White
+Write-Host "    - 10 MCP servers" -ForegroundColor White
+Write-Host "    - 17 doc files (HTML site)" -ForegroundColor White
 Write-Host ""
 Write-Host "  Next steps:" -ForegroundColor Yellow
 Write-Host "    1. Run: claude auth login" -ForegroundColor White
 Write-Host "    2. Clone your microservice repo" -ForegroundColor White
 Write-Host "    3. Open in VS Code with Claude Code extension" -ForegroundColor White
-Write-Host "    4. Verify: all 6 MCP servers should connect" -ForegroundColor White
+Write-Host "    4. Verify: all 10 MCP servers should connect" -ForegroundColor White
+Write-Host "    5. Open ~/.claude/docs/index.html in browser for documentation" -ForegroundColor White
 Write-Host ""
 Write-Host "  Note: GITHUB_PERSONAL_ACCESS_TOKEN is already in .mcp.json" -ForegroundColor Gray
 Write-Host "  Make sure it is set in your system environment variables." -ForegroundColor Gray

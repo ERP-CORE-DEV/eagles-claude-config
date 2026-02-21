@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overview - EAGLES Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script>if(localStorage.getItem('eagles-theme')!=='light'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}</script>
+</head>
+<body class="bg-[#0f172a] dark:bg-[#0f172a] text-slate-100 font-sans min-h-screen transition-colors duration-300">
+    <div id="toast" class="toast"></div>
+    <header class="glass sticky top-0 z-50 border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">E</div>
+                <div><h1 class="text-lg font-bold gradient-text">EAGLES Pro</h1><p class="text-xs text-slate-400">Overview</p></div>
+            </div>
+            <nav class="hidden md:flex items-center gap-1">
+                <a href="../index.html" class="nav-link">Hub</a>
+                <a href="index.html" class="nav-link">Project</a>
+                <a href="../code/index.html" class="nav-link">Code</a>
+                <a href="architecture.html" class="nav-link">Architecture</a>
+                <a href="quickstart.html" class="nav-link">Quickstart</a>
+            </nav>
+            <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-slate-700/50 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg></button>
+        </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="breadcrumb mb-8"><a href="../index.html">Hub</a><span class="sep">/</span><a href="index.html">Project</a><span class="sep">/</span><span class="text-slate-300">Overview</span></div>
+
+        <section class="mb-12 animate-fade-in">
+            <h1 class="text-3xl font-extrabold mb-4"><span class="gradient-text">EAGLES Pro</span></h1>
+            <p class="text-lg text-slate-400 max-w-4xl">A universal configuration framework that turns Claude Code into a fully equipped development environment with agents, skills, hooks, rules, MCP servers, and a DSL engine.</p>
+        </section>
+
+        <!-- What this project does -->
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-indigo-500/20 text-indigo-400">&#x1F4A1;</div><h2 class="text-2xl font-bold">What this project does</h2></div>
+            <div class="card">
+                <p class="text-slate-300 leading-relaxed mb-4">EAGLES (Enhanced Agents, Guidelines, Libraries, Extensions, and Skills) solves a fundamental problem: every time you start a new Claude Code session, you lose context -- your coding patterns, architecture decisions, security rules, and team conventions all reset to zero. EAGLES eliminates this by providing a persistent, extensible framework that lives in your <span class="inline-code">~/.claude/</span> directory and loads automatically on every session.</p>
+                <p class="text-slate-300 leading-relaxed">The framework combines five complementary systems:</p>
+                <ul class="mt-3 space-y-2 text-slate-300">
+                    <li class="flex gap-2"><span class="text-indigo-400 font-bold">1.</span><span><strong class="text-white">24 specialized agents</strong> that handle complex workflows (TDD, code review, security scanning, architecture design, documentation generation)</span></li>
+                    <li class="flex gap-2"><span class="text-green-400 font-bold">2.</span><span><strong class="text-white">72 slash-command skills</strong> that execute specific development tasks (<span class="inline-code">/tdd</span>, <span class="inline-code">/code-review</span>, <span class="inline-code">/scaffold-microservice</span>, <span class="inline-code">/gitleaks</span>)</span></li>
+                    <li class="flex gap-2"><span class="text-purple-400 font-bold">3.</span><span><strong class="text-white">10 MCP servers</strong> that connect Claude Code to external tools (GitHub, Chrome DevTools, filesystem, team-sync)</span></li>
+                    <li class="flex gap-2"><span class="text-amber-400 font-bold">4.</span><span><strong class="text-white">7 hooks</strong> across 5 lifecycle events that enforce quality gates automatically (secret detection, coverage reminders, doc-blocker)</span></li>
+                    <li class="flex gap-2"><span class="text-cyan-400 font-bold">5.</span><span><strong class="text-white">A TypeScript DSL engine</strong> that parses shortcut commands like <span class="inline-code">@arch:ms @deploy:k8s --scale=3</span> into structured execution plans</span></li>
+                </ul>
+                <p class="text-slate-400 mt-4">EAGLES is universal. It works with .NET, Node.js, Python, Java, Go, and any other technology stack.</p>
+            </div>
+        </section>
+
+        <!-- Who it is for -->
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-green-500/20 text-green-400">&#x1F465;</div><h2 class="text-2xl font-bold">Who it is for</h2></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="card border-t-4 border-t-indigo-500">
+                    <h3 class="font-semibold text-white mb-2">Individual developers</h3>
+                    <p class="text-sm text-slate-400">Using Claude Code CLI who want persistent coding standards, automated quality gates, and reusable workflows across all projects</p>
+                </div>
+                <div class="card border-t-4 border-t-green-500">
+                    <h3 class="font-semibold text-white mb-2">Development teams</h3>
+                    <p class="text-sm text-slate-400">Sharing a common Claude Code configuration through a Git repository (install once with <span class="inline-code">setup_claude.ps1</span>, everyone gets the same setup)</p>
+                </div>
+                <div class="card border-t-4 border-t-purple-500">
+                    <h3 class="font-semibold text-white mb-2">Tech leads &amp; architects</h3>
+                    <p class="text-sm text-slate-400">Who need to enforce patterns (Controller-Service-Repository, GDPR, secret scanning) across a team without manual review</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Stack -->
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-purple-500/20 text-purple-400">&#x1F4E6;</div><h2 class="text-2xl font-bold">Technology stack</h2></div>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead><tr><th>Component</th><th>Technology</th><th>Version</th><th>Location</th></tr></thead>
+                    <tbody>
+                        <tr><td>DSL engine</td><td><span class="badge badge-blue">TypeScript</span></td><td>5.4+</td><td><code>C:\.claude\engine\src\</code></td></tr>
+                        <tr><td>DSL runtime</td><td><span class="badge badge-green">Node.js</span></td><td>18+</td><td><code>C:\.claude\engine\</code></td></tr>
+                        <tr><td>Skills</td><td><span class="badge badge-indigo">Markdown + YAML</span></td><td>-</td><td><code>~/.claude/skills/</code></td></tr>
+                        <tr><td>Agents</td><td><span class="badge badge-indigo">Markdown + YAML</span></td><td>-</td><td><code>~/.claude/agents/</code></td></tr>
+                        <tr><td>Rules</td><td><span class="badge badge-indigo">Markdown</span></td><td>-</td><td><code>~/.claude/rules/</code></td></tr>
+                        <tr><td>Hooks</td><td><span class="badge badge-amber">Python 3</span></td><td>3.x</td><td><code>~/.claude/hooks/</code></td></tr>
+                        <tr><td>Reference configs</td><td><span class="badge badge-cyan">YAML 1.1</span></td><td>-</td><td><code>C:\.claude\</code></td></tr>
+                        <tr><td>MCP servers</td><td><span class="badge badge-green">Node.js</span></td><td>18+</td><td><code>~/.claude/.mcp.json</code></td></tr>
+                        <tr><td>Configuration</td><td><span class="badge badge-purple">JSON</span></td><td>-</td><td><code>~/.claude/settings.json</code></td></tr>
+                        <tr><td>Distribution</td><td><span class="badge badge-orange">Git</span></td><td>-</td><td><code>github.com/ERP-CORE-DEV/eagles-claude-config</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Design Philosophy -->
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-amber-500/20 text-amber-400">&#x1F3AF;</div><h2 class="text-2xl font-bold">Design philosophy</h2></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="card"><h3 class="font-semibold text-indigo-400 mb-2">1. Universal, not stack-specific</h3><p class="text-sm text-slate-400">EAGLES works with any language, framework, or deployment target. Stack-specific rules live in dedicated subdirectories and load contextually.</p></div>
+                <div class="card"><h3 class="font-semibold text-green-400 mb-2">2. Persistent across sessions</h3><p class="text-sm text-slate-400">Everything lives on disk in <span class="inline-code">~/.claude/</span>. Claude Code loads it automatically. No setup commands needed after installation.</p></div>
+                <div class="card"><h3 class="font-semibold text-purple-400 mb-2">3. Composable</h3><p class="text-sm text-slate-400">You combine agents, skills, hooks, and rules independently. Use <span class="inline-code">/tdd</span> without the orchestrator. Add a hook without touching any agent.</p></div>
+                <div class="card"><h3 class="font-semibold text-amber-400 mb-2">4. Context-rot resistant</h3><p class="text-sm text-slate-400">The orchestrator delegates to sub-agents via the Task tool, giving each phase a fresh 200K-token context. The PostToolUse hook suggests <span class="inline-code">/compact</span> every 25 calls.</p></div>
+                <div class="card md:col-span-2"><h3 class="font-semibold text-cyan-400 mb-2">5. Team-distributable</h3><p class="text-sm text-slate-400">A single Git repo holds the full configuration. <span class="inline-code">setup_claude.ps1</span> copies everything to <span class="inline-code">~/.claude/</span> on each developer's machine.</p></div>
+            </div>
+        </section>
+
+        <!-- Constraints -->
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-red-500/20 text-red-400">&#x26A0;</div><h2 class="text-2xl font-bold">Constraints and decisions</h2></div>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead><tr><th>Constraint</th><th>Decision</th><th>Rationale</th></tr></thead>
+                    <tbody>
+                        <tr><td>Claude Code runs on Windows</td><td>All hooks use <code>python3 -c</code> with explicit <code>os.path.expanduser</code></td><td>Native shell and ~ expansion don't work reliably on Windows</td></tr>
+                        <tr><td>Context window degrades after 50+ calls</td><td>Orchestrator agent + context-rot counter hook</td><td>Sub-agents get fresh context; main thread stays lean</td></tr>
+                        <tr><td>Team members need identical setup</td><td>Git-based distribution with <code>setup_claude.ps1</code></td><td>Single source of truth, version-controlled</td></tr>
+                        <tr><td>YAML skills are read-only reference</td><td>Slash-command skills in <code>~/.claude/skills/</code> are executable</td><td>YAML defines patterns; SKILL.md implements them</td></tr>
+                        <tr><td>Security secrets must never leak</td><td>Gitleaks hook blocks <code>git commit</code> without prior scan</td><td>Pre-commit enforcement, not just CI/CD</td></tr>
+                        <tr><td>Documentation must be intentional</td><td>doc-blocker hook blocks <code>.md</code> writes outside allowed paths</td><td>Prevents accidental documentation sprawl</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <footer class="border-t border-slate-700/50 mt-12"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-slate-500"><p>EAGLES Pro v2.1.0 &middot; Generated by <span class="text-indigo-400">@doc-official-writer</span></p><p class="mt-1">Last updated: 2026-02-19</p></div></footer>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

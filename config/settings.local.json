@@ -1,6 +1,5 @@
 {
-  "enabledMcpjsonServers": [
-    "chrome-devtools"
-  ],
-  "enableAllProjectMcpServers": true
+  "_comment": "Template - each developer customizes this locally",
+  "model": "claude-sonnet-4-6",
+  "permissions": {}
 }

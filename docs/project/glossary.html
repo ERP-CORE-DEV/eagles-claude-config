@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossary - EAGLES Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script>if(localStorage.getItem('eagles-theme')!=='light'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}</script>
+</head>
+<body class="bg-[#0f172a] dark:bg-[#0f172a] text-slate-100 font-sans min-h-screen transition-colors duration-300">
+    <div id="toast" class="toast"></div>
+    <header class="glass sticky top-0 z-50 border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">E</div>
+                <div><h1 class="text-lg font-bold gradient-text">EAGLES Pro</h1><p class="text-xs text-slate-400">Glossary</p></div>
+            </div>
+            <nav class="hidden md:flex items-center gap-1">
+                <a href="../index.html" class="nav-link">Hub</a>
+                <a href="index.html" class="nav-link">Project</a>
+                <a href="../code/index.html" class="nav-link">Code</a>
+                <a href="architecture.html" class="nav-link">Architecture</a>
+                <a href="quickstart.html" class="nav-link">Quickstart</a>
+            </nav>
+            <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-slate-700/50 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg></button>
+        </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="breadcrumb mb-8"><a href="../index.html">Hub</a><span class="sep">/</span><a href="index.html">Project</a><span class="sep">/</span><span class="text-slate-300">Glossary</span></div>
+
+        <section class="mb-12 animate-fade-in">
+            <h1 class="text-3xl font-extrabold mb-4"><span class="gradient-text">Glossary</span></h1>
+            <p class="text-lg text-slate-400">Definitions of all EAGLES-specific terms and the external frameworks it references.</p>
+        </section>
+
+        <!-- EAGLES Terms -->
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-indigo-500/20 text-indigo-400">&#x1F985;</div><h2 class="text-2xl font-bold">EAGLES terms</h2></div>
+            <div class="space-y-4">
+                <div class="card"><h3 class="font-semibold text-indigo-400">Agent</h3><p class="text-sm text-slate-300 mt-1">A Markdown file in <span class="inline-code">~/.claude/agents/</span> that defines specialized behavior for Claude Code. Each agent has a name, description, list of allowed tools, model preference (opus or sonnet), and a mode (primary, subagent, or secondary). EAGLES ships with 24 agents.</p></div>
+                <div class="card"><h3 class="font-semibold text-indigo-400">Skill</h3><p class="text-sm text-slate-300 mt-1">A slash command that you invoke in Claude Code (e.g., <span class="inline-code">/tdd</span>, <span class="inline-code">/code-review</span>, <span class="inline-code">/gitleaks</span>). Each skill is a directory under <span class="inline-code">~/.claude/skills/</span> containing a <span class="inline-code">SKILL.md</span> file with YAML frontmatter and Markdown instructions. EAGLES ships with 72 executable skills.</p></div>
+                <div class="card"><h3 class="font-semibold text-indigo-400">Hook</h3><p class="text-sm text-slate-300 mt-1">A command that runs automatically at a specific lifecycle point in Claude Code. Hooks are defined in <span class="inline-code">settings.json</span> under the <span class="inline-code">hooks</span> key. They receive tool input/output as JSON on stdin and can either allow (exit 0) or block (exit 2) tool calls. EAGLES uses 7 hooks across 5 lifecycle events.</p></div>
+                <div class="card"><h3 class="font-semibold text-indigo-400">Rule</h3><p class="text-sm text-slate-300 mt-1">A plain Markdown file in <span class="inline-code">~/.claude/rules/</span> that Claude Code loads as a system instruction. Rules enforce coding standards, architecture patterns, and team conventions without requiring the developer to remember them. EAGLES ships with 10 rule files.</p></div>
+                <div class="card"><h3 class="font-semibold text-indigo-400">MCP server</h3><p class="text-sm text-slate-300 mt-1">A Model Context Protocol server that extends Claude Code with external tool capabilities. MCP servers are configured in <span class="inline-code">.mcp.json</span> and communicate via stdio. Examples: GitHub API, Chrome DevTools, filesystem access, team-sync. EAGLES configures 10 MCP servers.</p></div>
+                <div class="card"><h3 class="font-semibold text-indigo-400">DSL engine</h3><p class="text-sm text-slate-300 mt-1">A TypeScript application that parses shortcut commands like <span class="inline-code">@arch:ms @deploy:k8s --scale=3</span> into structured execution plans. The engine has three stages: Parse (tokenizer), Validate (category and skill checking), Generate (execution plan output). It supports 17 prefix categories.</p></div>
+                <div class="card"><h3 class="font-semibold text-indigo-400">Context rot</h3><p class="text-sm text-slate-300 mt-1">The gradual degradation of Claude Code response quality as the context window fills up during a long session. After approximately 50+ tool calls, responses may become less accurate. EAGLES mitigates this through the orchestrator agent (sub-agent delegation with fresh contexts), the context-rot counter hook, and the <span class="inline-code">/compact</span> command.</p></div>
+                <div class="card"><h3 class="font-semibold text-indigo-400">GSD (Get Stuff Done)</h3><p class="text-sm text-slate-300 mt-1">An execution framework used by the EAGLES orchestrator agent. GSD decomposes complex tasks into phased waves, where each wave runs in parallel sub-agents with fresh 200K-token contexts. The workflow follows: PLAN (decompose task), WAVE execution (parallel sub-agents), STATE tracking, VERIFY (build + test).</p></div>
+                <div class="card"><h3 class="font-semibold text-indigo-400">Two-tier skill system</h3><p class="text-sm text-slate-300 mt-1">EAGLES uses two layers of skills: (1) YAML reference skills (103 patterns covering the full development lifecycle), and (2) Markdown executable skills (72 slash commands). The executable layer implements or references the reference layer.</p></div>
+                <div class="card"><h3 class="font-semibold text-indigo-400">Primary / Subagent / Secondary</h3><p class="text-sm text-slate-300 mt-1"><strong>Primary</strong>: runs as the main agent, interacts with the user. <strong>Subagent</strong>: spawned by another agent via Task tool, runs in fresh context. <strong>Secondary</strong>: runs alongside a primary agent for parallel tasks.</p></div>
+                <div class="card"><h3 class="font-semibold text-indigo-400">Doc-blocker</h3><p class="text-sm text-slate-300 mt-1">A PreToolUse hook (<span class="inline-code">~/.claude/hooks/doc-blocker.py</span>) that intercepts all Write tool calls for <span class="inline-code">.md</span> files. It blocks writes unless the file path contains an allowed string (<span class="inline-code">/docs/</span>, <span class="inline-code">CLAUDE</span>, <span class="inline-code">README</span>, <span class="inline-code">CHANGELOG</span>, <span class="inline-code">SKILL</span>, <span class="inline-code">rules/</span>, <span class="inline-code">agents/</span>, <span class="inline-code">memory/</span>).</p></div>
+                <div class="card"><h3 class="font-semibold text-indigo-400">FRAMEWORK-MANIFEST.yaml</h3><p class="text-sm text-slate-300 mt-1">The master index file that describes the entire reference configuration library: architecture patterns, workflows, stacks, deployment strategies, testing frameworks, integration contracts, debugging tools, 103 skills, and 2 agents. Version 1.2.0.</p></div>
+            </div>
+        </section>
+
+        <!-- External Frameworks -->
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-purple-500/20 text-purple-400">&#x1F30D;</div><h2 class="text-2xl font-bold">External frameworks</h2></div>
+            <div class="space-y-4">
+                <div class="card border-l-4 border-l-purple-500"><h3 class="font-semibold text-purple-400">Diataxis</h3><p class="text-sm text-slate-300 mt-1">A documentation framework by Daniele Procida that organizes content into four types: Tutorials (learning-oriented), How-to guides (task-oriented), Explanation (understanding-oriented), and Reference (information-oriented). EAGLES uses Diataxis to structure its <span class="inline-code">docs/project/</span> documentation.</p></div>
+                <div class="card border-l-4 border-l-blue-500"><h3 class="font-semibold text-blue-400">Arc42</h3><p class="text-sm text-slate-300 mt-1">A template for software architecture documentation created by Gernot Starke and Peter Hruschka. It has 12 sections (S1-S12). EAGLES uses Arc42 sections to structure ARCHITECTURE.md.</p></div>
+                <div class="card border-l-4 border-l-cyan-500"><h3 class="font-semibold text-cyan-400">C4 Model</h3><p class="text-sm text-slate-300 mt-1">A set of hierarchical abstractions for software architecture diagrams by Simon Brown. Four levels: L1 System Context, L2 Container, L3 Component, L4 Code. EAGLES references C4 levels in architecture documentation and diagram generation.</p></div>
+                <div class="card border-l-4 border-l-green-500"><h3 class="font-semibold text-green-400">MCP (Model Context Protocol)</h3><p class="text-sm text-slate-300 mt-1">An open protocol by Anthropic for connecting AI models to external tools and data sources. MCP servers communicate via stdio and expose tools that Claude Code can call.</p></div>
+                <div class="card border-l-4 border-l-amber-500"><h3 class="font-semibold text-amber-400">Google Developer Documentation Style Guide</h3><p class="text-sm text-slate-300 mt-1">A writing style guide that emphasizes second-person voice, active voice, present tense, conditions-first sentence structure, and no filler words. EAGLES documentation follows this guide.</p></div>
+                <div class="card border-l-4 border-l-indigo-500"><h3 class="font-semibold text-indigo-400">12-Factor App</h3><p class="text-sm text-slate-300 mt-1">A methodology for building SaaS applications. EAGLES references Factor III (Store config in the environment) for its configuration documentation.</p></div>
+            </div>
+        </section>
+
+        <!-- Architecture Terms -->
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-cyan-500/20 text-cyan-400">&#x1F3D7;</div><h2 class="text-2xl font-bold">Architecture terms</h2></div>
+            <div class="space-y-4">
+                <div class="card"><h3 class="font-semibold text-cyan-400">Controller-Service-Repository</h3><p class="text-sm text-slate-300 mt-1">The architecture pattern enforced by EAGLES rules for .NET projects. Controllers handle HTTP concerns, services handle business logic and validation, repositories handle data access. Explicitly chosen over CQRS/MediatR for simplicity.</p></div>
+                <div class="card"><h3 class="font-semibold text-cyan-400">CosmosDB SDK 3.54 direct</h3><p class="text-sm text-slate-300 mt-1">The data access approach enforced by EAGLES rules. Uses the Azure Cosmos DB .NET SDK v3 directly (not Entity Framework Core) for full control over partition keys, request units (RU), and query optimization.</p></div>
+                <div class="card"><h3 class="font-semibold text-cyan-400">GDPR/CNIL compliance</h3><p class="text-sm text-slate-300 mt-1">European data protection requirements enforced by EAGLES security rules. Includes: no PII in logs, <span class="inline-code">AnonymizeXxx()</span> methods on personal data entities, <span class="inline-code">IsAnonymized</span> flag checks before data export.</p></div>
+                <div class="card"><h3 class="font-semibold text-cyan-400">French HR domain</h3><p class="text-sm text-slate-300 mt-1">The primary business domain for the RH-OptimERP project. Includes: SMIC (minimum wage), CDI/CDD/CDIC (contract types), CPF (personal training account), OPCO (skills operators), RNCP/RS (certification codes), and Code du Travail (French labor law).</p></div>
+            </div>
+        </section>
+    </main>
+    <footer class="border-t border-slate-700/50 mt-12"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-slate-500"><p>EAGLES Pro v2.1.0 &middot; Generated by <span class="text-indigo-400">@doc-official-writer</span></p><p class="mt-1">Last updated: 2026-02-19</p></div></footer>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

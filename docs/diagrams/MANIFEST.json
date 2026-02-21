@@ -1,0 +1,66 @@
+{
+  "generatedAt": "2026-02-19T00:00:00Z",
+  "generator": "doc-diagram-artist agent via Eraser.io API",
+  "framework": "EAGLES Pro v2.1.0",
+  "diagrams": [
+    {
+      "name": "system-context",
+      "title": "EAGLES Pro System Context (C4 L1)",
+      "description": "C4 Level 1 diagram showing EAGLES Pro as a system with external actors: Developer, Claude Code CLI, GitHub, and MCP Servers.",
+      "diagramType": "cloud-architecture-diagram",
+      "localFile": "system-context.png",
+      "imageUrl": "https://storage.googleapis.com/second-petal-295822.appspot.com/elements/autoDiagram%3A32e3c18acd49074717820aa522d493bb166da9556fc7e5431addc402ea4bdc57.png",
+      "editUrl": "https://app.eraser.io/new?requestId=dIvtf8gMvPqkt2zLIfA0",
+      "requestId": "dIvtf8gMvPqkt2zLIfA0",
+      "usedIn": [
+        "INDEX.md",
+        "OVERVIEW.md"
+      ]
+    },
+    {
+      "name": "component-architecture",
+      "title": "EAGLES Pro Component Architecture (C4 L2)",
+      "description": "C4 Level 2 diagram showing internal components: Skills Layer (72 commands), Agents Layer (24 agents), Hooks Layer (9 hooks), Rules Layer (10 files), MCP Servers (10), and DSL Engine. Shows data flow from User Command through to Output.",
+      "diagramType": "cloud-architecture-diagram",
+      "localFile": "component-architecture.png",
+      "imageUrl": "https://storage.googleapis.com/second-petal-295822.appspot.com/elements/autoDiagram%3Ae6fd8af4b708a6924dd70099d66a2f4d352f670a3fdf2c74660e0ebb5e11c197.png",
+      "editUrl": "https://app.eraser.io/new?requestId=AtsDwLEy7uzhuWMnOeT0",
+      "requestId": "AtsDwLEy7uzhuWMnOeT0",
+      "usedIn": [
+        "INDEX.md",
+        "ARCHITECTURE.md",
+        "COMPONENTS.md"
+      ]
+    },
+    {
+      "name": "doc-team",
+      "title": "EAGLES Doc Team Architecture",
+      "description": "Architecture diagram of the 5-agent documentation team: doc-orchestrator (Editor-in-Chief) dispatching to doc-hub-architect, doc-official-writer, doc-code-analyst, and doc-diagram-artist in parallel. Shows Diataxis, Arc42, Rust Book, and C4 methodology influences.",
+      "diagramType": "cloud-architecture-diagram",
+      "localFile": "doc-team.png",
+      "imageUrl": "https://storage.googleapis.com/second-petal-295822.appspot.com/elements/autoDiagram%3A53db6da85cf4f1193cd4817bda69eb348a7ca47c58c0c28d4dfbd93b31ba8076.png",
+      "editUrl": "https://app.eraser.io/new?requestId=27OiiPojbxDhfjyEoD7E",
+      "requestId": "27OiiPojbxDhfjyEoD7E",
+      "usedIn": [
+        "INDEX.md",
+        "AGENTS.md",
+        "DOC-TEAM.md"
+      ]
+    },
+    {
+      "name": "skill-execution-flow",
+      "title": "EAGLES Skill Execution Flow (Sequence)",
+      "description": "Sequence diagram showing the full lifecycle when a developer types /tdd: skill lookup, frontmatter parsing, PreToolUse hooks (doc-blocker, auto-compact, gitleaks), TDD-Guide agent dispatch, tool usage loop (Read, Write, Edit, Bash, Grep, Glob), PostToolUse hooks (tsc-reminder, context-rot-detector, dependency-audit), and result return.",
+      "diagramType": "sequence-diagram",
+      "localFile": "skill-execution-flow.png",
+      "imageUrl": "https://storage.googleapis.com/second-petal-295822.appspot.com/elements/autoDiagram%3Ac2d25c451fca5f52e38b9484500451ed30c484fa46b18052d25bb68511f0327d.png",
+      "editUrl": "https://app.eraser.io/new?requestId=DvbnnkFiiuWib3cHq3ac",
+      "requestId": "DvbnnkFiiuWib3cHq3ac",
+      "usedIn": [
+        "INDEX.md",
+        "SKILLS.md",
+        "EXECUTION-MODEL.md"
+      ]
+    }
+  ]
+}

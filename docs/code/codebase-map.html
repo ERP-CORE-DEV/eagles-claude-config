@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codebase Map - EAGLES Pro v2.1.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script>if(localStorage.getItem('eagles-theme')!=='light'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}</script>
+</head>
+<body class="bg-[#0f172a] dark:bg-[#0f172a] text-slate-100 font-sans min-h-screen transition-colors duration-300">
+    <div id="toast" class="toast"></div>
+    <header class="glass sticky top-0 z-50 border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">E</div>
+                <div>
+                    <h1 class="text-lg font-bold gradient-text">EAGLES Pro</h1>
+                    <p class="text-xs text-slate-400">v2.1.0 Codebase Map</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center gap-1">
+                <a href="../index.html" class="nav-link">Hub</a>
+                <a href="../project/index.html" class="nav-link">Project</a>
+                <a href="index.html" class="nav-link active">Code</a>
+            </nav>
+            <div class="flex items-center gap-2">
+                <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-slate-700/50 transition-colors" title="Toggle theme">
+                    <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+                    <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <nav class="breadcrumb mb-8">
+            <a href="../index.html" class="hover:text-indigo-400 transition-colors">Hub</a>
+            <span class="mx-2 text-slate-600">/</span>
+            <a href="index.html" class="hover:text-indigo-400 transition-colors">Code</a>
+            <span class="mx-2 text-slate-600">/</span>
+            <span class="text-slate-300">Codebase Map</span>
+        </nav>
+
+        <section class="mb-12 animate-fade-in">
+            <div class="section-header">
+                <span class="section-icon">&#x1F5FA;</span>
+                <div>
+                    <h2 class="text-3xl font-bold gradient-text">Codebase Map</h2>
+                    <p class="text-slate-400 mt-1">EAGLES Framework file structure with progressive depth levels</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TL;DR -->
+        <section class="mb-12 animate-fade-in">
+            <h3 class="text-xl font-semibold text-slate-100 mb-4">1. TL;DR</h3>
+            <div class="card">
+                <p class="text-slate-300">The EAGLES framework lives in <strong class="text-indigo-400">two locations</strong>: <span class="inline-code">~/.claude/</span> (active runtime with agents, skills, hooks, rules, and MCP config) and <span class="inline-code">C:\.claude\</span> (reference library with 103+ YAML skills, DSL engine, architecture configs, and HTML docs).</p>
+            </div>
+        </section>
+
+        <!-- Plain English -->
+        <section class="mb-12 animate-fade-in">
+            <h3 class="text-xl font-semibold text-slate-100 mb-4">2. Plain English</h3>
+            <div class="card">
+                <p class="text-slate-300">Think of EAGLES like a well-organized toolbox. The <strong class="text-purple-400">reference library</strong> (<span class="inline-code">C:\.claude\</span>) is the master catalog &mdash; it has every tool blueprint (skills), recipe book (YAML configs), and a smart machine (DSL engine) that reads shorthand codes. The <strong class="text-indigo-400">active runtime</strong> (<span class="inline-code">~/.claude/</span>) is your personal workbench &mdash; custom tools (agents), house rules (rules/), safety guards (hooks), and phone numbers (MCP servers) for all specialized assistants.</p>
+            </div>
+        </section>
+
+        <!-- Active Runtime -->
+        <section class="mb-12 animate-fade-in">
+            <h3 class="text-xl font-semibold text-slate-100 mb-4">3. Active Runtime: <span class="inline-code">~/.claude/</span></h3>
+            <div class="card">
+                <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>C:\Users\hatim\.claude\
+|
++-- settings.json                    # Global: 177 allow, 6 deny, 5 hook types, model: opus
++-- .mcp.json                        # MCP registry: 10 servers (chrome-devtools, github, fs...)
+|
++-- agents/                          # 24 specialized AI agent definitions
+|   +-- planner.md                   # Feature planning (opus, primary)
+|   +-- orchestrator.md              # GSD-style wave executor (opus, primary)
+|   +-- tdd-guide.md                 # TDD RED-GREEN-REFACTOR (sonnet)
+|   +-- code-reviewer.md             # Quality/security review (sonnet, subagent)
+|   +-- security-reviewer.md         # OWASP Top 10 + GDPR (sonnet, subagent)
+|   +-- build-error-resolver.md      # Minimal surgical fixes (sonnet, subagent)
+|   +-- devsecops.md                 # SAST/DAST/deps scans (sonnet)
+|   +-- doc-orchestrator.md          # Editor-in-Chief (sonnet, primary)
+|   +-- doc-hub-architect.md         # Docs structure designer (sonnet, subagent)
+|   +-- doc-official-writer.md       # Diataxis/Arc42 writer (sonnet, subagent)
+|   +-- doc-code-analyst.md          # Deep code docs (sonnet, subagent)
+|   +-- doc-diagram-artist.md        # Eraser.io diagrams (sonnet, subagent)
+|   +-- database-reviewer.md         # CosmosDB optimization (sonnet, subagent)
+|   +-- e2e-runner.md                # Playwright E2E tests (sonnet, subagent)
+|   +-- refactor-cleaner.md          # Dead code removal (sonnet, subagent)
+|   +-- researcher.md                # Multi-source research (sonnet, subagent)
+|   +-- go-reviewer.md               # Go idiomatic review (sonnet, subagent)
+|   +-- python-reviewer.md           # PEP 8 compliance (sonnet, subagent)
+|   +-- go-build-resolver.md         # Go module fixes (sonnet, subagent)
+|   +-- framework-advisor.md         # Framework config recs (sonnet, subagent)
+|   +-- architecture-explorer.md     # Architecture analysis (sonnet, subagent)
+|   +-- verifier.md                  # Post-execution validation (sonnet, subagent)
+|   +-- codegen.md                   # Template code gen (sonnet, subagent)
+|   +-- architect.md                 # System design + ADR (sonnet, subagent)
+|
++-- skills/                          # 46+ slash command skill directories
+|   +-- tdd/SKILL.md                 # /tdd workflow launcher
+|   +-- scaffold-microservice/       # /scaffold-microservice .NET 8 scaffolding
+|   +-- gsd-plan/SKILL.md            # /gsd-plan phased execution
+|   +-- gsd-execute/SKILL.md         # /gsd-execute fresh-context phases
+|   +-- gsd-verify/SKILL.md          # /gsd-verify validation
+|   +-- gitleaks/SKILL.md            # /gitleaks secret detection
+|   +-- repo-map/SKILL.md            # /repo-map codebase map generator
+|   +-- update-docs/SKILL.md         # /update-docs 5-agent doc gen
+|   +-- session-save/SKILL.md        # /session-save state persistence
+|   +-- session-load/SKILL.md        # /session-load state restore
+|   +-- session-rename/SKILL.md      # /session-rename tab management
+|   +-- (and 35+ more...)
+|
++-- rules/                           # 10 modular rule files
+|   +-- common/                      # Language-agnostic standards
+|   |   +-- agents.md                # Agent usage rules (24 agents)
+|   |   +-- coding-style.md          # Immutability, naming, file size
+|   |   +-- git-workflow.md          # Conventional commits, branches
+|   |   +-- hooks.md                 # Hook definition rules
+|   |   +-- patterns.md              # Controller-Service-Repository
+|   |   +-- performance.md           # &lt;100ms, async I/O
+|   |   +-- security.md              # No secrets, GDPR, Key Vault
+|   |   +-- testing.md               # TDD, 80% coverage, xUnit
+|   +-- dotnet/                      # .NET-specific standards
+|       +-- coding-style.md          # PascalCase, CosmosDB SDK 3.54
+|       +-- testing.md               # xUnit, FluentAssertions, Moq
+|
++-- hooks/                           # External hook scripts
+|   +-- doc-blocker.py               # Blocks .md writes outside paths
+|
++-- docs/                            # Documentation output
+    +-- index.html                   # Main hub (this doc site)
+    +-- project/                     # Official project docs (8 pages)
+    +-- code/                        # Deep code docs (2 pages)
+    +-- diagrams/                    # Eraser.io generated diagrams</code></pre></div>
+            </div>
+        </section>
+
+        <!-- Reference Library -->
+        <section class="mb-12 animate-fade-in">
+            <h3 class="text-xl font-semibold text-slate-100 mb-4">4. Reference Library: <span class="inline-code">C:\.claude\</span></h3>
+            <div class="card">
+                <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>C:\.claude\
+|
++-- FRAMEWORK-MANIFEST.yaml          # Master index (888 lines, v1.2.0)
++-- README.md                         # Framework overview + DSL reference (353 lines)
+|
++-- architectures/                    # Architecture pattern YAML configs
+|   +-- hybrid.yaml                   # Multi-tier hybrid (legacy integration)
+|   +-- monolith.yaml                 # 5 variants: 3-tier, Clean, Hex, Vertical, Modular
+|   +-- microservices.yaml            # Saga, circuit breaker, service mesh
+|   +-- serverless.yaml               # Lambda, Functions, Step Functions
+|
++-- workflows/                        # Development methodology configs
+|   +-- agile-scrum.yaml              # Sprint management, user stories
+|   +-- devops-cicd.yaml              # Pipelines, IaC, monitoring
+|   +-- waterfall-vmodel.yaml         # Phase gates, traceability
+|   +-- kanban-flow.yaml              # WIP limits, flow metrics
+|
++-- stacks/                           # Technology stack configs
+|   +-- tech-stacks.yaml              # .NET 8, Node 20, Python 3.11, Java 21, Go 1.22
+|
++-- deployments/                      # Deployment strategy configs
+|   +-- deployment-strategies.yaml    # Kubernetes, Docker, Serverless, VM
+|
++-- testing/                          # Testing framework configs
+|   +-- testing-frameworks.yaml       # Unit, Integration, E2E, BDD, Performance
+|
++-- integration/                      # Integration contract templates
+|   +-- api-contracts.yaml            # Universal API endpoint contracts
+|   +-- data-transformations.yaml     # Type/casing transformation rules
+|   +-- component-contracts.yaml      # Frontend component patterns
+|
++-- debugging/                        # Troubleshooting
+|   +-- known-issues.yaml             # Issue tracking template
+|   +-- troubleshooting-runbooks.yaml # Step-by-step guides
+|
++-- skills/                           # 103+ production-ready skill files
+|   +-- framework/SKILL.md            # /framework status display
+|   +-- arch/SKILL.md                 # /arch architecture loader
+|   +-- workflow/SKILL.md             # /workflow methodology config
+|   +-- stack/SKILL.md                # /stack tech stack selection
+|   +-- deploy/SKILL.md               # /deploy deployment strategy
+|   +-- test/SKILL.md                 # /test testing framework
+|   +-- backend/                      # 8 skills: REST, validation, auth...
+|   +-- frontend/                     # 6 skills: React, Redux, routing...
+|   +-- testing/                      # 7 skills: unit, integration, E2E...
+|   +-- security/                     # 6 skills: JWT, RBAC, OAuth...
+|   +-- database/                     # 9 skills: schema, migration...
+|   +-- devops/                       # 5 skills: Docker, K8s, CI/CD...
+|   +-- api-design/                   # 6 skills: pagination, versioning...
+|   +-- monitoring/                   # 5 skills: logging, health checks...
+|   +-- performance/                  # 5 skills: caching, compression...
+|   +-- microservices/                # 4 skills: circuit breaker, saga...
+|   +-- messaging/                    # 3 skills: RabbitMQ, event sourcing
+|   +-- refactoring/                  # 5 skills: extract method, DRY...
+|
++-- engine/                           # TypeScript DSL Engine
+|   +-- package.json                  # @claude/dsl-engine v1.0.0
+|   +-- src/
+|   |   +-- index.ts                  # executeDsl() pipeline + CLI
+|   |   +-- parser.ts                 # Tokenizer + Parser (AST)
+|   |   +-- validator.ts              # Validation with Levenshtein
+|   |   +-- generator.ts              # AST -&gt; SkillInvocation[]
+|   |   +-- types.ts                  # All type definitions
+|   +-- dist/                         # Compiled JavaScript output
+|
++-- docs/                             # Interactive HTML documentation
+    +-- index.html                    # Main entry (Tailwind, dark mode)
+    +-- architectures.html            # Architecture patterns
+    +-- workflows.html                # Workflow methodologies
+    +-- stacks.html                   # Technology stacks
+    +-- deployments.html              # Deployment strategies
+    +-- testing.html                  # Testing frameworks
+    +-- skills.html                   # Skills catalog
+    +-- agents.html                   # Agents documentation
+    +-- complete-guide.html           # All-in-one guide
+    +-- skill-catalog.json            # Machine-readable (141 skills)</code></pre></div>
+            </div>
+        </section>
+
+        <!-- Key Statistics -->
+        <section class="mb-12 animate-fade-in">
+            <h3 class="text-xl font-semibold text-slate-100 mb-6">5. Key File Statistics</h3>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead><tr><th>Location</th><th>Component</th><th>Count</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="inline-code">~/.claude/agents/</span></td><td>Agent definitions</td><td><span class="badge-indigo">24</span></td></tr>
+                        <tr><td><span class="inline-code">~/.claude/skills/</span></td><td>Slash command skills</td><td><span class="badge-indigo">71</span></td></tr>
+                        <tr><td><span class="inline-code">~/.claude/rules/</span></td><td>Rule files</td><td><span class="badge-indigo">10</span></td></tr>
+                        <tr><td><span class="inline-code">~/.claude/settings.json</span></td><td>Permission allow rules</td><td><span class="badge-indigo">177</span></td></tr>
+                        <tr><td><span class="inline-code">~/.claude/.mcp.json</span></td><td>MCP servers</td><td><span class="badge-indigo">10</span></td></tr>
+                        <tr><td><span class="inline-code">C:\.claude\skills/</span></td><td>Reference skill files</td><td><span class="badge-purple">103+</span></td></tr>
+                        <tr><td><span class="inline-code">C:\.claude\engine/src/</span></td><td>DSL engine source files</td><td><span class="badge-purple">5</span></td></tr>
+                        <tr><td><span class="inline-code">C:\.claude\docs/</span></td><td>HTML documentation pages</td><td><span class="badge-purple">11</span></td></tr>
+                        <tr><td><span class="inline-code">C:\.claude\</span> (YAML)</td><td>Architecture/workflow/stack configs</td><td><span class="badge-purple">16</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Related Documents -->
+        <section class="mb-12 animate-fade-in">
+            <h3 class="text-xl font-semibold text-slate-100 mb-6">Related Documents</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="card"><span class="badge-yellow">Planned</span><p class="text-slate-300 mt-2 text-sm">Architecture Patterns &mdash; How skill, agent, hook, and DSL patterns work</p></div>
+                <div class="card"><span class="badge-yellow">Planned</span><p class="text-slate-300 mt-2 text-sm">Data Flow &mdash; What happens when a user types a slash command</p></div>
+                <div class="card"><span class="badge-yellow">Planned</span><p class="text-slate-300 mt-2 text-sm">Dependencies &mdash; All MCP servers and DSL engine dependencies</p></div>
+                <div class="card"><span class="badge-yellow">Planned</span><p class="text-slate-300 mt-2 text-sm">Conventions &mdash; Naming and file format conventions</p></div>
+                <div class="card"><span class="badge-yellow">Planned</span><p class="text-slate-300 mt-2 text-sm">Testing Strategy &mdash; How the framework validates itself</p></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass border-t border-slate-700/50 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">E</div>
+                    <span class="text-sm text-slate-400">EAGLES Pro v2.1.0 &mdash; Codebase Map</span>
+                </div>
+                <div class="flex items-center gap-4 text-sm text-slate-500">
+                    <a href="../index.html" class="hover:text-indigo-400 transition-colors">Hub</a>
+                    <a href="../project/index.html" class="hover:text-indigo-400 transition-colors">Project</a>
+                    <a href="index.html" class="hover:text-indigo-400 transition-colors">Code</a>
+                </div>
+                <p class="text-xs text-slate-600">Generated by @doc-code-analyst &bull; 2026-02-19</p>
+            </div>
+        </div>
+    </footer>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

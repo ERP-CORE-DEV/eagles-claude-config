@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Documentation - EAGLES Pro v2.1.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script>if(localStorage.getItem('eagles-theme')!=='light'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}</script>
+</head>
+<body class="bg-[#0f172a] dark:bg-[#0f172a] text-slate-100 font-sans min-h-screen transition-colors duration-300">
+    <div id="toast" class="toast"></div>
+    <header class="glass sticky top-0 z-50 border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">E</div>
+                <div>
+                    <h1 class="text-lg font-bold gradient-text">EAGLES Pro</h1>
+                    <p class="text-xs text-slate-400">v2.1.0 Code Documentation</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex items-center gap-1">
+                <a href="../index.html" class="nav-link">Hub</a>
+                <a href="../project/index.html" class="nav-link">Project</a>
+                <a href="index.html" class="nav-link active">Code</a>
+            </nav>
+            <div class="flex items-center gap-2">
+                <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-slate-700/50 transition-colors" title="Toggle theme">
+                    <svg class="w-5 h-5 hidden dark:block" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+                    <svg class="w-5 h-5 block dark:hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <nav class="breadcrumb mb-8">
+            <a href="../index.html" class="hover:text-indigo-400 transition-colors">Hub</a>
+            <span class="mx-2 text-slate-600">/</span>
+            <span class="text-slate-300">Code Documentation</span>
+        </nav>
+
+        <section class="mb-12 animate-fade-in">
+            <div class="section-header">
+                <span class="section-icon">&#x1F4BB;</span>
+                <div>
+                    <h2 class="text-3xl font-bold gradient-text">Code Documentation</h2>
+                    <p class="text-slate-400 mt-1">Deep technical documentation for framework developers and contributors</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Document Map -->
+        <section class="mb-12 animate-fade-in">
+            <h3 class="text-xl font-semibold text-slate-100 mb-6">Document Map</h3>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead><tr><th>#</th><th>Document</th><th>Description</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr><td class="font-mono text-indigo-400">01</td><td><a href="index.html" class="text-indigo-400 hover:text-indigo-300">index.html</a></td><td>This index -- code documentation overview</td><td><span class="badge-green">Created</span></td></tr>
+                        <tr><td class="font-mono text-indigo-400">02</td><td><a href="codebase-map.html" class="text-indigo-400 hover:text-indigo-300">codebase-map.html</a></td><td>Complete file tree with annotations</td><td><span class="badge-green">Created</span></td></tr>
+                        <tr><td class="font-mono text-indigo-400">03</td><td><span class="text-slate-500">dsl-engine.html</span></td><td>DSL Engine internals: parser, resolver, FrameworkConfig</td><td><span class="badge-yellow">Planned</span></td></tr>
+                        <tr><td class="font-mono text-indigo-400">04</td><td><span class="text-slate-500">hooks.html</span></td><td>Hook system: PreToolUse, PostToolUse, Stop, SessionStart, PreCompact</td><td><span class="badge-yellow">Planned</span></td></tr>
+                        <tr><td class="font-mono text-indigo-400">05</td><td><span class="text-slate-500">mcp-integration.html</span></td><td>MCP server integration patterns and configuration</td><td><span class="badge-yellow">Planned</span></td></tr>
+                        <tr><td class="font-mono text-indigo-400">06</td><td><span class="text-slate-500">skill-authoring.html</span></td><td>How to create new slash commands (SKILL.md format)</td><td><span class="badge-yellow">Planned</span></td></tr>
+                        <tr><td class="font-mono text-indigo-400">07</td><td><span class="text-slate-500">agent-authoring.html</span></td><td>How to create new agents (frontmatter + system prompt)</td><td><span class="badge-yellow">Planned</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Architecture -->
+        <section class="mb-12 animate-fade-in">
+            <h3 class="text-xl font-semibold text-slate-100 mb-6">Architecture Overview</h3>
+            <div class="card">
+                <h4 class="text-lg font-semibold text-indigo-400 mb-4">Component Relationships</h4>
+                <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>User types /skill or @agent
+         |
+         v
++-------------------+
+| Claude Code CLI   |
++--------+----------+
+         |
+    +----+----+
+    |         |
+    v         v
++-------+  +--------+
+| Skill |  | Agent  |
+| SKILL |  | .md    |
+| .md   |  | files  |
++---+---+  +---+----+
+    |          |
+    v          v
++-------------------+     +------------------+
+| settings.json     |     | .mcp.json        |
+| (hooks fire)      |     | (MCP tools)      |
++-------------------+     +------------------+
+         |                        |
+         v                        v
++-------------------+     +------------------+
+| rules/            |     | MCP Servers      |
+| (coding standards)|     | (github, fs,     |
++-------------------+     |  team-sync, etc.)|
+                          +------------------+</code></pre></div>
+            </div>
+        </section>
+
+        <!-- Key File Formats -->
+        <section class="mb-12 animate-fade-in">
+            <h3 class="text-xl font-semibold text-slate-100 mb-6">Key File Formats</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="card">
+                    <h4 class="text-lg font-semibold text-indigo-400 mb-3">Agent Definition</h4>
+                    <p class="text-sm text-slate-400 mb-3"><span class="inline-code">agents/*.md</span></p>
+                    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>---
+name: agent-name
+description: One-line description
+tools: Read, Write, Edit, Bash
+model: opus | sonnet | haiku
+mode: primary | subagent
+---
+
+System prompt content here...</code></pre></div>
+                </div>
+                <div class="card">
+                    <h4 class="text-lg font-semibold text-indigo-400 mb-3">Skill Definition</h4>
+                    <p class="text-sm text-slate-400 mb-3"><span class="inline-code">skills/*/SKILL.md</span></p>
+                    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>---
+name: skill-name
+description: One-line description
+argument-hint: "&lt;arg&gt; [--flag]"
+tags: [category1, category2]
+user-invocable: true
+---
+
+# Skill Title
+Instructions for Claude...</code></pre></div>
+                </div>
+                <div class="card">
+                    <h4 class="text-lg font-semibold text-indigo-400 mb-3">Hook Configuration</h4>
+                    <p class="text-sm text-slate-400 mb-3"><span class="inline-code">settings.json</span></p>
+                    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "ToolName",
+      "hooks": [{
+        "type": "command",
+        "command": "python3 ..."
+      }]
+    }]
+  }
+}</code></pre></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DSL Engine -->
+        <section class="mb-12 animate-fade-in">
+            <h3 class="text-xl font-semibold text-slate-100 mb-6">DSL Engine Overview</h3>
+            <div class="card">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="badge-purple">TypeScript</span>
+                    <span class="text-sm text-slate-400">Location: <span class="inline-code">C:\.claude\engine\</span></span>
+                </div>
+                <p class="text-slate-300 mb-4">The engine parses DSL shortcuts like <span class="inline-code">@arch:ms</span> into typed tokens, resolves them against YAML configs, and merges into a unified <span class="inline-code">FrameworkConfig</span> object.</p>
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead><tr><th>DSL Prefix</th><th>Maps to</th></tr></thead>
+                        <tbody>
+                            <tr><td><span class="badge-indigo">arch</span></td><td>Architecture patterns (microservices, monolith, etc.)</td></tr>
+                            <tr><td><span class="badge-indigo">mono</span></td><td>Monorepo configurations</td></tr>
+                            <tr><td><span class="badge-indigo">deploy</span></td><td>Deployment targets (k8s, azure, aws)</td></tr>
+                            <tr><td><span class="badge-indigo">test</span></td><td>Testing frameworks and strategies</td></tr>
+                            <tr><td><span class="badge-indigo">dotnet</span></td><td>.NET-specific configurations</td></tr>
+                            <tr><td><span class="badge-indigo">node</span></td><td>Node.js-specific configurations</td></tr>
+                            <tr><td><span class="badge-indigo">python</span></td><td>Python-specific configurations</td></tr>
+                            <tr><td><span class="badge-indigo">java</span></td><td>Java-specific configurations</td></tr>
+                            <tr><td><span class="badge-indigo">go</span></td><td>Go-specific configurations</td></tr>
+                            <tr><td><span class="badge-indigo">agile</span></td><td>Agile methodology patterns</td></tr>
+                            <tr><td><span class="badge-indigo">devops</span></td><td>DevOps pipeline patterns</td></tr>
+                            <tr><td><span class="badge-indigo">kanban</span></td><td>Kanban workflow configurations</td></tr>
+                            <tr><td><span class="badge-indigo">vmodel</span></td><td>V-Model testing configurations</td></tr>
+                            <tr><td><span class="badge-indigo">api</span></td><td>API design patterns</td></tr>
+                            <tr><td><span class="badge-indigo">props</span></td><td>Property/configuration patterns</td></tr>
+                            <tr><td><span class="badge-indigo">transform</span></td><td>Code transformation patterns</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hook System -->
+        <section class="mb-12 animate-fade-in">
+            <h3 class="text-xl font-semibold text-slate-100 mb-6">Hook System Deep Dive</h3>
+            <div class="card mb-6">
+                <h4 class="text-lg font-semibold text-indigo-400 mb-4">Lifecycle Events</h4>
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead><tr><th>Lifecycle</th><th>When it fires</th><th>Can block?</th></tr></thead>
+                        <tbody>
+                            <tr><td><span class="badge-red">PreToolUse</span></td><td>Before any tool executes</td><td><span class="badge-red">Yes (exit 2)</span></td></tr>
+                            <tr><td><span class="badge-blue">PostToolUse</span></td><td>After any tool completes</td><td><span class="badge-slate">No (warnings)</span></td></tr>
+                            <tr><td><span class="badge-slate">Stop</span></td><td>When session ends</td><td><span class="badge-slate">No</span></td></tr>
+                            <tr><td><span class="badge-green">SessionStart</span></td><td>When session begins</td><td><span class="badge-slate">No</span></td></tr>
+                            <tr><td><span class="badge-yellow">PreCompact</span></td><td>Before context compaction</td><td><span class="badge-slate">No</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <h4 class="text-lg font-semibold text-indigo-400 mb-4">Current Hooks (9 total)</h4>
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead><tr><th>#</th><th>Hook</th><th>Event</th><th>Purpose</th></tr></thead>
+                        <tbody>
+                            <tr><td>1</td><td class="font-semibold text-slate-200">Doc-blocker</td><td><span class="badge-red">PreToolUse/Write</span></td><td>Blocks .md writes outside allowed paths</td></tr>
+                            <tr><td>2</td><td class="font-semibold text-slate-200">Gitleaks gate</td><td><span class="badge-red">PreToolUse/Bash</span></td><td>Blocks git commit without gitleaks scan</td></tr>
+                            <tr><td>3</td><td class="font-semibold text-slate-200">Coverage gate</td><td><span class="badge-red">PreToolUse/Bash</span></td><td>Reminds about code coverage on dotnet test</td></tr>
+                            <tr><td>4</td><td class="font-semibold text-slate-200">TSC check</td><td><span class="badge-blue">PostToolUse/Edit|Write</span></td><td>Recommends tsc after .ts/.tsx edits</td></tr>
+                            <tr><td>5</td><td class="font-semibold text-slate-200">Context rot</td><td><span class="badge-blue">PostToolUse/Task</span></td><td>Suggests /compact every 50 tool calls</td></tr>
+                            <tr><td>6</td><td class="font-semibold text-slate-200">Dependency audit</td><td><span class="badge-blue">PostToolUse/Bash</span></td><td>Flags new dependency additions</td></tr>
+                            <tr><td>7</td><td class="font-semibold text-slate-200">Session persist</td><td><span class="badge-slate">Stop</span></td><td>Saves instincts and memory on exit</td></tr>
+                            <tr><td>8</td><td class="font-semibold text-slate-200">Session restore</td><td><span class="badge-green">SessionStart</span></td><td>Loads most recent session context</td></tr>
+                            <tr><td>9</td><td class="font-semibold text-slate-200">Compaction safety</td><td><span class="badge-yellow">PreCompact</span></td><td>Saves critical context before compaction</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- MCP Integration -->
+        <section class="mb-12 animate-fade-in">
+            <h3 class="text-xl font-semibold text-slate-100 mb-6">MCP Integration Patterns</h3>
+            <div class="card mb-6">
+                <h4 class="text-lg font-semibold text-indigo-400 mb-4">Server Categories</h4>
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead><tr><th>Category</th><th>Servers</th><th>Integration</th></tr></thead>
+                        <tbody>
+                            <tr><td><span class="badge-green">Official</span></td><td>github, filesystem, memory, sequential-thinking</td><td>npm packages via npx</td></tr>
+                            <tr><td><span class="badge-purple">Custom</span></td><td>prompt-library, team-sync, qco</td><td>Local Node.js servers</td></tr>
+                            <tr><td><span class="badge-blue">Community</span></td><td>gitmcp, chrome-devtools</td><td>npm packages via npx</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="card">
+                    <h4 class="text-lg font-semibold text-indigo-400 mb-3">NPX Server Pattern</h4>
+                    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>{
+  "server-name": {
+    "type": "stdio",
+    "command": "npx",
+    "args": ["-y", "package-name"],
+    "env": { "API_KEY": "${ENV_VAR}" }
+  }
+}</code></pre></div>
+                </div>
+                <div class="card">
+                    <h4 class="text-lg font-semibold text-indigo-400 mb-3">Local Server Pattern</h4>
+                    <div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre><code>{
+  "server-name": {
+    "type": "stdio",
+    "command": "node",
+    "args": ["C:/path/to/dist/index.js"]
+  }
+}</code></pre></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contributing -->
+        <section class="mb-12 animate-fade-in">
+            <h3 class="text-xl font-semibold text-slate-100 mb-6">Contributing</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card">
+                    <h4 class="text-lg font-semibold text-green-400 mb-3">Add a Skill</h4>
+                    <ol class="text-slate-300 text-sm space-y-2 list-decimal list-inside">
+                        <li>Create <span class="inline-code">~/.claude/skills/my-skill/</span></li>
+                        <li>Create <span class="inline-code">SKILL.md</span> with frontmatter</li>
+                        <li>Write system prompt instructions</li>
+                        <li>Test: <span class="inline-code">/my-skill &lt;args&gt;</span></li>
+                    </ol>
+                    <p class="mt-3"><a href="../project/howto-guides.html" class="text-indigo-400 hover:text-indigo-300 text-sm">See How-to Guide &rarr;</a></p>
+                </div>
+                <div class="card">
+                    <h4 class="text-lg font-semibold text-blue-400 mb-3">Add an Agent</h4>
+                    <ol class="text-slate-300 text-sm space-y-2 list-decimal list-inside">
+                        <li>Create <span class="inline-code">~/.claude/agents/my-agent.md</span></li>
+                        <li>Add frontmatter (name, tools, model)</li>
+                        <li>Write the system prompt</li>
+                        <li>Invoke: <span class="inline-code">@my-agent &lt;task&gt;</span></li>
+                    </ol>
+                    <p class="mt-3"><a href="../project/howto-guides.html" class="text-indigo-400 hover:text-indigo-300 text-sm">See How-to Guide &rarr;</a></p>
+                </div>
+                <div class="card">
+                    <h4 class="text-lg font-semibold text-amber-400 mb-3">Add a Hook</h4>
+                    <ol class="text-slate-300 text-sm space-y-2 list-decimal list-inside">
+                        <li>Edit <span class="inline-code">settings.json</span></li>
+                        <li>Add entry under lifecycle event</li>
+                        <li>Write Python one-liner or script</li>
+                        <li>Test by triggering matched tool</li>
+                    </ol>
+                    <p class="mt-3"><a href="../project/howto-guides.html" class="text-indigo-400 hover:text-indigo-300 text-sm">See How-to Guide &rarr;</a></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="glass border-t border-slate-700/50 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">E</div>
+                    <span class="text-sm text-slate-400">EAGLES Pro v2.1.0 &mdash; Code Documentation</span>
+                </div>
+                <div class="flex items-center gap-4 text-sm text-slate-500">
+                    <a href="../index.html" class="hover:text-indigo-400 transition-colors">Hub</a>
+                    <a href="../project/index.html" class="hover:text-indigo-400 transition-colors">Project</a>
+                    <a href="index.html" class="hover:text-indigo-400 transition-colors">Code</a>
+                </div>
+                <p class="text-xs text-slate-600">Generated by @doc-code-analyst &bull; 2026-02-19</p>
+            </div>
+        </div>
+    </footer>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

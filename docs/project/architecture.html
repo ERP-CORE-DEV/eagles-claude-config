@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture - EAGLES Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script>if(localStorage.getItem('eagles-theme')!=='light'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}</script>
+</head>
+<body class="bg-[#0f172a] dark:bg-[#0f172a] text-slate-100 font-sans min-h-screen transition-colors duration-300">
+    <div id="toast" class="toast"></div>
+    <header class="glass sticky top-0 z-50 border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">E</div>
+                <div><h1 class="text-lg font-bold gradient-text">EAGLES Pro</h1><p class="text-xs text-slate-400">Architecture</p></div>
+            </div>
+            <nav class="hidden md:flex items-center gap-1">
+                <a href="../index.html" class="nav-link">Hub</a>
+                <a href="index.html" class="nav-link">Project</a>
+                <a href="../code/index.html" class="nav-link">Code</a>
+                <a href="architecture.html" class="nav-link active">Architecture</a>
+                <a href="quickstart.html" class="nav-link">Quickstart</a>
+            </nav>
+            <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-slate-700/50 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg></button>
+        </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="breadcrumb mb-8"><a href="../index.html">Hub</a><span class="sep">/</span><a href="index.html">Project</a><span class="sep">/</span><span class="text-slate-300">Architecture</span></div>
+
+        <section class="mb-12 animate-fade-in">
+            <h1 class="text-3xl font-extrabold mb-4"><span class="gradient-text">Architecture</span></h1>
+            <p class="text-lg text-slate-400 max-w-3xl">How EAGLES is structured, how its components interact at runtime, and why key design decisions were made. Follows Arc42 sections S3-S11.</p>
+        </section>
+
+        <!-- S3 System Context -->
+        <section class="mb-14" id="s3">
+            <div class="section-header"><div class="section-icon bg-indigo-500/20 text-indigo-400">&#x1F30D;</div><h2 class="text-2xl font-bold">S3 -- System Context</h2></div>
+            <p class="text-slate-400 mb-4">EAGLES operates as a configuration layer between the developer and Claude Code. It provides files that Claude Code reads automatically from <span class="inline-code">~/.claude/</span>.</p>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead><tr><th>System</th><th>Direction</th><th>Protocol</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong class="text-white">GitHub API</strong></td><td>Bidirectional</td><td><span class="badge badge-blue">HTTPS + MCP</span></td><td>PR creation, code search, issue management</td></tr>
+                        <tr><td><strong class="text-white">Chrome DevTools</strong></td><td>Outbound</td><td><span class="badge badge-purple">WebSocket</span></td><td>Browser automation, screenshots, performance</td></tr>
+                        <tr><td><strong class="text-white">Prompt Library</strong></td><td>Local</td><td><span class="badge badge-green">stdio</span></td><td>MCP workflow orchestration</td></tr>
+                        <tr><td><strong class="text-white">Team Sync</strong></td><td>Local</td><td><span class="badge badge-green">stdio</span></td><td>Cross-microservice contract validation</td></tr>
+                        <tr><td><strong class="text-white">QCO</strong></td><td>Local</td><td><span class="badge badge-green">stdio</span></td><td>4-layer code generation pipeline</td></tr>
+                        <tr><td><strong class="text-white">Context7</strong></td><td>Outbound</td><td><span class="badge badge-blue">HTTPS</span></td><td>Library documentation retrieval</td></tr>
+                        <tr><td><strong class="text-white">GitMCP</strong></td><td>Outbound</td><td><span class="badge badge-blue">HTTPS</span></td><td>GitHub repository documentation mining</td></tr>
+                        <tr><td><strong class="text-white">Memory MCP</strong></td><td>Local</td><td><span class="badge badge-green">stdio</span></td><td>Persistent knowledge graph</td></tr>
+                        <tr><td><strong class="text-white">Sequential Thinking</strong></td><td>Local</td><td><span class="badge badge-green">stdio</span></td><td>Structured multi-step reasoning</td></tr>
+                        <tr><td><strong class="text-white">Filesystem MCP</strong></td><td>Local</td><td><span class="badge badge-green">stdio</span></td><td>File operations outside sandbox</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- S4 Solution Strategy -->
+        <section class="mb-14" id="s4">
+            <div class="section-header"><div class="section-icon bg-green-500/20 text-green-400">&#x1F3AF;</div><h2 class="text-2xl font-bold">S4 -- Solution Strategy</h2></div>
+            <h3 class="text-lg font-semibold text-white mb-3">File formats</h3>
+            <div class="overflow-x-auto mb-8">
+                <table class="data-table">
+                    <thead><tr><th>Format</th><th>Used for</th><th>Why</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="badge badge-indigo">Markdown + YAML</span></td><td>Agents and Skills</td><td>Claude Code natively loads .md files as context</td></tr>
+                        <tr><td><span class="badge badge-indigo">Plain Markdown</span></td><td>Rules</td><td>Claude Code loads rules/ as system instructions</td></tr>
+                        <tr><td><span class="badge badge-amber">JSON</span></td><td>Settings and MCP</td><td>Claude Code expects JSON for config files</td></tr>
+                        <tr><td><span class="badge badge-blue">TypeScript</span></td><td>DSL engine</td><td>Type safety for parsing shortcut commands</td></tr>
+                        <tr><td><span class="badge badge-green">Python</span></td><td>Hooks</td><td>Cross-platform compatibility</td></tr>
+                        <tr><td><span class="badge badge-cyan">YAML</span></td><td>Reference configs</td><td>More readable for nested configurations</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-lg font-semibold text-white mb-3">Key strategic decisions</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="card"><h3 class="font-semibold text-indigo-400 mb-2">Slash commands over DSL for daily use</h3><p class="text-sm text-slate-400">Developers type <span class="inline-code">/tdd</span>, <span class="inline-code">/code-review</span>. The DSL engine is for composing complex multi-config setups.</p></div>
+                <div class="card"><h3 class="font-semibold text-green-400 mb-2">Agents as Markdown, not code</h3><p class="text-sm text-slate-400">Agent behavior is defined entirely in Markdown. Edit an agent by editing a text file.</p></div>
+                <div class="card"><h3 class="font-semibold text-purple-400 mb-2">Hooks as Python one-liners</h3><p class="text-sm text-slate-400">Every hook is a <span class="inline-code">python3 -c</span> command. Avoids shell compatibility issues across Windows/macOS/Linux.</p></div>
+                <div class="card"><h3 class="font-semibold text-amber-400 mb-2">Two-tier skill system</h3><p class="text-sm text-slate-400">YAML skills are reference definitions (103). Markdown skills are executable slash commands (72).</p></div>
+            </div>
+        </section>
+
+        <!-- S5 Building Blocks -->
+        <section class="mb-14" id="s5">
+            <div class="section-header"><div class="section-icon bg-purple-500/20 text-purple-400">&#x1F9F1;</div><h2 class="text-2xl font-bold">S5 -- Building Blocks</h2></div>
+
+            <h3 class="text-lg font-semibold text-white mb-3">Active runtime (<span class="inline-code">~/.claude/</span>)</h3>
+            <div class="overflow-x-auto mb-8">
+                <table class="data-table">
+                    <thead><tr><th>Directory</th><th>Count</th><th>Contents</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>agents/</code></td><td><span class="badge badge-indigo">24</span></td><td>Markdown agent definitions with YAML frontmatter</td></tr>
+                        <tr><td><code>skills/</code></td><td><span class="badge badge-green">72</span></td><td>Directories each containing a SKILL.md file</td></tr>
+                        <tr><td><code>rules/common/</code></td><td><span class="badge badge-purple">8</span></td><td>Coding style, git workflow, patterns, security, performance, testing</td></tr>
+                        <tr><td><code>rules/dotnet/</code></td><td><span class="badge badge-purple">2</span></td><td>.NET coding style, .NET testing rules</td></tr>
+                        <tr><td><code>hooks/</code></td><td><span class="badge badge-amber">1</span></td><td>doc-blocker.py (external hook script)</td></tr>
+                        <tr><td><code>settings.json</code></td><td><span class="badge badge-blue">1</span></td><td>177 allow, 6 deny, model, 7 hook definitions</td></tr>
+                        <tr><td><code>.mcp.json</code></td><td><span class="badge badge-cyan">1</span></td><td>10 MCP server configurations</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-lg font-semibold text-white mb-3">Agents by category</h3>
+            <div class="overflow-x-auto mb-8">
+                <table class="data-table">
+                    <thead><tr><th>Agent</th><th>Model</th><th>Mode</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>orchestrator</code></td><td><span class="badge badge-purple">opus</span></td><td>primary</td><td>GSD-style wave execution with sub-agent delegation</td></tr>
+                        <tr><td><code>planner</code></td><td><span class="badge badge-purple">opus</span></td><td>primary</td><td>Feature planning with phased breakdown</td></tr>
+                        <tr><td><code>architect</code></td><td><span class="badge badge-purple">opus</span></td><td>primary</td><td>System design, ADR generation</td></tr>
+                        <tr><td><code>tdd-guide</code></td><td><span class="badge badge-indigo">sonnet</span></td><td>primary</td><td>RED-GREEN-REFACTOR cycle enforcement</td></tr>
+                        <tr><td><code>code-reviewer</code></td><td><span class="badge badge-indigo">sonnet</span></td><td>subagent</td><td>Quality, security, maintainability review</td></tr>
+                        <tr><td><code>security-reviewer</code></td><td><span class="badge badge-indigo">sonnet</span></td><td>subagent</td><td>OWASP Top 10 + GDPR/CNIL scanning</td></tr>
+                        <tr><td><code>doc-orchestrator</code></td><td><span class="badge badge-purple">opus</span></td><td>primary</td><td>Dispatches 5-agent tech writer team</td></tr>
+                        <tr><td colspan="4" class="text-slate-500 text-center">... and 17 more specialized agents</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-lg font-semibold text-white mb-3">Skills by category</h3>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead><tr><th>Category</th><th>Count</th><th>Examples</th></tr></thead>
+                    <tbody>
+                        <tr><td>Security</td><td><span class="badge badge-red">7</span></td><td>/gitleaks, /security-scan, /semgrep-scan, /trivy-scan</td></tr>
+                        <tr><td>Code generation</td><td><span class="badge badge-green">8</span></td><td>/scaffold-microservice, /generate-crud, /generate-endpoint</td></tr>
+                        <tr><td>Testing</td><td><span class="badge badge-blue">7</span></td><td>/tdd, /e2e, /mutation-test, /load-test</td></tr>
+                        <tr><td>DevOps</td><td><span class="badge badge-purple">6</span></td><td>/helm-deploy, /argocd-deploy, /create-azure-pipeline</td></tr>
+                        <tr><td>Code quality</td><td><span class="badge badge-amber">5</span></td><td>/code-review, /db-review, /arch-test</td></tr>
+                        <tr><td>GSD workflow</td><td><span class="badge badge-indigo">6</span></td><td>/gsd-plan, /gsd-execute, /gsd-verify</td></tr>
+                        <tr><td>Documentation</td><td><span class="badge badge-cyan">2</span></td><td>/update-docs, /onboard-developer</td></tr>
+                        <tr><td>CI/CD</td><td><span class="badge badge-orange">4</span></td><td>/sonarcloud-gate, /dependabot-check, /semantic-release</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- S6 Runtime Behavior -->
+        <section class="mb-14" id="s6">
+            <div class="section-header"><div class="section-icon bg-cyan-500/20 text-cyan-400">&#x26A1;</div><h2 class="text-2xl font-bold">S6 -- Runtime Behavior</h2></div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div class="card border-t-4 border-t-green-500">
+                    <h3 class="font-semibold text-green-400 mb-3">Skill invocation flow</h3>
+                    <ol class="space-y-2 text-sm text-slate-300">
+                        <li class="flex gap-2"><span class="text-green-400 font-bold">1.</span>Claude Code reads <code>~/.claude/skills/tdd/SKILL.md</code></li>
+                        <li class="flex gap-2"><span class="text-green-400 font-bold">2.</span>Frontmatter specifies <code>agent: tdd-guide</code></li>
+                        <li class="flex gap-2"><span class="text-green-400 font-bold">3.</span>Agent loaded from <code>~/.claude/agents/tdd-guide.md</code></li>
+                        <li class="flex gap-2"><span class="text-green-400 font-bold">4.</span>Agent instructions activate (RED-GREEN-REFACTOR)</li>
+                        <li class="flex gap-2"><span class="text-green-400 font-bold">5.</span><code>$ARGUMENTS</code> replaced with user input</li>
+                        <li class="flex gap-2"><span class="text-green-400 font-bold">6.</span>Agent uses tools (Read, Write, Edit, Bash)</li>
+                        <li class="flex gap-2"><span class="text-green-400 font-bold">7.</span>PostToolUse hooks fire after each tool call</li>
+                    </ol>
+                </div>
+                <div class="card border-t-4 border-t-purple-500">
+                    <h3 class="font-semibold text-purple-400 mb-3">Orchestrator wave flow</h3>
+                    <ol class="space-y-2 text-sm text-slate-300">
+                        <li class="flex gap-2"><span class="text-purple-400 font-bold">1.</span>Orchestrator loads from agents/orchestrator.md</li>
+                        <li class="flex gap-2"><span class="text-purple-400 font-bold">2.</span>PLAN: Creates .planning/ directory</li>
+                        <li class="flex gap-2"><span class="text-purple-400 font-bold">3.</span>WAVE 1: Spawns sub-agents (parallel, fresh contexts)</li>
+                        <li class="flex gap-2"><span class="text-purple-400 font-bold">4.</span>Updates STATE.md, checks verification gates</li>
+                        <li class="flex gap-2"><span class="text-purple-400 font-bold">5.</span>WAVE 2: Implementation sub-agents</li>
+                        <li class="flex gap-2"><span class="text-purple-400 font-bold">6.</span>Updates STATE.md</li>
+                        <li class="flex gap-2"><span class="text-purple-400 font-bold">7.</span>WAVE 3: Integration testing</li>
+                        <li class="flex gap-2"><span class="text-purple-400 font-bold">8.</span>VERIFY: Build + test + coverage check</li>
+                    </ol>
+                </div>
+                <div class="card border-t-4 border-t-amber-500">
+                    <h3 class="font-semibold text-amber-400 mb-3">Hook execution flow</h3>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li class="flex gap-2"><span class="text-amber-400 font-bold">-</span><strong class="text-white">PreToolUse:</strong> exit 0 = allow, exit 2 = block with message</li>
+                        <li class="flex gap-2"><span class="text-amber-400 font-bold">-</span><strong class="text-white">PostToolUse:</strong> stdout shown as warning (never blocks)</li>
+                        <li class="flex gap-2"><span class="text-amber-400 font-bold">-</span><strong class="text-white">Stop:</strong> session persistence</li>
+                        <li class="flex gap-2"><span class="text-amber-400 font-bold">-</span><strong class="text-white">SessionStart:</strong> context recovery</li>
+                        <li class="flex gap-2"><span class="text-amber-400 font-bold">-</span><strong class="text-white">PreCompact:</strong> saves WIP before trim</li>
+                        <li class="flex gap-2"><span class="text-amber-400 font-bold">-</span>JSON on stdin: <code>{tool_input, tool_result}</code></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- S7 Deployment -->
+        <section class="mb-14" id="s7">
+            <div class="section-header"><div class="section-icon bg-blue-500/20 text-blue-400">&#x1F680;</div><h2 class="text-2xl font-bold">S7 -- Deployment</h2></div>
+            <p class="text-slate-400 mb-4">EAGLES deployment is file-copy-based. No containers, servers, or databases.</p>
+            <div class="code-block mb-6"><span class="lang-badge">DIAGRAM</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code>Source: github.com/ERP-CORE-DEV/eagles-claude-config
+       |
+       |  git clone + .\setup_claude.ps1
+       v
+Target: ~/.claude/
+       agents/        &lt;-- copied from repo (24 files)
+       skills/        &lt;-- copied from repo (72 dirs)
+       rules/         &lt;-- copied from repo (10 files)
+       hooks/         &lt;-- copied from repo (1 file)
+       settings.json  &lt;-- merged with existing
+       .mcp.json      &lt;-- merged with existing</code></pre>
+            </div>
+        </section>
+
+        <!-- S8 Crosscutting Concerns -->
+        <section class="mb-14" id="s8">
+            <div class="section-header"><div class="section-icon bg-red-500/20 text-red-400">&#x26A0;</div><h2 class="text-2xl font-bold">S8 -- Crosscutting Concerns</h2></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="card border-t-4 border-t-amber-500">
+                    <h3 class="font-semibold text-amber-400 mb-3">Windows compatibility</h3>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li class="flex gap-2"><span class="text-amber-400">-</span>All hooks use <span class="inline-code">python3 -c</span> instead of shell scripts</li>
+                        <li class="flex gap-2"><span class="text-amber-400">-</span>Explicit <span class="inline-code">os.path.expanduser('~')</span> (tilde does not expand on Windows)</li>
+                        <li class="flex gap-2"><span class="text-amber-400">-</span>Backslashes normalized to forward slashes before path matching</li>
+                    </ul>
+                </div>
+                <div class="card border-t-4 border-t-purple-500">
+                    <h3 class="font-semibold text-purple-400 mb-3">Context rot prevention</h3>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li class="flex gap-2"><span class="text-purple-400">1.</span><strong class="text-white">Orchestrator sub-agents:</strong> fresh 200K-token contexts via Task tool</li>
+                        <li class="flex gap-2"><span class="text-purple-400">2.</span><strong class="text-white">Context-rot counter:</strong> suggests /compact every 25 calls</li>
+                        <li class="flex gap-2"><span class="text-purple-400">3.</span><strong class="text-white">PreCompact hook:</strong> saves critical context before compaction</li>
+                    </ul>
+                </div>
+                <div class="card border-t-4 border-t-indigo-500">
+                    <h3 class="font-semibold text-indigo-400 mb-3">Documentation guard</h3>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li class="flex gap-2"><span class="text-indigo-400">-</span>doc-blocker.py intercepts all Write calls for .md files</li>
+                        <li class="flex gap-2"><span class="text-indigo-400">-</span>Allowed paths: /docs/, CLAUDE, README, CHANGELOG, SKILL, rules/, agents/, memory/</li>
+                        <li class="flex gap-2"><span class="text-indigo-400">-</span>Blocks with exit code 2 and descriptive error message</li>
+                    </ul>
+                </div>
+                <div class="card border-t-4 border-t-red-500">
+                    <h3 class="font-semibold text-red-400 mb-3">Secret protection</h3>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li class="flex gap-2"><span class="text-red-400">1.</span><strong class="text-white">PreToolUse hook:</strong> blocks git commit without prior gitleaks scan</li>
+                        <li class="flex gap-2"><span class="text-red-400">2.</span><strong class="text-white">.gitleaks.toml:</strong> custom rules for Azure keys, CosmosDB strings</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- S9 Architecture Decisions -->
+        <section class="mb-14" id="s9">
+            <div class="section-header"><div class="section-icon bg-blue-500/20 text-blue-400">&#x1F4D0;</div><h2 class="text-2xl font-bold">S9 -- Architecture Decisions</h2></div>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead><tr><th>ADR</th><th>Decision</th><th>Rejected alternative</th><th>Rationale</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="badge badge-blue">001</span></td><td>Controller-Service-Repository</td><td>CQRS + MediatR</td><td>Simpler, matches team experience, easier onboarding</td></tr>
+                        <tr><td><span class="badge badge-blue">002</span></td><td>CosmosDB SDK 3.54 direct</td><td>EF Core</td><td>Full control over partition keys and RU costs</td></tr>
+                        <tr><td><span class="badge badge-blue">003</span></td><td>Python for hooks</td><td>Bash / PowerShell</td><td>Cross-platform: works on Windows, macOS, Linux</td></tr>
+                        <tr><td><span class="badge badge-blue">004</span></td><td>YAML for reference configs</td><td>JSON / TOML</td><td>More readable for large nested configurations</td></tr>
+                        <tr><td><span class="badge badge-blue">005</span></td><td>Markdown agents</td><td>Compiled classes</td><td>Edit behavior by editing text, no build step</td></tr>
+                        <tr><td><span class="badge badge-blue">006</span></td><td>Two-tier skill system</td><td>Single-tier</td><td>YAML defines patterns; Markdown executes them</td></tr>
+                        <tr><td><span class="badge badge-blue">007</span></td><td>Sub-agent delegation via Task</td><td>Sequential execution</td><td>Prevents context rot; fresh 200K tokens per phase</td></tr>
+                        <tr><td><span class="badge badge-blue">008</span></td><td>Git-based distribution</td><td>npm / NuGet</td><td>Simple; no build step; version-controlled</td></tr>
+                        <tr><td><span class="badge badge-blue">009</span></td><td>Diataxis + Arc42 + Google Style</td><td>Ad-hoc docs</td><td>Consistent structure, proven frameworks</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- S10 Quality Requirements -->
+        <section class="mb-14" id="s10">
+            <div class="section-header"><div class="section-icon bg-green-500/20 text-green-400">&#x2705;</div><h2 class="text-2xl font-bold">S10 -- Quality Requirements</h2></div>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead><tr><th>Quality</th><th>Target</th><th>Enforcement</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong class="text-white">Performance</strong></td><td>&lt; 100ms single entity ops</td><td>Rules enforce async I/O; performance.md</td></tr>
+                        <tr><td><strong class="text-white">Security</strong></td><td>Zero hardcoded secrets</td><td>Gitleaks hook + /gitleaks skill + .gitleaks.toml</td></tr>
+                        <tr><td><strong class="text-white">Test coverage</strong></td><td>&gt; 80% on changed files</td><td>Coverage-gate hook + testing.md rules</td></tr>
+                        <tr><td><strong class="text-white">GDPR</strong></td><td>AnonymizeXxx() on PII</td><td>Security rules + /gdpr-check skill</td></tr>
+                        <tr><td><strong class="text-white">Context freshness</strong></td><td>No degradation after 50+ calls</td><td>Orchestrator sub-agents + context-rot counter</td></tr>
+                        <tr><td><strong class="text-white">Team consistency</strong></td><td>Identical setup across 6 devs</td><td>Git distribution + setup_claude.ps1</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- S11 Risks -->
+        <section class="mb-14" id="s11">
+            <div class="section-header"><div class="section-icon bg-red-500/20 text-red-400">&#x1F6A8;</div><h2 class="text-2xl font-bold">S11 -- Risks</h2></div>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead><tr><th>Risk</th><th>Severity</th><th>Mitigation</th></tr></thead>
+                    <tbody>
+                        <tr><td>Claude CLI breaking changes</td><td><span class="badge badge-red">HIGH</span></td><td>Pin version; test hooks on updates</td></tr>
+                        <tr><td>MCP npx auto-updates</td><td><span class="badge badge-amber">MEDIUM</span></td><td>Pin MCP package versions</td></tr>
+                        <tr><td>Context window exhaustion</td><td><span class="badge badge-amber">MEDIUM</span></td><td>Orchestrator delegation + /compact</td></tr>
+                        <tr><td>Single-machine config</td><td><span class="badge badge-green">LOW</span></td><td>Git repo as source of truth; 5-min re-install</td></tr>
+                        <tr><td>Hook debugging difficulty</td><td><span class="badge badge-green">LOW</span></td><td>External Python files for complex logic</td></tr>
+                        <tr><td>Stale YAML skill catalog</td><td><span class="badge badge-green">LOW</span></td><td>DSL engine dynamic disk scan at init</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-indigo-500/20 text-indigo-400">&#x27A1;</div><h2 class="text-2xl font-bold">Continue reading</h2></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a href="overview.html" class="card group block"><h3 class="font-semibold text-white group-hover:text-indigo-400">Overview</h3><p class="text-sm text-slate-400">What EAGLES is, who it is for, design philosophy</p></a>
+                <a href="howto-guides.html" class="card group block"><h3 class="font-semibold text-white group-hover:text-indigo-400">How-to Guides</h3><p class="text-sm text-slate-400">Recipes for creating skills, agents, and hooks</p></a>
+                <a href="configuration.html" class="card group block"><h3 class="font-semibold text-white group-hover:text-indigo-400">Configuration</h3><p class="text-sm text-slate-400">Full reference of settings.json and .mcp.json</p></a>
+                <a href="glossary.html" class="card group block"><h3 class="font-semibold text-white group-hover:text-indigo-400">Glossary</h3><p class="text-sm text-slate-400">Definitions for EAGLES terms</p></a>
+            </div>
+        </section>
+    </main>
+    <footer class="border-t border-slate-700/50 mt-12"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-slate-500"><p>EAGLES Pro v2.1.0 &middot; Generated by <span class="text-indigo-400">@doc-hub-architect</span></p><p class="mt-1">Last updated: 2026-02-19</p></div></footer>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

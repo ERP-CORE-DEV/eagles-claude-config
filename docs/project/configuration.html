@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration - EAGLES Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script>if(localStorage.getItem('eagles-theme')!=='light'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}</script>
+</head>
+<body class="bg-[#0f172a] dark:bg-[#0f172a] text-slate-100 font-sans min-h-screen transition-colors duration-300">
+    <div id="toast" class="toast"></div>
+    <header class="glass sticky top-0 z-50 border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">E</div>
+                <div><h1 class="text-lg font-bold gradient-text">EAGLES Pro</h1><p class="text-xs text-slate-400">Configuration</p></div>
+            </div>
+            <nav class="hidden md:flex items-center gap-1">
+                <a href="../index.html" class="nav-link">Hub</a>
+                <a href="index.html" class="nav-link">Project</a>
+                <a href="../code/index.html" class="nav-link">Code</a>
+                <a href="architecture.html" class="nav-link">Architecture</a>
+                <a href="quickstart.html" class="nav-link">Quickstart</a>
+            </nav>
+            <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-slate-700/50 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg></button>
+        </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="breadcrumb mb-8"><a href="../index.html">Hub</a><span class="sep">/</span><a href="index.html">Project</a><span class="sep">/</span><span class="text-slate-300">Configuration</span></div>
+
+        <section class="mb-12 animate-fade-in">
+            <h1 class="text-3xl font-extrabold mb-4"><span class="gradient-text">Configuration</span></h1>
+            <p class="text-lg text-slate-400 max-w-3xl">Complete reference for all EAGLES configuration files. All files live under <span class="inline-code">~/.claude/</span> and apply globally to every Claude Code session.</p>
+        </section>
+
+        <!-- Config files overview -->
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-indigo-500/20 text-indigo-400">&#x1F4C1;</div><h2 class="text-2xl font-bold">Configuration files</h2></div>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead><tr><th>File</th><th>Format</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>~/.claude/settings.json</code></td><td><span class="badge badge-amber">JSON</span></td><td>Permissions, model selection, and hook definitions</td></tr>
+                        <tr><td><code>~/.claude/.mcp.json</code></td><td><span class="badge badge-amber">JSON</span></td><td>MCP server registrations and environment bindings</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- settings.json -->
+        <section class="mb-14">
+            <div class="section-header"><div class="section-icon bg-amber-500/20 text-amber-400">&#x2699;&#xFE0F;</div><h2 class="text-2xl font-bold">settings.json</h2></div>
+            <p class="text-slate-400 mb-6">Location: <span class="inline-code">~/.claude/settings.json</span></p>
+
+            <h3 class="text-lg font-semibold text-white mb-3">Top-level fields</h3>
+            <div class="overflow-x-auto mb-8">
+                <table class="data-table">
+                    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>permissions</code></td><td><span class="badge badge-purple">Object</span></td><td>Allow and deny lists that control which tools Claude Code may invoke</td></tr>
+                        <tr><td><code>model</code></td><td><span class="badge badge-blue">String</span></td><td>Default model identifier for all sessions</td></tr>
+                        <tr><td><code>hooks</code></td><td><span class="badge badge-purple">Object</span></td><td>Lifecycle event handlers keyed by event name</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-lg font-semibold text-white mb-3">permissions.allow <span class="badge badge-green ml-2">177 entries</span></h3>
+            <p class="text-slate-400 mb-3">Glob-style patterns that whitelist specific tool calls.</p>
+            <div class="code-block mb-8"><span class="lang-badge">JSON</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code>"allow": [
+  "Bash(git:*)",        // All git commands
+  "Bash(dotnet:*)",     // All dotnet commands
+  "Bash(npm:*)",        // All npm commands
+  "Read(//c/**)",       // Read any file on C: drive
+  "Write(//c/**)",      // Write any file on C: drive
+  "mcp__github__*"      // All GitHub MCP tools
+  // ... 171 additional patterns
+]</code></pre>
+            </div>
+
+            <h3 class="text-lg font-semibold text-white mb-3">permissions.deny <span class="badge badge-red ml-2">6 entries</span></h3>
+            <p class="text-slate-400 mb-3">Patterns that are always blocked regardless of allow list. Deny rules take precedence.</p>
+            <div class="code-block mb-8"><span class="lang-badge">JSON</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code>"deny": [
+  "Bash(rm -rf:*)",           // Recursive force delete
+  "Bash(rmdir:*)",            // Directory removal
+  "Bash(del /s:*)",           // Windows recursive delete
+  "Bash(git reset --hard:*)", // Hard git reset
+  "Bash(git push --force:*)", // Force push
+  "Bash(git clean -f:*)"     // Force clean
+]</code></pre>
+            </div>
+
+            <h3 class="text-lg font-semibold text-white mb-3">model</h3>
+            <div class="code-block mb-8"><span class="lang-badge">JSON</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code>"model": "opus"   // Valid: "opus" or "sonnet"</code></pre>
+            </div>
+
+            <h3 class="text-lg font-semibold text-white mb-3">Hook events</h3>
+            <div class="overflow-x-auto mb-8">
+                <table class="data-table">
+                    <thead><tr><th>Event</th><th>Fires</th><th>Stdin payload</th><th>Can block?</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>PreToolUse</code></td><td>Before every tool call</td><td><code>{tool_input}</code></td><td><span class="badge badge-red">Yes (exit 2)</span></td></tr>
+                        <tr><td><code>PostToolUse</code></td><td>After every tool call</td><td><code>{tool_input, tool_result}</code></td><td><span class="badge badge-green">No</span></td></tr>
+                        <tr><td><code>Stop</code></td><td>Session ends</td><td>empty</td><td><span class="badge badge-green">No</span></td></tr>
+                        <tr><td><code>SessionStart</code></td><td>Session begins</td><td>empty</td><td><span class="badge badge-green">No</span></td></tr>
+                        <tr><td><code>PreCompact</code></td><td>Before /compact runs</td><td>empty</td><td><span class="badge badge-green">No</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-lg font-semibold text-white mb-3">Current hooks <span class="badge badge-indigo ml-2">9 registered</span></h3>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead><tr><th>Hook</th><th>Event</th><th>Trigger</th><th>Blocks?</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong class="text-white">doc-blocker</strong></td><td><span class="badge badge-indigo">PreToolUse</span></td><td>Write on .md files outside allowed paths</td><td><span class="badge badge-red">Yes</span></td></tr>
+                        <tr><td><strong class="text-white">gitleaks</strong></td><td><span class="badge badge-indigo">PreToolUse</span></td><td>git commit without prior scan</td><td><span class="badge badge-red">Yes</span></td></tr>
+                        <tr><td><strong class="text-white">coverage-gate</strong></td><td><span class="badge badge-indigo">PreToolUse</span></td><td>dotnet test without --collect flag</td><td><span class="badge badge-amber">Prints</span></td></tr>
+                        <tr><td><strong class="text-white">TSC</strong></td><td><span class="badge badge-purple">PostToolUse</span></td><td>Edit/Write on .ts/.tsx files</td><td><span class="badge badge-green">No</span></td></tr>
+                        <tr><td><strong class="text-white">context-rot</strong></td><td><span class="badge badge-purple">PostToolUse</span></td><td>Tool call count reaches multiples of 25</td><td><span class="badge badge-green">No</span></td></tr>
+                        <tr><td><strong class="text-white">dep-audit</strong></td><td><span class="badge badge-purple">PostToolUse</span></td><td>npm install or dotnet add package</td><td><span class="badge badge-green">No</span></td></tr>
+                        <tr><td><strong class="text-white">session-end</strong></td><td><span class="badge badge-cyan">Stop</span></td><td>Every session end</td><td><span class="badge badge-green">No</span></td></tr>
+                        <tr><td><strong class="text-white">session-start</strong></td><td><span class="badge badge-green">SessionStart</span></td><td>Every session start</td><td><span class="badge badge-green">No</span></td></tr>
+                        <tr><td><strong class="text-white">pre-compact</strong></td><td><span class="badge badge-blue">PreCompact</span></td><td>Before every /compact</td><td><span class="badge badge-green">No</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- .mcp.json -->
+        <section class="mb-14">
+            <div class="section-header"><div class="section-icon bg-purple-500/20 text-purple-400">&#x1F50C;</div><h2 class="text-2xl font-bold">.mcp.json</h2></div>
+            <p class="text-slate-400 mb-6">Location: <span class="inline-code">~/.claude/.mcp.json</span></p>
+
+            <h3 class="text-lg font-semibold text-white mb-3">Structure</h3>
+            <div class="code-block mb-8"><span class="lang-badge">JSON</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code>{
+  "mcpServers": {
+    "server-name": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      }
+    }
+  }
+}</code></pre>
+            </div>
+
+            <h3 class="text-lg font-semibold text-white mb-3">Server fields</h3>
+            <div class="overflow-x-auto mb-8">
+                <table class="data-table">
+                    <thead><tr><th>Field</th><th>Required</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>type</code></td><td><span class="badge badge-red">Yes</span></td><td>Always <code>"stdio"</code> for Claude Code MCP servers</td></tr>
+                        <tr><td><code>command</code></td><td><span class="badge badge-red">Yes</span></td><td>Executable to launch (<code>npx</code>, <code>node</code>, <code>python3</code>)</td></tr>
+                        <tr><td><code>args</code></td><td><span class="badge badge-red">Yes</span></td><td>Arguments passed to the command</td></tr>
+                        <tr><td><code>env</code></td><td><span class="badge badge-green">No</span></td><td>Environment variables; use <code>${VAR}</code> to reference host env</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-lg font-semibold text-white mb-3">Current servers <span class="badge badge-purple ml-2">10 registered</span></h3>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead><tr><th>Server</th><th>Type</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong class="text-white">github</strong></td><td><span class="badge badge-indigo">Official</span></td><td>GitHub API -- search code, manage issues, create PRs</td></tr>
+                        <tr><td><strong class="text-white">chrome-devtools</strong></td><td><span class="badge badge-indigo">Official</span></td><td>Browser automation via Chrome DevTools Protocol</td></tr>
+                        <tr><td><strong class="text-white">filesystem</strong></td><td><span class="badge badge-indigo">Official</span></td><td>Scoped filesystem access</td></tr>
+                        <tr><td><strong class="text-white">prompt-library</strong></td><td><span class="badge badge-amber">Custom</span></td><td>EAGLES prompt template orchestration</td></tr>
+                        <tr><td><strong class="text-white">team-sync</strong></td><td><span class="badge badge-amber">Custom</span></td><td>Cross-team session state synchronization</td></tr>
+                        <tr><td><strong class="text-white">qco</strong></td><td><span class="badge badge-amber">Custom</span></td><td>4-layer quality code generation pipeline</td></tr>
+                        <tr><td><strong class="text-white">qonto</strong></td><td><span class="badge badge-amber">Custom</span></td><td>Qonto accounting API integration</td></tr>
+                        <tr><td><strong class="text-white">memory</strong></td><td><span class="badge badge-indigo">Official</span></td><td>Persistent key-value memory across sessions</td></tr>
+                        <tr><td><strong class="text-white">sequential-thinking</strong></td><td><span class="badge badge-indigo">Official</span></td><td>Structured multi-step reasoning</td></tr>
+                        <tr><td><strong class="text-white">gitmcp</strong></td><td><span class="badge badge-indigo">Official</span></td><td>GitHub repository documentation mining</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Rules directory -->
+        <section class="mb-14">
+            <div class="section-header"><div class="section-icon bg-cyan-500/20 text-cyan-400">&#x1F4CF;</div><h2 class="text-2xl font-bold">Rules directory</h2></div>
+            <p class="text-slate-400 mb-6">Rule files are plain Markdown loaded as system instructions at session start.</p>
+
+            <h3 class="text-lg font-semibold text-white mb-3">Directory tree</h3>
+            <div class="code-block mb-8"><span class="lang-badge">TREE</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code>~/.claude/rules/
++-- common/
+|   +-- agents.md          # Agent usage rules
+|   +-- coding-style.md    # Language-agnostic style guide
+|   +-- git-workflow.md    # Branching and commit conventions
+|   +-- hooks.md           # Hook authoring guidelines
+|   +-- patterns.md        # Architecture pattern rules
+|   +-- performance.md     # Performance targets and practices
+|   +-- security.md        # Security and GDPR rules
+|   +-- testing.md         # Testing framework and coverage rules
++-- dotnet/
+    +-- coding-style.md    # .NET naming, CosmosDB, French HR
+    +-- testing.md         # xUnit + FluentAssertions + Moq</code></pre>
+            </div>
+
+            <h3 class="text-lg font-semibold text-white mb-3">Scope</h3>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead><tr><th>Directory</th><th>When loaded</th><th>Files</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>rules/common/</code></td><td>Always -- applies to every project and session</td><td><span class="badge badge-indigo">8 files</span></td></tr>
+                        <tr><td><code>rules/dotnet/</code></td><td>When a <code>.csproj</code> or <code>.sln</code> file is detected</td><td><span class="badge badge-purple">2 files</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Environment variables -->
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-green-500/20 text-green-400">&#x1F511;</div><h2 class="text-2xl font-bold">Environment variables</h2></div>
+            <p class="text-slate-400 mb-6">Set these in your host shell before launching Claude Code. The <span class="inline-code">${VAR}</span> syntax in <span class="inline-code">.mcp.json</span> reads from the system environment at runtime.</p>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead><tr><th>Variable</th><th>Required by</th><th>Description</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>GITHUB_PERSONAL_ACCESS_TOKEN</code></td><td><span class="badge badge-indigo">github MCP</span></td><td>Personal access token with <code>repo</code> and <code>read:org</code> scopes</td></tr>
+                        <tr><td><code>QONTO_CLIENT_ID</code></td><td><span class="badge badge-amber">qonto MCP</span></td><td>OAuth 2.0 client ID for Qonto API</td></tr>
+                        <tr><td><code>QONTO_CLIENT_SECRET</code></td><td><span class="badge badge-amber">qonto MCP</span></td><td>OAuth 2.0 client secret for Qonto API</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card border-l-4 border-l-red-500 mt-6">
+                <h3 class="font-semibold text-red-400 mb-1">Security note</h3>
+                <p class="text-sm text-slate-300">Never hardcode these values in <span class="inline-code">.mcp.json</span> or any tracked file. Set them in your shell profile (<span class="inline-code">~/.bashrc</span>, <span class="inline-code">~/.zshrc</span>, or Windows environment variables) so they are available without appearing in version control.</p>
+            </div>
+        </section>
+    </main>
+    <footer class="border-t border-slate-700/50 mt-12"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-slate-500"><p>EAGLES Pro v2.1.0 &middot; Generated by <span class="text-indigo-400">@doc-official-writer</span></p><p class="mt-1">Last updated: 2026-02-19</p></div></footer>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How-to Guides - EAGLES Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script>if(localStorage.getItem('eagles-theme')!=='light'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}</script>
+</head>
+<body class="bg-[#0f172a] dark:bg-[#0f172a] text-slate-100 font-sans min-h-screen transition-colors duration-300">
+    <div id="toast" class="toast"></div>
+    <header class="glass sticky top-0 z-50 border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">E</div>
+                <div><h1 class="text-lg font-bold gradient-text">EAGLES Pro</h1><p class="text-xs text-slate-400">How-to Guides</p></div>
+            </div>
+            <nav class="hidden md:flex items-center gap-1">
+                <a href="../index.html" class="nav-link">Hub</a>
+                <a href="index.html" class="nav-link">Project</a>
+                <a href="../code/index.html" class="nav-link">Code</a>
+                <a href="architecture.html" class="nav-link">Architecture</a>
+                <a href="quickstart.html" class="nav-link">Quickstart</a>
+            </nav>
+            <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-slate-700/50 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg></button>
+        </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="breadcrumb mb-8"><a href="../index.html">Hub</a><span class="sep">/</span><a href="index.html">Project</a><span class="sep">/</span><span class="text-slate-300">How-to Guides</span></div>
+
+        <section class="mb-12 animate-fade-in">
+            <h1 class="text-3xl font-extrabold mb-4"><span class="gradient-text">How-to Guides</span></h1>
+            <p class="text-lg text-slate-400 max-w-3xl">Task-specific recipes for extending and customizing EAGLES. Each guide solves one problem.</p>
+        </section>
+
+        <!-- Quick navigation -->
+        <section class="mb-12">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <a href="#create-skill" class="card group block"><h3 class="font-semibold text-green-400 group-hover:text-green-300">Create a new skill</h3><p class="text-xs text-slate-400">Add a slash command to Claude Code</p></a>
+                <a href="#create-agent" class="card group block"><h3 class="font-semibold text-purple-400 group-hover:text-purple-300">Create a new agent</h3><p class="text-xs text-slate-400">Define specialized AI behavior</p></a>
+                <a href="#add-hook" class="card group block"><h3 class="font-semibold text-amber-400 group-hover:text-amber-300">Add a hook</h3><p class="text-xs text-slate-400">Automate quality gates</p></a>
+                <a href="#add-mcp" class="card group block"><h3 class="font-semibold text-cyan-400 group-hover:text-cyan-300">Add an MCP server</h3><p class="text-xs text-slate-400">Connect external tools</p></a>
+                <a href="#dsl-engine" class="card group block"><h3 class="font-semibold text-indigo-400 group-hover:text-indigo-300">Run the DSL engine</h3><p class="text-xs text-slate-400">Parse shortcut commands</p></a>
+            </div>
+        </section>
+
+        <!-- Guide 1: Create a skill -->
+        <section class="mb-14" id="create-skill">
+            <div class="section-header"><div class="section-icon bg-green-500/20 text-green-400">&#x2728;</div><h2 class="text-2xl font-bold">How to create a new skill</h2></div>
+            <div class="card">
+                <p class="text-slate-300 mb-6">A skill is a slash command that you invoke in Claude Code (e.g., <span class="inline-code">/my-skill</span>). Each skill lives in its own directory under <span class="inline-code">~/.claude/skills/</span>.</p>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-xs font-bold">1</span>Create the skill directory</h3>
+                <div class="code-block mb-6"><span class="lang-badge">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>mkdir ~/.claude/skills/my-skill</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-xs font-bold">2</span>Create SKILL.md with frontmatter</h3>
+                <div class="code-block mb-6"><span class="lang-badge">MARKDOWN</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>---
+name: my-skill
+description: Short description of what this skill does
+argument-hint: "&lt;target&gt; [--verbose]"
+tags: [category1, category2]
+user-invocable: true
+---
+
+# My Skill
+
+Instructions for Claude Code to follow when this skill is invoked.
+
+## What To Do
+1. First step
+2. Second step
+
+## Arguments
+- `&lt;target&gt;`: What to operate on</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center text-xs font-bold">3</span>Test your skill</h3>
+                <div class="code-block mb-8"><span class="lang-badge">CLAUDE</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>/my-skill some-argument</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3">Frontmatter field reference</h3>
+                <div class="overflow-x-auto mb-6">
+                    <table class="data-table">
+                        <thead><tr><th>Field</th><th>Required</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>name</code></td><td><span class="badge badge-red">Yes</span></td><td>The slash command name (without the <code>/</code>)</td></tr>
+                            <tr><td><code>description</code></td><td><span class="badge badge-red">Yes</span></td><td>One-line description shown in skill listings</td></tr>
+                            <tr><td><code>argument-hint</code></td><td><span class="badge badge-green">No</span></td><td>Hint text shown after the command name</td></tr>
+                            <tr><td><code>tags</code></td><td><span class="badge badge-green">No</span></td><td>Array of tags for categorization</td></tr>
+                            <tr><td><code>agent</code></td><td><span class="badge badge-green">No</span></td><td>Name of an agent to activate when this skill runs</td></tr>
+                            <tr><td><code>user-invocable</code></td><td><span class="badge badge-green">No</span></td><td>Set to <code>true</code> to make the skill available as a slash command</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3">Real example: the /tdd skill</h3>
+                <div class="code-block"><span class="lang-badge">MARKDOWN</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>---
+name: tdd
+description: Start TDD workflow for a feature
+agent: tdd-guide
+user-invocable: true
+---
+
+Implement the following using strict TDD (RED-GREEN-REFACTOR): $ARGUMENTS.
+Start with interface definition, then write failing tests, then minimal implementation, then refactor.</code></pre>
+                </div>
+                <p class="text-sm text-slate-400 mt-3">The <span class="inline-code">$ARGUMENTS</span> placeholder is replaced with whatever the user types after <span class="inline-code">/tdd</span>. The <span class="inline-code">agent: tdd-guide</span> field activates the TDD agent from <span class="inline-code">~/.claude/agents/tdd-guide.md</span>.</p>
+            </div>
+        </section>
+
+        <!-- Guide 2: Create an agent -->
+        <section class="mb-14" id="create-agent">
+            <div class="section-header"><div class="section-icon bg-purple-500/20 text-purple-400">&#x1F916;</div><h2 class="text-2xl font-bold">How to create a new agent</h2></div>
+            <div class="card">
+                <p class="text-slate-300 mb-6">An agent is a Markdown file that defines specialized behavior for Claude Code. Agents live in <span class="inline-code">~/.claude/agents/</span>.</p>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-bold">1</span>Create the agent file</h3>
+                <div class="code-block mb-6"><span class="lang-badge">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>touch ~/.claude/agents/my-agent.md</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-bold">2</span>Write agent definition with frontmatter</h3>
+                <div class="code-block mb-6"><span class="lang-badge">MARKDOWN</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>---
+name: my-specialist
+description: Expert in [domain] for [specific tasks]
+tools: Read, Write, Edit, Bash, Grep, Glob
+model: claude-sonnet-4-6
+mode: subagent
+---
+
+You are a specialist in [domain]. You are called as a subagent by the orchestrator
+when tasks require [specific expertise].
+
+## Workflow
+1. First, analyze the request
+2. Then, implement the solution
+3. Finally, verify the result
+
+## Rules
+- Only read and edit files under [allowed scope]
+- Never run destructive commands without confirmation
+- Output a structured report at the end</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-bold">3</span>Reference the agent from a skill (optional)</h3>
+                <div class="code-block mb-8"><span class="lang-badge">YAML</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>agent: my-specialist</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3">Frontmatter field reference</h3>
+                <div class="overflow-x-auto mb-6">
+                    <table class="data-table">
+                        <thead><tr><th>Field</th><th>Required</th><th>Values</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>name</code></td><td><span class="badge badge-red">Yes</span></td><td>string</td><td>Identifier used when referencing this agent</td></tr>
+                            <tr><td><code>description</code></td><td><span class="badge badge-red">Yes</span></td><td>string</td><td>One-line summary. The orchestrator reads this for routing.</td></tr>
+                            <tr><td><code>tools</code></td><td><span class="badge badge-red">Yes</span></td><td>comma-separated</td><td>Allowed tools: Read, Write, Edit, Bash, Grep, Glob, Task, etc.</td></tr>
+                            <tr><td><code>model</code></td><td><span class="badge badge-red">Yes</span></td><td>see below</td><td>Claude model for this agent</td></tr>
+                            <tr><td><code>mode</code></td><td><span class="badge badge-red">Yes</span></td><td>primary / subagent / secondary</td><td>Execution context</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3">Model values</h3>
+                <div class="flex flex-wrap gap-3 mb-4">
+                    <div class="flex items-center gap-2"><span class="badge badge-purple">claude-opus-4-6</span><span class="text-sm text-slate-400">Complex reasoning, architecture</span></div>
+                    <div class="flex items-center gap-2"><span class="badge badge-indigo">claude-sonnet-4-6</span><span class="text-sm text-slate-400">Balanced -- most agents use this</span></div>
+                    <div class="flex items-center gap-2"><span class="badge badge-green">claude-haiku-4-5</span><span class="text-sm text-slate-400">Fast, token-efficient tasks</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guide 3: Add a hook -->
+        <section class="mb-14" id="add-hook">
+            <div class="section-header"><div class="section-icon bg-amber-500/20 text-amber-400">&#x26A1;</div><h2 class="text-2xl font-bold">How to add a hook</h2></div>
+            <div class="card">
+                <p class="text-slate-300 mb-6">Hooks intercept Claude Code tool calls at specific lifecycle points. A hook exits <span class="inline-code">0</span> to allow, <span class="inline-code">2</span> to block, or prints warnings on stdout.</p>
+
+                <h3 class="font-semibold text-white mb-3">Hook event reference</h3>
+                <div class="overflow-x-auto mb-6">
+                    <table class="data-table">
+                        <thead><tr><th>Event</th><th>When it fires</th><th>Can block?</th><th>Use for</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>PreToolUse</code></td><td>Before any tool call executes</td><td><span class="badge badge-red">Yes (exit 2)</span></td><td>Blocking dangerous writes, enforcing scan-first policies</td></tr>
+                            <tr><td><code>PostToolUse</code></td><td>After a tool call completes</td><td><span class="badge badge-green">No</span></td><td>Printing reminders, logging, coverage nudges</td></tr>
+                            <tr><td><code>Stop</code></td><td>When the session ends</td><td><span class="badge badge-green">No</span></td><td>Persisting session state</td></tr>
+                            <tr><td><code>SessionStart</code></td><td>When a new session opens</td><td><span class="badge badge-green">No</span></td><td>Loading context summaries</td></tr>
+                            <tr><td><code>PreCompact</code></td><td>Before context compaction</td><td><span class="badge badge-green">No</span></td><td>Saving work-in-progress notes</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold">1</span>Write the hook script</h3>
+                <div class="code-block mb-6"><span class="lang-badge">PYTHON</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code># ~/.claude/hooks/my-hook.py
+import json, sys
+
+payload = json.load(sys.stdin)
+tool_name = payload.get("tool_name", "")
+tool_input = payload.get("tool_input", {})
+
+# Example: block Write calls to .env files
+if tool_name == "Write":
+    file_path = tool_input.get("file_path", "")
+    if file_path.endswith(".env"):
+        print("Blocked: do not write secrets to .env files.", file=sys.stderr)
+        sys.exit(2)   # exit 2 = block the tool call
+
+sys.exit(0)  # exit 0 = allow</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold">2</span>Register the hook in settings.json</h3>
+                <div class="code-block mb-6"><span class="lang-badge">JSON</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          { "type": "command", "command": "python3 ~/.claude/hooks/my-hook.py" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xs font-bold">3</span>Verify the hook fires</h3>
+                <div class="code-block mb-8"><span class="lang-badge">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code># Open a new Claude Code session, then attempt the blocked action:
+# Ask Claude to write a file ending in .env -- the hook must block it.</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3">Current hooks inventory</h3>
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead><tr><th>Hook</th><th>Event</th><th>Matcher</th><th>Blocks?</th><th>Purpose</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>doc-blocker</code></td><td>PreToolUse</td><td>Write</td><td><span class="badge badge-red">Yes</span></td><td>Blocks .md writes outside allowed paths</td></tr>
+                            <tr><td><code>gitleaks-gate</code></td><td>PreToolUse</td><td>Bash</td><td><span class="badge badge-red">Yes</span></td><td>Blocks git commit without gitleaks scan</td></tr>
+                            <tr><td><code>coverage-gate</code></td><td>PreToolUse</td><td>Bash</td><td><span class="badge badge-amber">Prints</span></td><td>Reminds to add coverage to dotnet test</td></tr>
+                            <tr><td><code>TSC check</code></td><td>PostToolUse</td><td>Edit/Write</td><td><span class="badge badge-green">No</span></td><td>Suggests tsc after .ts/.tsx edits</td></tr>
+                            <tr><td><code>context-rot</code></td><td>PostToolUse</td><td>*</td><td><span class="badge badge-green">No</span></td><td>Suggests /compact every 25 calls</td></tr>
+                            <tr><td><code>dep-audit</code></td><td>PostToolUse</td><td>Bash</td><td><span class="badge badge-green">No</span></td><td>Reminds /security-scan after installs</td></tr>
+                            <tr><td><code>session-end</code></td><td>Stop</td><td>n/a</td><td><span class="badge badge-green">No</span></td><td>Confirms session persistence</td></tr>
+                            <tr><td><code>session-start</code></td><td>SessionStart</td><td>n/a</td><td><span class="badge badge-green">No</span></td><td>Loads session context</td></tr>
+                            <tr><td><code>pre-compact</code></td><td>PreCompact</td><td>n/a</td><td><span class="badge badge-green">No</span></td><td>Saves WIP before compaction</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guide 4: Add an MCP server -->
+        <section class="mb-14" id="add-mcp">
+            <div class="section-header"><div class="section-icon bg-cyan-500/20 text-cyan-400">&#x1F50C;</div><h2 class="text-2xl font-bold">How to add an MCP server</h2></div>
+            <div class="card">
+                <p class="text-slate-300 mb-6">MCP servers extend Claude Code with external tools that communicate via stdio. Configure them in <span class="inline-code">~/.claude/.mcp.json</span>.</p>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-bold">1</span>Open <span class="inline-code">~/.claude/.mcp.json</span></h3>
+                <div class="code-block mb-6"><span class="lang-badge">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>code ~/.claude/.mcp.json</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-bold">2</span>Add the server entry</h3>
+                <div class="code-block mb-6"><span class="lang-badge">JSON</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>{
+  "mcpServers": {
+    "my-server": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-my-server"],
+      "env": {
+        "MY_API_KEY": "${MY_API_KEY}"
+      }
+    }
+  }
+}</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-bold">3</span>Set environment variables</h3>
+                <div class="code-block mb-6"><span class="lang-badge">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code># Add to ~/.bashrc or ~/.zshrc (never hardcode in .mcp.json)
+export MY_API_KEY="your-key-here"</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-bold">4</span>Add tool permissions in settings.json</h3>
+                <div class="code-block mb-6"><span class="lang-badge">JSON</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>"permissions": {
+  "allow": [
+    "mcp__my-server__tool_name"
+  ]
+}</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-bold">5</span>Restart Claude Code and verify</h3>
+                <div class="code-block mb-8"><span class="lang-badge">CLAUDE</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>/mcp
+# Lists all connected MCP servers and their tools</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3">Current MCP server inventory</h3>
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead><tr><th>Server</th><th>Package / command</th><th>Scope</th><th>Purpose</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>github</code></td><td><code>@modelcontextprotocol/server-github</code></td><td><span class="badge badge-indigo">Global</span></td><td>GitHub API (PRs, issues, code search)</td></tr>
+                            <tr><td><code>chrome-devtools</code></td><td><code>chrome-devtools-mcp@latest</code></td><td><span class="badge badge-indigo">Global</span></td><td>Browser automation and DevTools</td></tr>
+                            <tr><td><code>filesystem</code></td><td><code>@modelcontextprotocol/server-filesystem</code></td><td><span class="badge badge-indigo">Global</span></td><td>Scoped file operations</td></tr>
+                            <tr><td><code>prompt-library</code></td><td>local Node.js server</td><td><span class="badge badge-purple">Project</span></td><td>MCP workflow orchestration</td></tr>
+                            <tr><td><code>team-sync</code></td><td>local Node.js server</td><td><span class="badge badge-purple">Project</span></td><td>Cross-team coordination</td></tr>
+                            <tr><td><code>qco</code></td><td>local Node.js server</td><td><span class="badge badge-purple">Project</span></td><td>4-layer code gen pipeline</td></tr>
+                            <tr><td><code>memory</code></td><td><code>@modelcontextprotocol/server-memory</code></td><td><span class="badge badge-indigo">Global</span></td><td>Persistent knowledge graph</td></tr>
+                            <tr><td><code>sequential-thinking</code></td><td><code>@modelcontextprotocol/server-sequential-thinking</code></td><td><span class="badge badge-indigo">Global</span></td><td>Structured multi-step reasoning</td></tr>
+                            <tr><td><code>gitmcp</code></td><td><code>gitmcp</code></td><td><span class="badge badge-indigo">Global</span></td><td>GitHub repo documentation mining</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guide 5: Run the DSL engine -->
+        <section class="mb-14" id="dsl-engine">
+            <div class="section-header"><div class="section-icon bg-indigo-500/20 text-indigo-400">&#x2699;&#xFE0F;</div><h2 class="text-2xl font-bold">How to run the DSL engine</h2></div>
+            <div class="card">
+                <p class="text-slate-300 mb-6">The DSL engine parses shortcut commands like <span class="inline-code">@arch:ms @deploy:k8s --scale=3</span> into structured execution plans. It supports 179 skills across 46 categories.</p>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-bold">1</span>Install dependencies</h3>
+                <div class="code-block mb-6"><span class="lang-badge">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>cd C:/.claude/engine
+npm install &amp;&amp; npm run build</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-bold">2</span>Run a DSL command</h3>
+                <div class="code-block mb-6"><span class="lang-badge">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>npx ts-node src/index.ts "@arch:ms @deploy:k8s --scale=3"</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3 flex items-center gap-2"><span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-bold">3</span>Combine multiple categories</h3>
+                <div class="code-block mb-8"><span class="lang-badge">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code># Full microservice with tests and K8s deployment:
+npx ts-node src/index.ts "@arch:ms @dotnet @test:unit @test:int @deploy:k8s --scale=3"
+
+# Code review and debugging:
+npx ts-node src/index.ts "@dotnet @debug:perf @api:rest --target=src/backend/"</code></pre>
+                </div>
+
+                <h3 class="font-semibold text-white mb-4">Available DSL categories</h3>
+                <div class="overflow-x-auto mb-6">
+                    <table class="data-table">
+                        <thead><tr><th>Category</th><th>Prefix</th><th>Examples</th></tr></thead>
+                        <tbody>
+                            <tr><td>Architecture</td><td><span class="badge badge-indigo">@arch:</span></td><td><code>@arch:ms</code>, <code>@arch:clean</code>, <code>@arch:hex</code></td></tr>
+                            <tr><td>Monolith</td><td><span class="badge badge-indigo">@mono:</span></td><td><code>@mono:3tier</code>, <code>@mono:modular</code></td></tr>
+                            <tr><td>Deployment</td><td><span class="badge badge-purple">@deploy:</span></td><td><code>@deploy:k8s</code>, <code>@deploy:docker</code>, <code>@deploy:sls</code></td></tr>
+                            <tr><td>Testing</td><td><span class="badge badge-green">@test:</span></td><td><code>@test:unit</code>, <code>@test:int</code>, <code>@test:e2e</code></td></tr>
+                            <tr><td>Stack</td><td><span class="badge badge-amber">bare prefix</span></td><td><code>@dotnet</code>, <code>@node</code>, <code>@python</code>, <code>@java</code>, <code>@go</code></td></tr>
+                            <tr><td>Workflow</td><td><span class="badge badge-cyan">bare prefix</span></td><td><code>@agile</code>, <code>@devops</code>, <code>@kanban</code>, <code>@vmodel</code></td></tr>
+                            <tr><td>API</td><td><span class="badge badge-red">@api:</span></td><td><code>@api:candidates</code>, <code>@api:rest</code></td></tr>
+                            <tr><td>Debug</td><td><span class="badge badge-orange">@debug:</span></td><td><code>@debug:issues</code>, <code>@debug:perf</code></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="font-semibold text-white mb-3">Engine output format</h3>
+                <div class="code-block"><span class="lang-badge">JSON</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <pre><code>{
+  "input": "@arch:ms @deploy:k8s --scale=3",
+  "categories": ["arch", "deploy"],
+  "skills": ["scaffold-microservice", "deploy-k8s"],
+  "flags": { "scale": "3" },
+  "plan": [
+    { "step": 1, "skill": "scaffold-microservice", "agent": "architect" },
+    { "step": 2, "skill": "deploy-k8s", "agent": "planner", "flags": { "scale": "3" } }
+  ],
+  "validation": { "valid": true, "errors": [], "warnings": [] }
+}</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-slate-500/20 text-slate-400">&#x27A1;</div><h2 class="text-2xl font-bold">Related pages</h2></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <a href="quickstart.html" class="card group block"><h3 class="font-semibold text-white group-hover:text-indigo-400">Quickstart</h3><p class="text-sm text-slate-400">Install EAGLES in under 5 minutes</p></a>
+                <a href="architecture.html" class="card group block"><h3 class="font-semibold text-white group-hover:text-indigo-400">Architecture</h3><p class="text-sm text-slate-400">How agents, skills, hooks, and DSL interact</p></a>
+                <a href="configuration.html" class="card group block"><h3 class="font-semibold text-white group-hover:text-indigo-400">Configuration</h3><p class="text-sm text-slate-400">Full reference of settings.json and .mcp.json</p></a>
+                <a href="glossary.html" class="card group block"><h3 class="font-semibold text-white group-hover:text-indigo-400">Glossary</h3><p class="text-sm text-slate-400">Look up EAGLES terms and concepts</p></a>
+            </div>
+        </section>
+    </main>
+    <footer class="border-t border-slate-700/50 mt-12"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-slate-500"><p>EAGLES Pro v2.1.0 &middot; Generated by <span class="text-indigo-400">@doc-official-writer</span></p><p class="mt-1">Last updated: 2026-02-19</p></div></footer>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

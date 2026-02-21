@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Documentation - EAGLES Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script>if(localStorage.getItem('eagles-theme')!=='light'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}</script>
+</head>
+<body class="bg-[#0f172a] dark:bg-[#0f172a] text-slate-100 font-sans min-h-screen transition-colors duration-300">
+    <div id="toast" class="toast"></div>
+    <header class="glass sticky top-0 z-50 border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">E</div>
+                <div><h1 class="text-lg font-bold gradient-text">EAGLES Pro</h1><p class="text-xs text-slate-400">Project Documentation</p></div>
+            </div>
+            <nav class="hidden md:flex items-center gap-1">
+                <a href="../index.html" class="nav-link">Hub</a>
+                <a href="index.html" class="nav-link active">Project</a>
+                <a href="../code/index.html" class="nav-link">Code</a>
+                <a href="architecture.html" class="nav-link">Architecture</a>
+                <a href="quickstart.html" class="nav-link">Quickstart</a>
+            </nav>
+            <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-slate-700/50 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg></button>
+        </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="breadcrumb mb-8"><a href="../index.html">Hub</a><span class="sep">/</span><span class="text-slate-300">Project Documentation</span></div>
+        <section class="mb-12 animate-fade-in">
+            <h1 class="text-3xl font-extrabold mb-4"><span class="gradient-text">Project Documentation</span></h1>
+            <p class="text-lg text-slate-400 max-w-3xl">Official documentation for understanding, configuring, and using the EAGLES framework.</p>
+        </section>
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-indigo-500/20 text-indigo-400">&#x1F5FA;</div><h2 class="text-2xl font-bold">Document Map</h2></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <a href="overview.html" class="card group block"><div class="flex items-center gap-2 mb-2"><span class="badge badge-indigo">01</span><h3 class="font-semibold text-white group-hover:text-indigo-400">Overview</h3></div><p class="text-sm text-slate-400">What EAGLES is, who it's for, key features</p></a>
+                <a href="quickstart.html" class="card group block"><div class="flex items-center gap-2 mb-2"><span class="badge badge-green">02</span><h3 class="font-semibold text-white group-hover:text-indigo-400">Quickstart</h3></div><p class="text-sm text-slate-400">5-minute setup guide</p></a>
+                <a href="architecture.html" class="card group block"><div class="flex items-center gap-2 mb-2"><span class="badge badge-purple">03</span><h3 class="font-semibold text-white group-hover:text-indigo-400">Architecture</h3></div><p class="text-sm text-slate-400">System architecture (Arc42)</p></a>
+                <a href="howto-guides.html" class="card group block"><div class="flex items-center gap-2 mb-2"><span class="badge badge-amber">04</span><h3 class="font-semibold text-white group-hover:text-indigo-400">How-to Guides</h3></div><p class="text-sm text-slate-400">Task-oriented recipes</p></a>
+                <a href="configuration.html" class="card group block"><div class="flex items-center gap-2 mb-2"><span class="badge badge-cyan">05</span><h3 class="font-semibold text-white group-hover:text-indigo-400">Configuration</h3></div><p class="text-sm text-slate-400">settings.json, .mcp.json, rules</p></a>
+                <a href="glossary.html" class="card group block"><div class="flex items-center gap-2 mb-2"><span class="badge badge-blue">06</span><h3 class="font-semibold text-white group-hover:text-indigo-400">Glossary</h3></div><p class="text-sm text-slate-400">EAGLES terms and definitions</p></a>
+            </div>
+        </section>
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-purple-500/20 text-purple-400">&#x1F4D0;</div><h2 class="text-2xl font-bold">Documentation Approach</h2></div>
+            <p class="text-slate-400 mb-4">This documentation follows the <a href="https://diataxis.fr/" class="text-indigo-400 hover:text-indigo-300 underline" target="_blank">Diataxis</a> framework:</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="card border-l-4 border-l-green-500"><h3 class="font-semibold text-green-400">Tutorials</h3><p class="text-sm text-slate-400 mt-1">Learning-oriented, step-by-step walkthroughs</p></div>
+                <div class="card border-l-4 border-l-amber-500"><h3 class="font-semibold text-amber-400">How-to Guides</h3><p class="text-sm text-slate-400 mt-1">Goal-oriented, practical recipes</p></div>
+                <div class="card border-l-4 border-l-cyan-500"><h3 class="font-semibold text-cyan-400">Reference</h3><p class="text-sm text-slate-400 mt-1">Information-oriented, complete details</p></div>
+                <div class="card border-l-4 border-l-purple-500"><h3 class="font-semibold text-purple-400">Explanation</h3><p class="text-sm text-slate-400 mt-1">Understanding-oriented, architecture decisions</p></div>
+            </div>
+        </section>
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-green-500/20 text-green-400">&#x1F985;</div><h2 class="text-2xl font-bold">What is EAGLES?</h2></div>
+            <p class="text-slate-300 mb-4">EAGLES (Enhanced AI-Guided Lean Engineering System) is a universal Claude Code framework that provides:</p>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                <div class="stat-card"><div class="stat-value text-indigo-400">24</div><div class="stat-label">Agents</div></div>
+                <div class="stat-card"><div class="stat-value text-green-400">71</div><div class="stat-label">Skills</div></div>
+                <div class="stat-card"><div class="stat-value text-purple-400">9</div><div class="stat-label">MCP Servers</div></div>
+                <div class="stat-card"><div class="stat-value text-amber-400">9</div><div class="stat-label">Hooks</div></div>
+                <div class="stat-card"><div class="stat-value text-cyan-400">10</div><div class="stat-label">Rules</div></div>
+                <div class="stat-card"><div class="stat-value text-pink-400">1</div><div class="stat-label">DSL Engine</div></div>
+            </div>
+            <p class="text-slate-400 mt-4">It is stack-agnostic and works with .NET, Node.js, Python, Go, Java, or any other technology.</p>
+        </section>
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-cyan-500/20 text-cyan-400">&#x26A1;</div><h2 class="text-2xl font-bold">Quick Start Preview</h2></div>
+            <div class="code-block"><span class="lang-badge">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code># 1. Clone the EAGLES config
+git clone https://github.com/ERP-CORE-DEV/eagles-claude-config
+cd eagles-claude-config
+
+# 2. Run the setup script
+.\setup_claude.ps1
+
+# 3. Start using skills in any project
+claude&gt; /gitleaks              # Scan for secrets
+claude&gt; /tdd MyService         # Start TDD workflow
+claude&gt; /scaffold-microservice OrderService</code></pre>
+            </div>
+            <p class="text-slate-400 mt-3">For the full guide, see <a href="quickstart.html" class="text-indigo-400 hover:text-indigo-300 underline">Quickstart</a>.</p>
+        </section>
+    </main>
+    <footer class="border-t border-slate-700/50 mt-12"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-slate-500"><p>EAGLES Pro v2.1.0 &middot; Generated by <span class="text-indigo-400">@doc-hub-architect</span></p><p class="mt-1">Last updated: 2026-02-19</p></div></footer>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

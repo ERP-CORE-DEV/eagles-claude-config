@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quickstart - EAGLES Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <script>if(localStorage.getItem('eagles-theme')!=='light'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}</script>
+</head>
+<body class="bg-[#0f172a] dark:bg-[#0f172a] text-slate-100 font-sans min-h-screen transition-colors duration-300">
+    <div id="toast" class="toast"></div>
+    <header class="glass sticky top-0 z-50 border-b border-slate-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg">E</div>
+                <div><h1 class="text-lg font-bold gradient-text">EAGLES Pro</h1><p class="text-xs text-slate-400">Quickstart</p></div>
+            </div>
+            <nav class="hidden md:flex items-center gap-1">
+                <a href="../index.html" class="nav-link">Hub</a>
+                <a href="index.html" class="nav-link">Project</a>
+                <a href="../code/index.html" class="nav-link">Code</a>
+                <a href="architecture.html" class="nav-link">Architecture</a>
+                <a href="quickstart.html" class="nav-link active">Quickstart</a>
+            </nav>
+            <button onclick="toggleTheme()" class="p-2 rounded-lg hover:bg-slate-700/50 transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg></button>
+        </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="breadcrumb mb-8"><a href="../index.html">Hub</a><span class="sep">/</span><a href="index.html">Project</a><span class="sep">/</span><span class="text-slate-300">Quickstart</span></div>
+
+        <section class="mb-12 animate-fade-in">
+            <h1 class="text-3xl font-extrabold mb-4"><span class="gradient-text">Quickstart</span></h1>
+            <p class="text-lg text-slate-400 max-w-3xl">Get EAGLES running in under 5 minutes. By the end, you will have persistent agents, skills, and hooks available in every Claude Code session.</p>
+        </section>
+
+        <!-- Prerequisites -->
+        <section class="mb-10">
+            <div class="section-header"><div class="section-icon bg-amber-500/20 text-amber-400">&#x2705;</div><h2 class="text-2xl font-bold">Prerequisites</h2></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="card text-center"><div class="text-2xl mb-2">&#x1F4BB;</div><p class="font-semibold text-white">Claude Code CLI</p><p class="text-xs text-slate-400 mt-1"><span class="inline-code">claude --version</span></p></div>
+                <div class="card text-center"><div class="text-2xl mb-2">&#x1F500;</div><p class="font-semibold text-white">Git</p><p class="text-xs text-slate-400 mt-1"><span class="inline-code">git --version</span></p></div>
+                <div class="card text-center"><div class="text-2xl mb-2">&#x1F40D;</div><p class="font-semibold text-white">Python 3</p><p class="text-xs text-slate-400 mt-1"><span class="inline-code">python3 --version</span></p></div>
+                <div class="card text-center"><div class="text-2xl mb-2">&#x1F7E2;</div><p class="font-semibold text-white">Node.js 18+</p><p class="text-xs text-slate-400 mt-1"><span class="inline-code">node --version</span></p></div>
+            </div>
+        </section>
+
+        <!-- Step 1 -->
+        <section class="mb-8">
+            <h2 class="text-xl font-bold text-white flex items-center gap-3 mb-4"><span class="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-sm font-bold">1</span>Clone the framework</h2>
+            <div class="code-block"><span class="lang-badge">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code>git clone https://github.com/ERP-CORE-DEV/eagles-claude-config.git
+cd eagles-claude-config</code></pre>
+            </div>
+        </section>
+
+        <!-- Step 2 -->
+        <section class="mb-8">
+            <h2 class="text-xl font-bold text-white flex items-center gap-3 mb-4"><span class="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-sm font-bold">2</span>Run the setup script</h2>
+            <div class="code-block"><span class="lang-badge">POWERSHELL</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code>.\setup_claude.ps1</code></pre>
+            </div>
+            <p class="text-slate-400 mt-3">This copies the following to your <span class="inline-code">~/.claude/</span> directory:</p>
+            <div class="overflow-x-auto mt-3">
+                <table class="data-table">
+                    <thead><tr><th>What</th><th>Where</th><th>Count</th></tr></thead>
+                    <tbody>
+                        <tr><td>Agents</td><td><code>~/.claude/agents/</code></td><td><span class="badge badge-indigo">24</span></td></tr>
+                        <tr><td>Skills</td><td><code>~/.claude/skills/</code></td><td><span class="badge badge-green">72</span></td></tr>
+                        <tr><td>Rules</td><td><code>~/.claude/rules/</code></td><td><span class="badge badge-purple">10</span></td></tr>
+                        <tr><td>Hooks</td><td><code>~/.claude/hooks/</code> + <code>settings.json</code></td><td><span class="badge badge-amber">7+1</span></td></tr>
+                        <tr><td>MCP config</td><td><code>~/.claude/.mcp.json</code></td><td><span class="badge badge-cyan">10</span></td></tr>
+                        <tr><td>Settings</td><td><code>~/.claude/settings.json</code></td><td><span class="badge badge-blue">1</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Step 3 -->
+        <section class="mb-8">
+            <h2 class="text-xl font-bold text-white flex items-center gap-3 mb-4"><span class="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-sm font-bold">3</span>Verify the installation</h2>
+            <div class="code-block"><span class="lang-badge">BASH</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code>claude</code></pre>
+            </div>
+            <p class="text-slate-400 mt-3">You should see the SessionStart hook fire. Run a quick skill:</p>
+            <div class="code-block mt-3"><span class="lang-badge">CLAUDE</span><button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre><code>/repo-map</code></pre>
+            </div>
+            <p class="text-slate-400 mt-3">If you see file listings with importance rankings, EAGLES is working.</p>
+        </section>
+
+        <!-- Step 4 -->
+        <section class="mb-8">
+            <h2 class="text-xl font-bold text-white flex items-center gap-3 mb-4"><span class="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-sm font-bold">4</span>Try core skills</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="card">
+                    <h3 class="font-semibold text-green-400 mb-2">TDD workflow</h3>
+                    <div class="code-block"><span class="lang-badge">CLAUDE</span><pre><code>/tdd implement a CalculateDiscount method that applies 10% for orders over 100 euros</code></pre></div>
+                    <p class="text-xs text-slate-400 mt-2">Activates the <span class="inline-code">tdd-guide</span> agent: RED -> GREEN -> REFACTOR</p>
+                </div>
+                <div class="card">
+                    <h3 class="font-semibold text-purple-400 mb-2">Code review</h3>
+                    <div class="code-block"><span class="lang-badge">CLAUDE</span><pre><code>/code-review src/backend/Services/MatchingService.cs</code></pre></div>
+                    <p class="text-xs text-slate-400 mt-2">Scans for quality, security, and maintainability issues</p>
+                </div>
+                <div class="card">
+                    <h3 class="font-semibold text-red-400 mb-2">Secret scanning</h3>
+                    <div class="code-block"><span class="lang-badge">CLAUDE</span><pre><code>/gitleaks</code></pre></div>
+                    <p class="text-xs text-slate-400 mt-2">Runs gitleaks patterns against your repository</p>
+                </div>
+                <div class="card">
+                    <h3 class="font-semibold text-cyan-400 mb-2">Generate docs</h3>
+                    <div class="code-block"><span class="lang-badge">CLAUDE</span><pre><code>/update-docs official --preview</code></pre></div>
+                    <p class="text-xs text-slate-400 mt-2">Dispatches the 5-agent tech writer team</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 5 -->
+        <section class="mb-12">
+            <h2 class="text-xl font-bold text-white flex items-center gap-3 mb-4"><span class="w-8 h-8 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-sm font-bold">5</span>Understand what happens automatically</h2>
+            <p class="text-slate-400 mb-4">Once installed, these hooks fire without any action from you:</p>
+            <div class="overflow-x-auto">
+                <table class="data-table">
+                    <thead><tr><th>When</th><th>What happens</th><th>Why</th></tr></thead>
+                    <tbody>
+                        <tr><td>You write a <code>.md</code> file</td><td><strong class="text-white">doc-blocker</strong> checks if the path is allowed</td><td>Prevents documentation sprawl</td></tr>
+                        <tr><td>You run <code>git commit</code></td><td><strong class="text-white">gitleaks</strong> blocks without prior scan</td><td>Secrets never reach the repository</td></tr>
+                        <tr><td>You run <code>dotnet test</code> without coverage</td><td><strong class="text-white">coverage-gate</strong> prints a reminder</td><td>Maintains test coverage visibility</td></tr>
+                        <tr><td>You edit a <code>.ts</code> file</td><td><strong class="text-white">TSC check</strong> suggests compilation</td><td>Catches type errors early</td></tr>
+                        <tr><td>Every 25 tool calls</td><td><strong class="text-white">context-rot counter</strong> suggests <span class="inline-code">/compact</span></td><td>Keeps the context window healthy</td></tr>
+                        <tr><td>You install a dependency</td><td><strong class="text-white">dependency-audit</strong> reminds <span class="inline-code">/security-scan</span></td><td>Catches vulnerable packages</td></tr>
+                        <tr><td>Session ends</td><td><strong class="text-white">Stop hook</strong> confirms persistence</td><td>Session continuity</td></tr>
+                        <tr><td>Session starts</td><td><strong class="text-white">SessionStart hook</strong> loads summary</td><td>Context recovery</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Next Steps -->
+        <section class="mb-12">
+            <div class="section-header"><div class="section-icon bg-green-500/20 text-green-400">&#x27A1;</div><h2 class="text-2xl font-bold">Next steps</h2></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <a href="architecture.html" class="card group block"><h3 class="font-semibold text-white group-hover:text-indigo-400">Architecture</h3><p class="text-sm text-slate-400">Understand how agents, skills, hooks, and DSL interact</p></a>
+                <a href="howto-guides.html" class="card group block"><h3 class="font-semibold text-white group-hover:text-indigo-400">How-to Guides</h3><p class="text-sm text-slate-400">Recipes for creating new skills, agents, and hooks</p></a>
+                <a href="configuration.html" class="card group block"><h3 class="font-semibold text-white group-hover:text-indigo-400">Configuration</h3><p class="text-sm text-slate-400">Full reference of settings.json and .mcp.json</p></a>
+                <a href="glossary.html" class="card group block"><h3 class="font-semibold text-white group-hover:text-indigo-400">Glossary</h3><p class="text-sm text-slate-400">Look up EAGLES terms and concepts</p></a>
+            </div>
+        </section>
+    </main>
+    <footer class="border-t border-slate-700/50 mt-12"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-slate-500"><p>EAGLES Pro v2.1.0 &middot; Generated by <span class="text-indigo-400">@doc-official-writer</span></p><p class="mt-1">Last updated: 2026-02-19</p></div></footer>
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 Bonjour l'equipe,
 
-Voici les etapes pour configurer **Claude Code** avec le framework EAGLES (15 agents, 35 skills, 10 rules, 5 hooks, 6 MCP servers).
+Voici les etapes pour configurer **Claude Code** avec le framework **EAGLES Pro v2.1.0** (25 agents, 103 skills, 10 rules, 9 hooks, 10 MCP servers).
 
 ## Pre-requis
 
@@ -42,7 +42,7 @@ Le script va:
 1. Verifier vos pre-requis (Node.js, Git, npx)
 2. Vous demander votre nom (MOHAMMED-REDA, HOUSSINE, HOUDAIFA, LAHCEN)
 3. Sauvegarder votre config existante (si presente)
-4. Installer 15 agents, 35 skills, 10 rules dans `~/.claude/`
+4. Installer 25 agents, 103 skills, 10 rules dans `~/.claude/`
 5. Configurer settings.json, .mcp.json, hooks
 6. Verifier les serveurs MCP
 
@@ -85,10 +85,14 @@ code .
 
 ## Etape 6 — Verifier
 
-Dans VS Code avec Claude Code, verifiez que les **6 serveurs MCP** se connectent:
+Dans VS Code avec Claude Code, verifiez que les **10 serveurs MCP** se connectent:
 - chrome-devtools
 - github
 - filesystem
+- gitmcp (documentation GitHub repos)
+- context7 (documentation librairies)
+- memory (memoire persistante)
+- sequential-thinking (raisonnement structure)
 - prompt-library
 - team-sync
 - qco (Quality Code Orchestrator)
