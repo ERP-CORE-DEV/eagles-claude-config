@@ -1,0 +1,48 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "C:\\RH-OptimERP"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "YOUR_GITHUB_PAT_HERE"
+      }
+    },
+    "team-sync": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["C:/RH-OptimERP/MCPs/team-sync/scripts/launcher.js"],
+      "env": {}
+    },
+    "context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    },
+    "gitmcp": {
+      "type": "http",
+      "url": "https://gitmcp.io/docs"
+    },
+    "qco": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["C:/RH-OptimERP/MCPs/quality-code-orchestrator/dist/index.js"],
+      "env": {}
+    },
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["chrome-devtools-mcp@latest"],
+      "env": {}
+    },
+    "prompt-library": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["C:/RH-OptimERP/MCPs/prompt-library-orchestrator/dist/index.js"],
+      "env": {}
+    }
+  }
+}
