@@ -48,10 +48,10 @@ export class EventBus {
   ): BusEvent<T>[] {
     const query = afterId
       ? this.db.prepare(
-          "SELECT * FROM events WHERE topic = ? AND published_at > (SELECT published_at FROM events WHERE id = ?) ORDER BY published_at ASC LIMIT ?",
+          "SELECT * FROM events WHERE topic = ? AND rowid > (SELECT rowid FROM events WHERE id = ?) ORDER BY rowid ASC LIMIT ?",
         )
       : this.db.prepare(
-          "SELECT * FROM events WHERE topic = ? ORDER BY published_at ASC LIMIT ?",
+          "SELECT * FROM events WHERE topic = ? ORDER BY rowid ASC LIMIT ?",
         );
 
     const rows = afterId
