@@ -72,6 +72,104 @@ export class TokenLedger {
     return row.total;
   }
 
+  getSessionCost(sessionId: string): {
+    totalCost: number;
+    records: number;
+    byModel: Record<string, { tokens: number; cost: number }>;
+  } {
+    const totalsRow = this.db.prepare(
+      "SELECT COALESCE(SUM(estimated_cost_usd), 0) as totalCost, COUNT(*) as records FROM token_records WHERE session_id = ?",
+    ).get(sessionId) as { totalCost: number; records: number };
+
+    const modelRows = this.db.prepare(
+      "SELECT model_name, SUM(total_tokens) as tokens, SUM(estimated_cost_usd) as cost FROM token_records WHERE session_id = ? GROUP BY model_name",
+    ).all(sessionId) as Array<{ model_name: string; tokens: number; cost: number }>;
+
+    const byModel: Record<string, { tokens: number; cost: number }> = {};
+    for (const row of modelRows) {
+      byModel[row.model_name] = { tokens: row.tokens, cost: row.cost };
+    }
+
+    return { totalCost: totalsRow.totalCost, records: totalsRow.records, byModel };
+  }
+
+  getAgentCosts(sessionId: string): Array<{
+    agentName: string;
+    totalCost: number;
+    totalTokens: number;
+  }> {
+    const rows = this.db.prepare(
+      `SELECT agent_name, SUM(estimated_cost_usd) as totalCost, SUM(total_tokens) as totalTokens
+       FROM token_records
+       WHERE session_id = ? AND agent_name IS NOT NULL
+       GROUP BY agent_name
+       ORDER BY totalCost DESC`,
+    ).all(sessionId) as Array<{ agent_name: string; totalCost: number; totalTokens: number }>;
+
+    return rows.map((row) => ({
+      agentName: row.agent_name,
+      totalCost: row.totalCost,
+      totalTokens: row.totalTokens,
+    }));
+  }
+
+  getWaveCosts(sessionId: string): Array<{
+    waveNumber: number;
+    totalCost: number;
+    totalTokens: number;
+  }> {
+    const rows = this.db.prepare(
+      `SELECT wave_number, SUM(estimated_cost_usd) as totalCost, SUM(total_tokens) as totalTokens
+       FROM token_records
+       WHERE session_id = ? AND wave_number IS NOT NULL
+       GROUP BY wave_number
+       ORDER BY wave_number ASC`,
+    ).all(sessionId) as Array<{ wave_number: number; totalCost: number; totalTokens: number }>;
+
+    return rows.map((row) => ({
+      waveNumber: row.wave_number,
+      totalCost: row.totalCost,
+      totalTokens: row.totalTokens,
+    }));
+  }
+
+  getCostReport(windowDays: number): {
+    totalCost: number;
+    byModel: Record<string, number>;
+    byDay: Array<{ date: string; cost: number }>;
+    recordCount: number;
+  } {
+    const since = new Date(Date.now() - windowDays * 86400000).toISOString();
+
+    const totalsRow = this.db.prepare(
+      "SELECT COALESCE(SUM(estimated_cost_usd), 0) as totalCost, COUNT(*) as recordCount FROM token_records WHERE recorded_at >= ?",
+    ).get(since) as { totalCost: number; recordCount: number };
+
+    const modelRows = this.db.prepare(
+      "SELECT model_name, SUM(estimated_cost_usd) as cost FROM token_records WHERE recorded_at >= ? GROUP BY model_name",
+    ).all(since) as Array<{ model_name: string; cost: number }>;
+
+    const byModel: Record<string, number> = {};
+    for (const row of modelRows) {
+      byModel[row.model_name] = row.cost;
+    }
+
+    const dayRows = this.db.prepare(
+      `SELECT substr(recorded_at, 1, 10) as date, SUM(estimated_cost_usd) as cost
+       FROM token_records
+       WHERE recorded_at >= ?
+       GROUP BY substr(recorded_at, 1, 10)
+       ORDER BY date ASC`,
+    ).all(since) as Array<{ date: string; cost: number }>;
+
+    return {
+      totalCost: totalsRow.totalCost,
+      byModel,
+      byDay: dayRows,
+      recordCount: totalsRow.recordCount,
+    };
+  }
+
   private calculateCost(
     model: string,
     inputTokens: number,

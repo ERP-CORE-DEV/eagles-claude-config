@@ -32,6 +32,11 @@ describe("token-tracker-mcp server", () => {
     expect(toolNames).toContain("record_token_usage");
     expect(toolNames).toContain("get_budget_status");
     expect(toolNames).toContain("route_by_budget");
+    expect(toolNames).toContain("get_session_cost");
+    expect(toolNames).toContain("get_agent_costs");
+    expect(toolNames).toContain("get_wave_costs");
+    expect(toolNames).toContain("get_cost_report");
+    expect(toolNames).toContain("get_model_pricing");
   });
 
   it("should record token usage and return computed cost", async () => {
@@ -78,5 +83,195 @@ describe("token-tracker-mcp server", () => {
 
     expect(data.recommended).toBeDefined();
     expect(data.currentSpendUsd).toBe(0);
+  });
+
+  it("get_session_cost: should return zero cost for a session with no records", async () => {
+    const result = await client.callTool({
+      name: "get_session_cost",
+      arguments: { sessionId: "nonexistent" },
+    });
+
+    const content = result.content as Array<{ type: string; text: string }>;
+    const data = JSON.parse(content[0].text);
+
+    expect(data.totalCost).toBe(0);
+    expect(data.records).toBe(0);
+    expect(data.byModel).toEqual({});
+  });
+
+  it("get_session_cost: should return correct breakdown after recording tokens", async () => {
+    await client.callTool({
+      name: "record_token_usage",
+      arguments: {
+        sessionId: "session-cost-test",
+        modelName: "claude-sonnet-4-6",
+        promptTokens: 1_000_000,
+        completionTokens: 1_000_000,
+      },
+    });
+
+    const result = await client.callTool({
+      name: "get_session_cost",
+      arguments: { sessionId: "session-cost-test" },
+    });
+
+    const content = result.content as Array<{ type: string; text: string }>;
+    const data = JSON.parse(content[0].text);
+
+    expect(data.records).toBe(1);
+    expect(data.totalCost).toBeGreaterThan(0);
+    expect(data.byModel).toHaveProperty("claude-sonnet-4-6");
+  });
+
+  it("get_agent_costs: should return empty array for session without agent records", async () => {
+    const result = await client.callTool({
+      name: "get_agent_costs",
+      arguments: { sessionId: "no-agents-session" },
+    });
+
+    const content = result.content as Array<{ type: string; text: string }>;
+    const data = JSON.parse(content[0].text);
+
+    expect(Array.isArray(data)).toBe(true);
+    expect(data.length).toBe(0);
+  });
+
+  it("get_agent_costs: should group costs by agent name", async () => {
+    await client.callTool({
+      name: "record_token_usage",
+      arguments: {
+        sessionId: "agent-cost-session",
+        modelName: "claude-sonnet-4-6",
+        promptTokens: 100_000,
+        completionTokens: 100_000,
+        agentName: "orchestrator",
+      },
+    });
+    await client.callTool({
+      name: "record_token_usage",
+      arguments: {
+        sessionId: "agent-cost-session",
+        modelName: "claude-haiku-4-5",
+        promptTokens: 50_000,
+        completionTokens: 50_000,
+        agentName: "helper",
+      },
+    });
+
+    const result = await client.callTool({
+      name: "get_agent_costs",
+      arguments: { sessionId: "agent-cost-session" },
+    });
+
+    const content = result.content as Array<{ type: string; text: string }>;
+    const data = JSON.parse(content[0].text) as Array<{ agentName: string; totalCost: number; totalTokens: number }>;
+
+    expect(data.length).toBe(2);
+    const agentNames = data.map((d) => d.agentName);
+    expect(agentNames).toContain("orchestrator");
+    expect(agentNames).toContain("helper");
+  });
+
+  it("get_wave_costs: should return empty array for session without wave records", async () => {
+    const result = await client.callTool({
+      name: "get_wave_costs",
+      arguments: { sessionId: "no-waves-session" },
+    });
+
+    const content = result.content as Array<{ type: string; text: string }>;
+    const data = JSON.parse(content[0].text);
+
+    expect(Array.isArray(data)).toBe(true);
+    expect(data.length).toBe(0);
+  });
+
+  it("get_wave_costs: should group costs by wave number ascending", async () => {
+    await client.callTool({
+      name: "record_token_usage",
+      arguments: {
+        sessionId: "wave-cost-session",
+        modelName: "claude-sonnet-4-6",
+        promptTokens: 200_000,
+        completionTokens: 200_000,
+        waveNumber: 2,
+      },
+    });
+    await client.callTool({
+      name: "record_token_usage",
+      arguments: {
+        sessionId: "wave-cost-session",
+        modelName: "claude-haiku-4-5",
+        promptTokens: 100_000,
+        completionTokens: 100_000,
+        waveNumber: 1,
+      },
+    });
+
+    const result = await client.callTool({
+      name: "get_wave_costs",
+      arguments: { sessionId: "wave-cost-session" },
+    });
+
+    const content = result.content as Array<{ type: string; text: string }>;
+    const data = JSON.parse(content[0].text) as Array<{ waveNumber: number; totalCost: number; totalTokens: number }>;
+
+    expect(data.length).toBe(2);
+    expect(data[0].waveNumber).toBe(1);
+    expect(data[1].waveNumber).toBe(2);
+  });
+
+  it("get_cost_report: should return zero totals for empty ledger", async () => {
+    const result = await client.callTool({
+      name: "get_cost_report",
+      arguments: { windowDays: 30 },
+    });
+
+    const content = result.content as Array<{ type: string; text: string }>;
+    const data = JSON.parse(content[0].text);
+
+    expect(data.totalCost).toBe(0);
+    expect(data.recordCount).toBe(0);
+    expect(data.byModel).toEqual({});
+    expect(data.byDay).toEqual([]);
+  });
+
+  it("get_cost_report: should include records after recording token usage", async () => {
+    await client.callTool({
+      name: "record_token_usage",
+      arguments: {
+        sessionId: "report-session",
+        modelName: "claude-sonnet-4-6",
+        promptTokens: 500_000,
+        completionTokens: 500_000,
+      },
+    });
+
+    const result = await client.callTool({
+      name: "get_cost_report",
+      arguments: { windowDays: 30 },
+    });
+
+    const content = result.content as Array<{ type: string; text: string }>;
+    const data = JSON.parse(content[0].text);
+
+    expect(data.recordCount).toBeGreaterThanOrEqual(1);
+    expect(data.totalCost).toBeGreaterThan(0);
+    expect(data.byModel).toHaveProperty("claude-sonnet-4-6");
+    expect(data.byDay.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("get_model_pricing: should return the full pricing table without a DB query", async () => {
+    const result = await client.callTool({
+      name: "get_model_pricing",
+      arguments: {},
+    });
+
+    const content = result.content as Array<{ type: string; text: string }>;
+    const data = JSON.parse(content[0].text);
+
+    expect(data).toHaveProperty("claude-opus-4-6");
+    expect(data).toHaveProperty("claude-sonnet-4-6");
+    expect(data).toHaveProperty("claude-haiku-4-5");
+    expect(data["claude-sonnet-4-6"]).toEqual({ inputPer1M: 3.0, outputPer1M: 15.0 });
   });
 });

@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { TokenLedger, EventBus } from "@eagles-advanced/data-layer";
-import { BUDGET_THRESHOLDS } from "@eagles-advanced/shared-utils";
+import { BUDGET_THRESHOLDS, MODEL_PRICING } from "@eagles-advanced/shared-utils";
 import { resolveDataPath } from "./config.js";
 
 export function createTokenTrackerServer(): McpServer {
@@ -77,6 +77,50 @@ export function createTokenTrackerServer(): McpServer {
           text: JSON.stringify({ recommended: recommendation, currentSpendUsd: currentSpend }),
         }],
       };
+    },
+  );
+
+  server.tool(
+    "get_session_cost",
+    { sessionId: z.string() },
+    async ({ sessionId }) => {
+      const data = ledger.getSessionCost(sessionId);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data) }] };
+    },
+  );
+
+  server.tool(
+    "get_agent_costs",
+    { sessionId: z.string() },
+    async ({ sessionId }) => {
+      const data = ledger.getAgentCosts(sessionId);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data) }] };
+    },
+  );
+
+  server.tool(
+    "get_wave_costs",
+    { sessionId: z.string() },
+    async ({ sessionId }) => {
+      const data = ledger.getWaveCosts(sessionId);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data) }] };
+    },
+  );
+
+  server.tool(
+    "get_cost_report",
+    { windowDays: z.number().int().positive().default(30) },
+    async ({ windowDays }) => {
+      const data = ledger.getCostReport(windowDays);
+      return { content: [{ type: "text" as const, text: JSON.stringify(data) }] };
+    },
+  );
+
+  server.tool(
+    "get_model_pricing",
+    {},
+    async () => {
+      return { content: [{ type: "text" as const, text: JSON.stringify(MODEL_PRICING) }] };
     },
   );
 
