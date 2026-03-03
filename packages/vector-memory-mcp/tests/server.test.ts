@@ -346,4 +346,105 @@ describe("vector-memory-mcp server", () => {
       expect(data.totalMemories).toBe(0);
     });
   });
+
+  describe("memory_store with TTL", () => {
+    it("store_withTtl_returnsExpiresAt", async () => {
+      const result = await client.callTool({
+        name: "memory_store",
+        arguments: {
+          text: "Ephemeral memory with TTL",
+          project: "test",
+          ttlSeconds: 3600,
+        },
+      });
+
+      const data = parseToolResult(result) as {
+        success: boolean;
+        expiresAt: string | null;
+      };
+      expect(data.success).toBe(true);
+      expect(data.expiresAt).toBeTruthy();
+      expect(data.expiresAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    });
+
+    it("store_withoutTtl_expiresAtIsNull", async () => {
+      const result = await client.callTool({
+        name: "memory_store",
+        arguments: {
+          text: "Permanent memory",
+          project: "test",
+        },
+      });
+
+      const data = parseToolResult(result) as {
+        success: boolean;
+        expiresAt: string | null;
+      };
+      expect(data.success).toBe(true);
+      expect(data.expiresAt).toBeNull();
+    });
+  });
+
+  describe("memory_search modes", () => {
+    it("search_semanticMode_returnsResults", async () => {
+      await client.callTool({
+        name: "memory_store",
+        arguments: { text: "pnpm monorepo setup guide", project: "test" },
+      });
+
+      const result = await client.callTool({
+        name: "memory_search",
+        arguments: { query: "monorepo", mode: "semantic", minScore: 0 },
+      });
+
+      const data = parseToolResult(result) as { mode: string; count: number };
+      expect(data.mode).toBe("semantic");
+    });
+
+    it("search_keywordMode_returnsResults", async () => {
+      await client.callTool({
+        name: "memory_store",
+        arguments: { text: "Always validate user inputs at boundaries", project: "test" },
+      });
+
+      const result = await client.callTool({
+        name: "memory_search",
+        arguments: { query: "validate", mode: "keyword" },
+      });
+
+      const data = parseToolResult(result) as { mode: string; results: unknown[] };
+      expect(data.mode).toBe("keyword");
+    });
+
+    it("search_hybridMode_deduplicatesResults", async () => {
+      await client.callTool({
+        name: "memory_store",
+        arguments: { text: "SQLite WAL mode is best for concurrent reads", project: "test" },
+      });
+
+      const result = await client.callTool({
+        name: "memory_search",
+        arguments: { query: "SQLite WAL", mode: "hybrid", minScore: 0 },
+      });
+
+      const data = parseToolResult(result) as {
+        mode: string;
+        results: Array<{ entry: { id: string } }>;
+      };
+      expect(data.mode).toBe("hybrid");
+      // Check no duplicate IDs
+      const ids = data.results.map((r) => r.entry.id);
+      expect(new Set(ids).size).toBe(ids.length);
+    });
+
+    it("search_defaultMode_isSemantic", async () => {
+      const result = await client.callTool({
+        name: "memory_search",
+        arguments: { query: "anything" },
+      });
+
+      const data = parseToolResult(result) as { mode: string };
+      expect(data.mode).toBe("semantic");
+    });
+  });
 });

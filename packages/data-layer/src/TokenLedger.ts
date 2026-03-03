@@ -170,6 +170,69 @@ export class TokenLedger {
     };
   }
 
+  generateAdvisory(windowDays: number): string[] {
+    const advisories: string[] = [];
+    const since = new Date(Date.now() - windowDays * 86400000).toISOString();
+
+    const totals = this.db.prepare(
+      `SELECT COALESCE(SUM(prompt_tokens), 0) as totalInput,
+              COALESCE(SUM(completion_tokens), 0) as totalOutput,
+              COALESCE(SUM(estimated_cost_usd), 0) as totalCost,
+              COUNT(*) as recordCount
+       FROM token_records WHERE recorded_at >= ?`,
+    ).get(since) as { totalInput: number; totalOutput: number; totalCost: number; recordCount: number };
+
+    const totalTokens = totals.totalInput + totals.totalOutput;
+
+    if (totalTokens > 0 && totals.totalOutput / totalTokens > 0.6) {
+      const pct = Math.round((totals.totalOutput / totalTokens) * 100);
+      advisories.push(
+        `High output ratio (${pct}%). Consider more concise system prompts to reduce output tokens.`,
+      );
+    }
+
+    const topModel = this.db.prepare(
+      `SELECT model_name, SUM(estimated_cost_usd) as cost
+       FROM token_records WHERE recorded_at >= ?
+       GROUP BY model_name ORDER BY cost DESC LIMIT 1`,
+    ).get(since) as { model_name: string; cost: number } | undefined;
+
+    if (topModel && totals.totalCost > 0 && topModel.cost / totals.totalCost > 0.5) {
+      const pct = Math.round((topModel.cost / totals.totalCost) * 100);
+      advisories.push(
+        `${topModel.model_name} accounts for ${pct}% of spend ($${topModel.cost.toFixed(4)}). Route non-critical tasks to cheaper models.`,
+      );
+    }
+
+    const topAgent = this.db.prepare(
+      `SELECT agent_name, SUM(total_tokens) as tokens
+       FROM token_records WHERE recorded_at >= ? AND agent_name IS NOT NULL
+       GROUP BY agent_name ORDER BY tokens DESC LIMIT 1`,
+    ).get(since) as { agent_name: string; tokens: number } | undefined;
+
+    if (topAgent && totalTokens > 0 && topAgent.tokens / totalTokens > 0.5) {
+      const pct = Math.round((topAgent.tokens / totalTokens) * 100);
+      advisories.push(
+        `Agent "${topAgent.agent_name}" consumes ${pct}% of tokens. Optimize its prompts or add caching.`,
+      );
+    }
+
+    if (totals.recordCount > 500) {
+      advisories.push(
+        `High request volume (${totals.recordCount} calls in ${windowDays}d). Evaluate cache-read tokens to reduce costs.`,
+      );
+    }
+
+    const warnThreshold = 5.0;
+    if (totals.totalCost > warnThreshold * 0.8) {
+      advisories.push(
+        `Approaching WARN threshold ($${totals.totalCost.toFixed(2)}/$${warnThreshold.toFixed(2)}). Review model routing.`,
+      );
+    }
+
+    return advisories;
+  }
+
   private calculateCost(
     model: string,
     inputTokens: number,

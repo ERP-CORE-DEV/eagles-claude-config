@@ -23,6 +23,7 @@ export interface VectorEntry {
   readonly createdAt: string;
   readonly accessedAt: string;
   readonly accessCount: number;
+  readonly expiresAt: string | null;
 }
 
 export interface VectorSearchResult {

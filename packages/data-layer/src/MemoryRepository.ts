@@ -6,7 +6,9 @@ import Database from "better-sqlite3";
 import { randomUUID } from "node:crypto";
 import type { VectorEntry, MemoryTag } from "@eagles-advanced/shared-utils";
 
-type InsertParams = Omit<VectorEntry, "id" | "createdAt" | "accessedAt" | "accessCount">;
+type InsertParams = Omit<VectorEntry, "id" | "createdAt" | "accessedAt" | "accessCount" | "expiresAt"> & {
+  readonly ttlSeconds?: number;
+};
 
 interface ListOptions {
   readonly project?: string;
@@ -31,6 +33,7 @@ interface RawMemoryRow {
   readonly created_at: string;
   readonly accessed_at: string;
   readonly access_count: number;
+  readonly expires_at: string | null;
 }
 
 interface CountRow {
@@ -58,7 +61,8 @@ export class MemoryRepository {
         source TEXT NOT NULL,
         created_at TEXT NOT NULL,
         accessed_at TEXT NOT NULL,
-        access_count INTEGER NOT NULL DEFAULT 0
+        access_count INTEGER NOT NULL DEFAULT 0,
+        expires_at TEXT
       );
       CREATE INDEX IF NOT EXISTS idx_memories_project ON memories(project);
       CREATE INDEX IF NOT EXISTS idx_memories_created ON memories(created_at);
@@ -69,11 +73,14 @@ export class MemoryRepository {
     const id = randomUUID();
     const now = new Date().toISOString();
     const tagsJson = JSON.stringify(params.tags);
+    const expiresAt = params.ttlSeconds !== undefined
+      ? new Date(Date.now() + params.ttlSeconds * 1000).toISOString()
+      : null;
 
     this.db.prepare(`
-      INSERT INTO memories (id, text, project, tags, confidence, source, created_at, accessed_at, access_count)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)
-    `).run(id, params.text, params.project, tagsJson, params.confidence, params.source, now, now);
+      INSERT INTO memories (id, text, project, tags, confidence, source, created_at, accessed_at, access_count, expires_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)
+    `).run(id, params.text, params.project, tagsJson, params.confidence, params.source, now, now, expiresAt);
 
     return {
       id,
@@ -85,6 +92,7 @@ export class MemoryRepository {
       createdAt: now,
       accessedAt: now,
       accessCount: 0,
+      expiresAt,
     };
   }
 
@@ -107,18 +115,15 @@ export class MemoryRepository {
   }
 
   list(options: ListOptions): VectorEntry[] {
-    const conditions: string[] = [];
-    const bindings: unknown[] = [];
+    const conditions: string[] = ["(expires_at IS NULL OR expires_at > ?)"];
+    const bindings: unknown[] = [new Date().toISOString()];
 
     if (options.project !== undefined) {
       conditions.push("project = ?");
       bindings.push(options.project);
     }
 
-    const whereClause = conditions.length > 0
-      ? `WHERE ${conditions.join(" AND ")}`
-      : "";
-
+    const whereClause = `WHERE ${conditions.join(" AND ")}`;
     const limit = options.limit ?? 100;
     const offset = options.offset ?? 0;
 
@@ -136,6 +141,37 @@ export class MemoryRepository {
     }
 
     return entries;
+  }
+
+  searchByKeyword(
+    query: string,
+    options?: { project?: string; limit?: number },
+  ): VectorEntry[] {
+    const conditions: string[] = [
+      "text LIKE ?",
+      "(expires_at IS NULL OR expires_at > ?)",
+    ];
+    const bindings: unknown[] = [`%${query}%`, new Date().toISOString()];
+
+    if (options?.project !== undefined) {
+      conditions.push("project = ?");
+      bindings.push(options.project);
+    }
+
+    const limit = options?.limit ?? 50;
+    const rows = this.db.prepare(
+      `SELECT * FROM memories WHERE ${conditions.join(" AND ")} ORDER BY created_at DESC LIMIT ?`,
+    ).all(...bindings, limit) as RawMemoryRow[];
+
+    return rows.map((row) => this.rowToEntry(row));
+  }
+
+  cleanExpired(): number {
+    const now = new Date().toISOString();
+    const result = this.db.prepare(
+      "DELETE FROM memories WHERE expires_at IS NOT NULL AND expires_at <= ?",
+    ).run(now);
+    return result.changes;
   }
 
   updateAccess(id: string): void {
@@ -192,6 +228,7 @@ export class MemoryRepository {
       createdAt: row.created_at,
       accessedAt: row.accessed_at,
       accessCount: row.access_count,
+      expiresAt: row.expires_at,
     };
   }
 }

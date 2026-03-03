@@ -6,7 +6,8 @@ import {
   scoreTokenEfficiency,
   scoreScopeCreep,
 } from "../src/scoring/ScoringAlgorithms.js";
-import { computeCompositeScore } from "../src/scoring/CompositeScorer.js";
+import { computeCompositeScore, computeTrendWithDecay } from "../src/scoring/CompositeScorer.js";
+import type { TimestampedScore } from "../src/scoring/CompositeScorer.js";
 import { parseRequirements } from "../src/parsing/RequirementsParser.js";
 
 // ---------------------------------------------------------------------------
@@ -351,5 +352,112 @@ describe("computeCompositeScore", () => {
       scopeCreep: 0.39,
     });
     expect(result.verdict).toBe("DRIFTING");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// computeTrendWithDecay
+// ---------------------------------------------------------------------------
+describe("computeTrendWithDecay", () => {
+  it("returns STABLE with zero confidence for empty scores", () => {
+    const result = computeTrendWithDecay([]);
+    expect(result.trend).toBe("STABLE");
+    expect(result.confidence).toBe(0);
+    expect(result.rawScores).toEqual([]);
+    expect(result.decayWeights).toEqual([]);
+    expect(result.weightedScore).toBe(0);
+  });
+
+  it("returns the single score for one data point", () => {
+    const now = new Date().toISOString();
+    const result = computeTrendWithDecay([{ score: 0.8, computedAt: now }]);
+    expect(result.weightedScore).toBeCloseTo(0.8, 1);
+    expect(result.trend).toBe("STABLE");
+    expect(result.confidence).toBeLessThan(0.5);
+    expect(result.rawScores).toEqual([0.8]);
+  });
+
+  it("detects IMPROVING trend with ascending scores", () => {
+    const now = Date.now();
+    const scores: TimestampedScore[] = [
+      { score: 0.3, computedAt: new Date(now - 4 * 3600000).toISOString() },
+      { score: 0.5, computedAt: new Date(now - 3 * 3600000).toISOString() },
+      { score: 0.7, computedAt: new Date(now - 2 * 3600000).toISOString() },
+      { score: 0.9, computedAt: new Date(now - 1 * 3600000).toISOString() },
+    ];
+    const result = computeTrendWithDecay(scores);
+    expect(result.trend).toBe("IMPROVING");
+    expect(result.confidence).toBeGreaterThan(0);
+  });
+
+  it("detects DEGRADING trend with descending scores", () => {
+    const now = Date.now();
+    const scores: TimestampedScore[] = [
+      { score: 0.9, computedAt: new Date(now - 4 * 3600000).toISOString() },
+      { score: 0.7, computedAt: new Date(now - 3 * 3600000).toISOString() },
+      { score: 0.5, computedAt: new Date(now - 2 * 3600000).toISOString() },
+      { score: 0.3, computedAt: new Date(now - 1 * 3600000).toISOString() },
+    ];
+    const result = computeTrendWithDecay(scores);
+    expect(result.trend).toBe("DEGRADING");
+  });
+
+  it("detects STABLE trend with flat scores", () => {
+    const now = Date.now();
+    const scores: TimestampedScore[] = [
+      { score: 0.7, computedAt: new Date(now - 3 * 3600000).toISOString() },
+      { score: 0.7, computedAt: new Date(now - 2 * 3600000).toISOString() },
+      { score: 0.7, computedAt: new Date(now - 1 * 3600000).toISOString() },
+    ];
+    const result = computeTrendWithDecay(scores);
+    expect(result.trend).toBe("STABLE");
+  });
+
+  it("weights recent scores higher via exponential decay", () => {
+    const now = Date.now();
+    const scores: TimestampedScore[] = [
+      { score: 0.2, computedAt: new Date(now - 48 * 3600000).toISOString() },
+      { score: 0.9, computedAt: new Date(now - 100).toISOString() },
+    ];
+    const result = computeTrendWithDecay(scores, 24);
+    // Recent score (0.9) should dominate; old (0.2) has weight ~e^(-2) ≈ 0.135
+    expect(result.weightedScore).toBeGreaterThan(0.7);
+  });
+
+  it("returns higher confidence with 3+ waves", () => {
+    const now = Date.now();
+    const twoScores: TimestampedScore[] = [
+      { score: 0.5, computedAt: new Date(now - 2 * 3600000).toISOString() },
+      { score: 0.6, computedAt: new Date(now - 1 * 3600000).toISOString() },
+    ];
+    const fourScores: TimestampedScore[] = [
+      { score: 0.4, computedAt: new Date(now - 4 * 3600000).toISOString() },
+      { score: 0.5, computedAt: new Date(now - 3 * 3600000).toISOString() },
+      { score: 0.6, computedAt: new Date(now - 2 * 3600000).toISOString() },
+      { score: 0.7, computedAt: new Date(now - 1 * 3600000).toISOString() },
+    ];
+    const r2 = computeTrendWithDecay(twoScores);
+    const r4 = computeTrendWithDecay(fourScores);
+    expect(r4.confidence).toBeGreaterThan(r2.confidence);
+  });
+
+  it("clamps weighted score to [0, 1]", () => {
+    const now = new Date().toISOString();
+    const result = computeTrendWithDecay([{ score: 1.5, computedAt: now }]);
+    expect(result.weightedScore).toBeLessThanOrEqual(1);
+    expect(result.weightedScore).toBeGreaterThanOrEqual(0);
+  });
+
+  it("uses custom half-life parameter", () => {
+    const now = Date.now();
+    const scores: TimestampedScore[] = [
+      { score: 0.1, computedAt: new Date(now - 6 * 3600000).toISOString() },
+      { score: 0.9, computedAt: new Date(now - 100).toISOString() },
+    ];
+    // Very short half-life (1 hour) = old score decays much more
+    const shortHalf = computeTrendWithDecay(scores, 1);
+    // Long half-life (1000 hours) = both roughly equal weight
+    const longHalf = computeTrendWithDecay(scores, 1000);
+    expect(shortHalf.weightedScore).toBeGreaterThan(longHalf.weightedScore);
   });
 });

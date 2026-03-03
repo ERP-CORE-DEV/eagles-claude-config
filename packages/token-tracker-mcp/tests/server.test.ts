@@ -37,6 +37,10 @@ describe("token-tracker-mcp server", () => {
     expect(toolNames).toContain("get_wave_costs");
     expect(toolNames).toContain("get_cost_report");
     expect(toolNames).toContain("get_model_pricing");
+    expect(toolNames).toContain("get_cost_advisory");
+    expect(toolNames).toContain("record_tool_metric");
+    expect(toolNames).toContain("get_tool_metrics");
+    expect(toolNames).toHaveLength(11);
   });
 
   it("should record token usage and return computed cost", async () => {

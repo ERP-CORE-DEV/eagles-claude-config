@@ -11,7 +11,7 @@ import {
   scoreTokenEfficiency,
   scoreScopeCreep,
 } from "./scoring/ScoringAlgorithms.js";
-import { computeCompositeScore } from "./scoring/CompositeScorer.js";
+import { computeCompositeScore, computeTrendWithDecay } from "./scoring/CompositeScorer.js";
 import type { OverallHealth, DriftTrend } from "@eagles-advanced/shared-utils";
 
 const DEFAULT_DB_PATH = join(tmpdir(), "eagles-drift.sqlite");
@@ -434,6 +434,41 @@ export function createDriftDetectorServer(dbPath?: string): McpServer {
               computedAt: s.computedAt,
             })),
             totalWavesRecorded: allScores.length,
+          }),
+        }],
+      };
+    },
+  );
+
+  // -------------------------------------------------------------------------
+  // drift_trend
+  // -------------------------------------------------------------------------
+  server.tool(
+    "drift_trend",
+    {
+      sessionId: z.string(),
+      halfLifeHours: z.number().positive().default(24),
+    },
+    async (params) => {
+      const scores = store.getScoresForSession(params.sessionId);
+
+      const timestampedScores = scores.map((s) => ({
+        score: s.driftScore,
+        computedAt: s.computedAt,
+      }));
+
+      const result = computeTrendWithDecay(
+        timestampedScores,
+        params.halfLifeHours,
+      );
+
+      return {
+        content: [{
+          type: "text" as const,
+          text: JSON.stringify({
+            sessionId: params.sessionId,
+            wavesAnalyzed: scores.length,
+            ...result,
           }),
         }],
       };

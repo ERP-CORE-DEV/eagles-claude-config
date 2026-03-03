@@ -1,9 +1,34 @@
 import { describe, it, expect } from "vitest";
 import {
   computePercentiles,
+  nearestRank,
   aggregateMetrics,
   type RunMetrics,
 } from "../src/metrics/MetricsCollector.js";
+
+describe("nearestRank", () => {
+  it("should return 0 for empty array", () => {
+    expect(nearestRank([], 0.5)).toBe(0);
+  });
+
+  it("should return the only value for single-element array", () => {
+    expect(nearestRank([42], 0.5)).toBe(42);
+    expect(nearestRank([42], 0.95)).toBe(42);
+    expect(nearestRank([42], 0.99)).toBe(42);
+  });
+
+  it("should handle two-element array", () => {
+    expect(nearestRank([10, 20], 0.5)).toBe(10);
+    expect(nearestRank([10, 20], 0.95)).toBe(20);
+  });
+
+  it("should use ceil-minus-1 indexing for 10 elements", () => {
+    const sorted = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    expect(nearestRank(sorted, 0.5)).toBe(5);
+    expect(nearestRank(sorted, 0.95)).toBe(10);
+    expect(nearestRank(sorted, 0.99)).toBe(10);
+  });
+});
 
 describe("computePercentiles", () => {
   it("should return zeros for empty array", () => {
@@ -17,8 +42,8 @@ describe("computePercentiles", () => {
     const values = Array.from({ length: 100 }, (_, i) => i + 1);
     const result = computePercentiles(values);
 
-    expect(result.p50).toBe(51);
-    expect(result.p95).toBe(96);
+    expect(result.p50).toBe(50);
+    expect(result.p95).toBe(95);
     expect(result.mean).toBeCloseTo(50.5, 0);
   });
 

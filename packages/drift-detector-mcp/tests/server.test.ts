@@ -47,7 +47,7 @@ describe("drift-detector-mcp server", () => {
     cleanup();
   });
 
-  it("should list all 7 tools", async () => {
+  it("should list all 8 tools", async () => {
     const result = await client.listTools();
     const toolNames = result.tools.map((t) => t.name);
 
@@ -57,8 +57,9 @@ describe("drift-detector-mcp server", () => {
     expect(toolNames).toContain("drift_alert");
     expect(toolNames).toContain("drift_report");
     expect(toolNames).toContain("drift_history");
+    expect(toolNames).toContain("drift_trend");
     expect(toolNames).toContain("drift_reset");
-    expect(toolNames).toHaveLength(7);
+    expect(toolNames).toHaveLength(8);
   });
 
   // -------------------------------------------------------------------------

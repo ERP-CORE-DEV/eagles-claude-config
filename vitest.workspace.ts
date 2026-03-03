@@ -7,4 +7,8 @@ export default defineWorkspace([
   "packages/vector-memory-mcp",
   "packages/drift-detector-mcp",
   "packages/benchmark",
+  "packages/tool-registry",
+  "packages/provider-router-mcp",
+  "packages/verification-mcp",
+  "packages/orchestrator-mcp",
 ]);

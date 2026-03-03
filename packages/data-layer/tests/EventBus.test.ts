@@ -76,4 +76,104 @@ describe("EventBus", () => {
     const events = bus.consume("token.recorded", null);
     expect(events[0].publishedAt).toMatch(/^\d{4}-\d{2}-\d{2}T/);
   });
+
+  describe("waitFor", () => {
+    it("should resolve when event is published before timeout", async () => {
+      bus.publish("drift.detected", { score: 0.42 });
+      const event = await bus.waitFor<{ score: number }>("drift.detected", 1000);
+      expect(event.payload.score).toBe(0.42);
+    });
+
+    it("should throw on timeout when no event", async () => {
+      await expect(
+        bus.waitFor("budget.alert", 100, 20),
+      ).rejects.toThrow("Timeout waiting for event on topic: budget.alert");
+    });
+  });
+
+  describe("consumeFiltered", () => {
+    it("should filter events by predicate", () => {
+      bus.publish("token.recorded", { cost: 0.01 });
+      bus.publish("token.recorded", { cost: 0.50 });
+      bus.publish("token.recorded", { cost: 0.02 });
+      bus.publish("token.recorded", { cost: 1.00 });
+
+      const expensive = bus.consumeFiltered<{ cost: number }>(
+        "token.recorded",
+        null,
+        (p) => p.cost > 0.1,
+      );
+      expect(expensive).toHaveLength(2);
+      expect(expensive[0].payload.cost).toBe(0.50);
+      expect(expensive[1].payload.cost).toBe(1.00);
+    });
+
+    it("should respect limit after filtering", () => {
+      for (let i = 0; i < 10; i++) {
+        bus.publish("token.recorded", { i, even: i % 2 === 0 });
+      }
+      const result = bus.consumeFiltered<{ i: number; even: boolean }>(
+        "token.recorded",
+        null,
+        (p) => p.even,
+        3,
+      );
+      expect(result).toHaveLength(3);
+      expect(result.every((e) => e.payload.even)).toBe(true);
+    });
+  });
+
+  describe("cleanOlderThan", () => {
+    it("should not delete recent events", () => {
+      bus.publish("token.recorded", { recent: true });
+      const deleted = bus.cleanOlderThan(1);
+      expect(deleted).toBe(0);
+
+      const events = bus.consume("token.recorded", null);
+      expect(events).toHaveLength(1);
+    });
+
+    it("should delete all events when cutoff is in the future", () => {
+      bus.publish("token.recorded", { a: 1 });
+      bus.publish("token.recorded", { a: 2 });
+
+      const deleted = bus.cleanOlderThan(-1);
+      expect(deleted).toBe(2);
+
+      const events = bus.consume("token.recorded", null);
+      expect(events).toHaveLength(0);
+    });
+  });
+
+  describe("maxEvents", () => {
+    it("should enforce max events cap when triggered manually", () => {
+      const testDir = mkdtempSync(join(tmpdir(), "eventbus-max-test-"));
+      const cappedBus = new EventBus(join(testDir, "capped-bus.sqlite"), 5);
+
+      for (let i = 0; i < 10; i++) {
+        cappedBus.publish("token.recorded", { i });
+      }
+
+      // Manually trigger enforcement since lazy cleanup fires every 100 publishes
+      cappedBus.enforceMaxEvents();
+
+      const events = cappedBus.consume("token.recorded", null, 100);
+      expect(events).toHaveLength(5);
+      // Should keep the most recent events (highest indices)
+      expect(events[0].payload).toEqual({ i: 5 });
+      expect(events[4].payload).toEqual({ i: 9 });
+
+      cappedBus.close();
+    });
+
+    it("should not enforce when maxEvents is not set", () => {
+      // Default bus (no maxEvents) should keep all events
+      for (let i = 0; i < 10; i++) {
+        bus.publish("token.recorded", { i });
+      }
+
+      const events = bus.consume("token.recorded", null, 100);
+      expect(events).toHaveLength(10);
+    });
+  });
 });

@@ -1,12 +1,13 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { TokenLedger, EventBus } from "@eagles-advanced/data-layer";
+import { TokenLedger, EventBus, ToolMetricsStore } from "@eagles-advanced/data-layer";
 import { BUDGET_THRESHOLDS, MODEL_PRICING } from "@eagles-advanced/shared-utils";
 import { resolveDataPath } from "./config.js";
 
 export function createTokenTrackerServer(): McpServer {
   const ledger = new TokenLedger(resolveDataPath("token-ledger/ledger.sqlite"));
   const bus = new EventBus(resolveDataPath("event-bus/bus.sqlite"));
+  const toolMetrics = new ToolMetricsStore(resolveDataPath("tool-metrics/metrics.sqlite"));
   const server = new McpServer({ name: "token-tracker", version: "0.1.0" });
 
   server.tool(
@@ -121,6 +122,72 @@ export function createTokenTrackerServer(): McpServer {
     {},
     async () => {
       return { content: [{ type: "text" as const, text: JSON.stringify(MODEL_PRICING) }] };
+    },
+  );
+
+  server.tool(
+    "get_cost_advisory",
+    { windowDays: z.number().int().positive().default(30) },
+    async ({ windowDays }) => {
+      const advisories = ledger.generateAdvisory(windowDays);
+      return {
+        content: [{
+          type: "text" as const,
+          text: JSON.stringify({ advisories, count: advisories.length }),
+        }],
+      };
+    },
+  );
+
+  server.tool(
+    "record_tool_metric",
+    {
+      toolName: z.string(),
+      durationMs: z.number().nonnegative(),
+      success: z.boolean().default(true),
+      serverName: z.string().default("unknown"),
+    },
+    async (params) => {
+      const record = toolMetrics.record({
+        toolName: params.toolName,
+        durationMs: params.durationMs,
+        success: params.success,
+        serverName: params.serverName,
+      });
+      return { content: [{ type: "text" as const, text: JSON.stringify(record) }] };
+    },
+  );
+
+  server.tool(
+    "get_tool_metrics",
+    {
+      toolName: z.string().optional(),
+      windowDays: z.number().int().positive().optional(),
+      topSlowest: z.number().int().min(1).max(50).default(10),
+    },
+    async (params) => {
+      if (params.toolName !== undefined) {
+        const percentiles = toolMetrics.getPercentiles(params.toolName, params.windowDays);
+        return {
+          content: [{
+            type: "text" as const,
+            text: JSON.stringify(percentiles ?? { error: "No metrics found for this tool" }),
+          }],
+        };
+      }
+
+      const slowest = toolMetrics.getTopSlowest(params.topSlowest, params.windowDays);
+      const allTools = toolMetrics.getAllToolNames();
+      return {
+        content: [{
+          type: "text" as const,
+          text: JSON.stringify({
+            totalTools: allTools.length,
+            totalRecords: toolMetrics.count(),
+            topSlowest: slowest,
+          }),
+        }],
+      };
     },
   );
 

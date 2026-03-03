@@ -317,6 +317,72 @@ describe("TokenLedger", () => {
     });
   });
 
+  describe("generateAdvisory", () => {
+    it("should return empty array for empty ledger", () => {
+      const advisories = ledger.generateAdvisory(30);
+      expect(advisories).toEqual([]);
+    });
+
+    it("should detect high output ratio", () => {
+      ledger.insert({
+        sessionId: "s-adv",
+        modelName: "claude-sonnet-4-6",
+        promptTokens: 100,
+        completionTokens: 900,
+        cacheReadTokens: 0,
+        cacheWriteTokens: 0,
+        waveNumber: null,
+        agentName: null,
+        toolName: null,
+      });
+      const advisories = ledger.generateAdvisory(30);
+      expect(advisories.some((a) => a.includes("output ratio"))).toBe(true);
+    });
+
+    it("should detect model dominance", () => {
+      ledger.insert({
+        sessionId: "s-dom",
+        modelName: "claude-opus-4-6",
+        promptTokens: 1_000_000,
+        completionTokens: 1_000_000,
+        cacheReadTokens: 0,
+        cacheWriteTokens: 0,
+        waveNumber: null,
+        agentName: null,
+        toolName: null,
+      });
+      ledger.insert({
+        sessionId: "s-dom",
+        modelName: "claude-haiku-4-5",
+        promptTokens: 100,
+        completionTokens: 100,
+        cacheReadTokens: 0,
+        cacheWriteTokens: 0,
+        waveNumber: null,
+        agentName: null,
+        toolName: null,
+      });
+      const advisories = ledger.generateAdvisory(30);
+      expect(advisories.some((a) => a.includes("claude-opus-4-6"))).toBe(true);
+    });
+
+    it("should detect budget proximity", () => {
+      ledger.insert({
+        sessionId: "s-budget",
+        modelName: "claude-opus-4-6",
+        promptTokens: 100_000,
+        completionTokens: 50_000,
+        cacheReadTokens: 0,
+        cacheWriteTokens: 0,
+        waveNumber: null,
+        agentName: null,
+        toolName: null,
+      });
+      const advisories = ledger.generateAdvisory(30);
+      expect(advisories.some((a) => a.includes("WARN threshold"))).toBe(true);
+    });
+  });
+
   describe("getCostReport", () => {
     it("should return zero totals for empty ledger", () => {
       const result = ledger.getCostReport(30);

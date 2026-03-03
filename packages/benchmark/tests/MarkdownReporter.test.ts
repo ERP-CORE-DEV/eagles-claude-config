@@ -4,7 +4,7 @@ import {
   generateMarkdownReport,
   type ComparisonReport,
 } from "../src/reporters/MarkdownReporter.js";
-import type { AggregateMetrics } from "../src/metrics/MetricsCollector.js";
+import { FEATURE_GAPS, type AggregateMetrics } from "../src/metrics/MetricsCollector.js";
 
 const classicMetrics: AggregateMetrics = {
   totalRuns: 4,
@@ -13,6 +13,8 @@ const classicMetrics: AggregateMetrics = {
   totalTokens: 10000,
   totalCostUsd: 0.5,
   avgCostPerTask: 0.125,
+  featuresSupported: 3,
+  totalTasks: 4,
 };
 
 const advancedMetrics: AggregateMetrics = {
@@ -22,7 +24,28 @@ const advancedMetrics: AggregateMetrics = {
   totalTokens: 8000,
   totalCostUsd: 0.3,
   avgCostPerTask: 0.075,
+  featuresSupported: 4,
+  totalTasks: 4,
 };
+
+function makeReport(
+  classic: AggregateMetrics,
+  advanced: AggregateMetrics,
+): ComparisonReport {
+  return {
+    generatedAt: "2026-03-02T00:00:00Z",
+    taskCount: 4,
+    classic,
+    advanced,
+    delta: computeDelta(classic, advanced),
+    dimensions: [
+      { dimension: "Memory Retrieval", classicTasks: 1, classicSuccesses: 1, advancedTasks: 1, advancedSuccesses: 1, classicSupported: true, advancedSupported: true, winner: "Advanced" },
+      { dimension: "Drift Detection", classicTasks: 1, classicSuccesses: 0, advancedTasks: 1, advancedSuccesses: 1, classicSupported: false, advancedSupported: true, winner: "Advanced" },
+    ],
+    featureGaps: FEATURE_GAPS,
+    dummyProjectDescription: "Generic TypeScript REST API (8 requirements, 3 waves)",
+  };
+}
 
 describe("computeDelta", () => {
   it("should compute percentage changes", () => {
@@ -49,39 +72,27 @@ describe("computeDelta", () => {
 });
 
 describe("generateMarkdownReport", () => {
-  it("should generate valid markdown with summary table", () => {
-    const report: ComparisonReport = {
-      generatedAt: "2026-03-02T00:00:00Z",
-      taskCount: 4,
-      classic: classicMetrics,
-      advanced: advancedMetrics,
-      delta: computeDelta(classicMetrics, advancedMetrics),
-    };
-
+  it("should generate valid markdown with summary and feature gap tables", () => {
+    const report = makeReport(classicMetrics, advancedMetrics);
     const md = generateMarkdownReport(report);
 
     expect(md).toContain("# EAGLES Benchmark Report");
     expect(md).toContain("| Metric |");
-    expect(md).toContain("$0.500");
-    expect(md).toContain("$0.300");
-    expect(md).toContain("Advanced wins on both cost and latency.");
+    expect(md).toContain("Feature Gap Analysis");
+    expect(md).toContain("Memory Search");
+    expect(md).toContain("Per-Dimension Results");
+    expect(md).toContain("Advanced wins on 2/2 dimensions");
   });
 
-  it("should indicate Classic wins when Advanced is worse", () => {
-    const worseAdvanced: AggregateMetrics = {
-      ...advancedMetrics,
-      totalCostUsd: 1.0,
-      latency: { p50: 200, p95: 400, p99: 500, mean: 300 },
-    };
+  it("should handle dimensions where Classic wins", () => {
     const report: ComparisonReport = {
-      generatedAt: "2026-03-02T00:00:00Z",
-      taskCount: 4,
-      classic: classicMetrics,
-      advanced: worseAdvanced,
-      delta: computeDelta(classicMetrics, worseAdvanced),
+      ...makeReport(classicMetrics, advancedMetrics),
+      dimensions: [
+        { dimension: "Memory", classicTasks: 1, classicSuccesses: 1, advancedTasks: 1, advancedSuccesses: 0, classicSupported: true, advancedSupported: true, winner: "Classic" },
+        { dimension: "Tokens", classicTasks: 1, classicSuccesses: 1, advancedTasks: 1, advancedSuccesses: 0, classicSupported: true, advancedSupported: true, winner: "Classic" },
+      ],
     };
-
     const md = generateMarkdownReport(report);
-    expect(md).toContain("Classic performs better");
+    expect(md).toContain("Classic wins on 2/2 dimensions");
   });
 });

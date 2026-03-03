@@ -20,9 +20,21 @@ importers:
 
   packages/benchmark:
     dependencies:
+      '@eagles-advanced/data-layer':
+        specifier: workspace:*
+        version: link:../data-layer
+      '@eagles-advanced/drift-detector-mcp':
+        specifier: workspace:*
+        version: link:../drift-detector-mcp
       '@eagles-advanced/shared-utils':
         specifier: workspace:*
         version: link:../shared-utils
+      '@eagles-advanced/token-tracker-mcp':
+        specifier: workspace:*
+        version: link:../token-tracker-mcp
+      '@eagles-advanced/vector-memory-mcp':
+        specifier: workspace:*
+        version: link:../vector-memory-mcp
       '@modelcontextprotocol/sdk':
         specifier: ^1.12.0
         version: 1.27.1(zod@3.25.76)
@@ -105,6 +117,68 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@20.19.35)
 
+  packages/orchestrator-mcp:
+    dependencies:
+      '@eagles-advanced/shared-utils':
+        specifier: workspace:*
+        version: link:../shared-utils
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.12.1
+        version: 1.27.1(zod@3.25.76)
+      better-sqlite3:
+        specifier: ^11.9.1
+        version: 11.10.0
+      zod:
+        specifier: ^3.25.0
+        version: 3.25.76
+    devDependencies:
+      '@types/better-sqlite3':
+        specifier: ^7.6.0
+        version: 7.6.13
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.35
+      tsup:
+        specifier: ^8.3.0
+        version: 8.5.1(postcss@8.5.6)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@20.19.35)
+
+  packages/provider-router-mcp:
+    dependencies:
+      '@eagles-advanced/shared-utils':
+        specifier: workspace:*
+        version: link:../shared-utils
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.12.1
+        version: 1.27.1(zod@3.25.76)
+      better-sqlite3:
+        specifier: ^11.9.1
+        version: 11.10.0
+      zod:
+        specifier: ^3.25.0
+        version: 3.25.76
+    devDependencies:
+      '@types/better-sqlite3':
+        specifier: ^7.6.9
+        version: 7.6.13
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.35
+      tsup:
+        specifier: ^8.3.0
+        version: 8.5.1(postcss@8.5.6)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@20.19.35)
+
   packages/shared-utils:
     devDependencies:
       '@types/node':
@@ -148,6 +222,28 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@20.19.35)
 
+  packages/tool-registry:
+    dependencies:
+      '@eagles-advanced/shared-utils':
+        specifier: workspace:*
+        version: link:../shared-utils
+      zod:
+        specifier: ^3.25.0
+        version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.35
+      tsup:
+        specifier: ^8.3.0
+        version: 8.5.1(postcss@8.5.6)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@20.19.35)
+
   packages/vector-memory-mcp:
     dependencies:
       '@eagles-advanced/data-layer':
@@ -166,6 +262,37 @@ importers:
         specifier: ^3.23.0
         version: 3.25.76
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.35
+      tsup:
+        specifier: ^8.3.0
+        version: 8.5.1(postcss@8.5.6)(typescript@5.9.3)
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@20.19.35)
+
+  packages/verification-mcp:
+    dependencies:
+      '@eagles-advanced/shared-utils':
+        specifier: workspace:*
+        version: link:../shared-utils
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.12.1
+        version: 1.27.1(zod@3.25.76)
+      better-sqlite3:
+        specifier: ^11.9.1
+        version: 11.10.0
+      zod:
+        specifier: ^3.25.0
+        version: 3.25.76
+    devDependencies:
+      '@types/better-sqlite3':
+        specifier: ^7.6.0
+        version: 7.6.13
       '@types/node':
         specifier: ^20.0.0
         version: 20.19.35

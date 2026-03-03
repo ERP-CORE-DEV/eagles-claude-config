@@ -20,6 +20,7 @@ export function createVectorMemoryServer(): McpServer {
       tags: z.array(z.enum(MEMORY_TAGS)).default([]),
       confidence: z.number().min(0).max(1).default(1.0),
       source: z.string().default("manual"),
+      ttlSeconds: z.number().int().positive().optional(),
     },
     async (params) => {
       const vector = await embeddingService.embed(params.text);
@@ -29,6 +30,7 @@ export function createVectorMemoryServer(): McpServer {
         tags: params.tags,
         confidence: params.confidence,
         source: params.source,
+        ttlSeconds: params.ttlSeconds,
       });
       await vectorStore.upsert(entry.id, vector, { project: entry.project });
 
@@ -43,6 +45,7 @@ export function createVectorMemoryServer(): McpServer {
             tags: entry.tags,
             confidence: entry.confidence,
             createdAt: entry.createdAt,
+            expiresAt: entry.expiresAt,
           }),
         }],
       };
@@ -57,36 +60,63 @@ export function createVectorMemoryServer(): McpServer {
       project: z.string().optional(),
       tags: z.array(z.enum(MEMORY_TAGS)).optional(),
       minScore: z.number().min(0).max(1).default(0.3),
+      mode: z.enum(["semantic", "keyword", "hybrid"]).default("semantic"),
     },
     async (params) => {
-      const queryVector = await embeddingService.embed(params.query);
-      const rawResults = await vectorStore.search(queryVector, params.topK * 2);
+      const results: Array<{ entry: NonNullable<ReturnType<typeof repository.getById>>; score: number }> = [];
+      const seenIds = new Set<string>();
 
-      const filtered = rawResults.filter((r) => r.score >= params.minScore);
-
-      const results = [];
-      for (const hit of filtered) {
-        const entry = repository.getById(hit.id);
-        if (entry === null) continue;
-
-        if (params.project !== undefined && entry.project !== params.project) continue;
-
+      const matchesFilters = (entry: NonNullable<ReturnType<typeof repository.getById>>): boolean => {
+        if (params.project !== undefined && entry.project !== params.project) return false;
         if (params.tags !== undefined && params.tags.length > 0) {
           const requiredTags = new Set(params.tags);
-          const hasTag = entry.tags.some((tag) => requiredTags.has(tag));
-          if (!hasTag) continue;
+          if (!entry.tags.some((tag) => requiredTags.has(tag))) return false;
         }
+        if (entry.expiresAt !== null && entry.expiresAt <= new Date().toISOString()) return false;
+        return true;
+      };
 
-        repository.updateAccess(entry.id);
-        results.push({ entry, score: hit.score });
+      if (params.mode === "semantic" || params.mode === "hybrid") {
+        const queryVector = await embeddingService.embed(params.query);
+        const rawResults = await vectorStore.search(queryVector, params.topK * 2);
 
-        if (results.length >= params.topK) break;
+        for (const hit of rawResults) {
+          if (hit.score < params.minScore) continue;
+          const entry = repository.getById(hit.id);
+          if (entry === null) continue;
+          if (!matchesFilters(entry)) continue;
+          if (seenIds.has(entry.id)) continue;
+          seenIds.add(entry.id);
+          results.push({ entry, score: hit.score });
+        }
+      }
+
+      if (params.mode === "keyword" || params.mode === "hybrid") {
+        const keywordResults = repository.searchByKeyword(params.query, {
+          project: params.project,
+          limit: params.topK * 2,
+        });
+
+        for (const entry of keywordResults) {
+          if (seenIds.has(entry.id)) continue;
+          if (!matchesFilters(entry)) continue;
+          seenIds.add(entry.id);
+          results.push({ entry, score: 0.5 });
+        }
+      }
+
+      const topResults = results
+        .sort((a, b) => b.score - a.score)
+        .slice(0, params.topK);
+
+      for (const r of topResults) {
+        repository.updateAccess(r.entry.id);
       }
 
       return {
         content: [{
           type: "text" as const,
-          text: JSON.stringify({ results, query: params.query, count: results.length }),
+          text: JSON.stringify({ results: topResults, query: params.query, count: topResults.length, mode: params.mode }),
         }],
       };
     },
