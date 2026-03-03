@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@eagles-advanced/shared-utils": "workspace:*",
-    "better-sqlite3": "^11.5.0",
+    "better-sqlite3": "^11.9.1",
     "hnswlib-node": "^3.0.0"
   },
   "devDependencies": {

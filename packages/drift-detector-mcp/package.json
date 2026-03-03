@@ -20,9 +20,9 @@
   "dependencies": {
     "@eagles-advanced/data-layer": "workspace:*",
     "@eagles-advanced/shared-utils": "workspace:*",
-    "@modelcontextprotocol/sdk": "^1.12.0",
-    "better-sqlite3": "^11.5.0",
-    "zod": "^3.23.0"
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "better-sqlite3": "^11.9.1",
+    "zod": "^3.25.0"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.0",

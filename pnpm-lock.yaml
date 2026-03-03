@@ -36,10 +36,10 @@ importers:
         specifier: workspace:*
         version: link:../vector-memory-mcp
       '@modelcontextprotocol/sdk':
-        specifier: ^1.12.0
+        specifier: ^1.12.1
         version: 1.27.1(zod@3.25.76)
       zod:
-        specifier: ^3.23.0
+        specifier: ^3.25.0
         version: 3.25.76
     devDependencies:
       '@types/node':
@@ -61,7 +61,7 @@ importers:
         specifier: workspace:*
         version: link:../shared-utils
       better-sqlite3:
-        specifier: ^11.5.0
+        specifier: ^11.9.1
         version: 11.10.0
       hnswlib-node:
         specifier: ^3.0.0
@@ -92,13 +92,13 @@ importers:
         specifier: workspace:*
         version: link:../shared-utils
       '@modelcontextprotocol/sdk':
-        specifier: ^1.12.0
+        specifier: ^1.12.1
         version: 1.27.1(zod@3.25.76)
       better-sqlite3:
-        specifier: ^11.5.0
+        specifier: ^11.9.1
         version: 11.10.0
       zod:
-        specifier: ^3.23.0
+        specifier: ^3.25.0
         version: 3.25.76
     devDependencies:
       '@types/better-sqlite3':
@@ -203,10 +203,10 @@ importers:
         specifier: workspace:*
         version: link:../shared-utils
       '@modelcontextprotocol/sdk':
-        specifier: ^1.12.0
+        specifier: ^1.12.1
         version: 1.27.1(zod@3.25.76)
       zod:
-        specifier: ^3.23.0
+        specifier: ^3.25.0
         version: 3.25.76
     devDependencies:
       '@types/node':
@@ -253,13 +253,13 @@ importers:
         specifier: workspace:*
         version: link:../shared-utils
       '@modelcontextprotocol/sdk':
-        specifier: ^1.12.0
+        specifier: ^1.12.1
         version: 1.27.1(zod@3.25.76)
       '@xenova/transformers':
         specifier: ^2.17.0
         version: 2.17.2
       zod:
-        specifier: ^3.23.0
+        specifier: ^3.25.0
         version: 3.25.76
     devDependencies:
       '@types/node':
