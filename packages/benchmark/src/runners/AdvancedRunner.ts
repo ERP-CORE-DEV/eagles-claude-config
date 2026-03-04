@@ -31,16 +31,16 @@ export class AdvancedRunner implements TaskRunner {
 
     // Dynamic imports to avoid pulling MCP server code at parse time
     const { createTokenTrackerServer } = await import(
-      "@eagles-advanced/token-tracker-mcp/server"
+      "@eagles-ai-platform/token-tracker-mcp/server"
     ) as { createTokenTrackerServer: ServerFactory };
     const { createDriftDetectorServer } = await import(
-      "@eagles-advanced/drift-detector-mcp/server"
+      "@eagles-ai-platform/drift-detector-mcp/server"
     ) as { createDriftDetectorServer: ServerFactory };
 
     // Vector-memory requires mocked embedding + vector store
     // We import the factory and let it use the mocked data-layer
     const { createVectorMemoryServer } = await import(
-      "@eagles-advanced/vector-memory-mcp/server"
+      "@eagles-ai-platform/vector-memory-mcp/server"
     ) as { createVectorMemoryServer: ServerFactory };
 
     this.tokenClient = await this.connectClient(createTokenTrackerServer, "token-tracker");

@@ -26,8 +26,8 @@ vi.mock("../src/services/EmbeddingService.js", () => ({
 
 // Mock VectorStore from data-layer — hnswlib-node mock doesn't propagate across
 // workspace packages for dynamic imports. Replace with in-memory implementation.
-vi.mock("@eagles-advanced/data-layer", async () => {
-  const actual = await vi.importActual("@eagles-advanced/data-layer");
+vi.mock("@eagles-ai-platform/data-layer", async () => {
+  const actual = await vi.importActual("@eagles-ai-platform/data-layer");
   return {
     ...actual,
     VectorStore: vi.fn().mockImplementation(() => {
@@ -110,7 +110,7 @@ describe("vector-memory-mcp server", () => {
         name: "memory_store",
         arguments: {
           text: "Always use pnpm for monorepo management",
-          project: "eagles-advanced",
+          project: "eagles-ai-platform",
           tags: ["pattern"],
           confidence: 0.9,
         },
@@ -125,7 +125,7 @@ describe("vector-memory-mcp server", () => {
       expect(data.success).toBe(true);
       expect(data.id).toBeTruthy();
       expect(data.text).toBe("Always use pnpm for monorepo management");
-      expect(data.project).toBe("eagles-advanced");
+      expect(data.project).toBe("eagles-ai-platform");
     });
 
     it("store_defaultTagsAndConfidence_appliedCorrectly", async () => {

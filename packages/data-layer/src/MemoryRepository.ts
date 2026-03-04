@@ -4,7 +4,7 @@
 
 import Database from "better-sqlite3";
 import { randomUUID } from "node:crypto";
-import type { VectorEntry, MemoryTag } from "@eagles-advanced/shared-utils";
+import type { VectorEntry, MemoryTag } from "@eagles-ai-platform/shared-utils";
 
 type InsertParams = Omit<VectorEntry, "id" | "createdAt" | "accessedAt" | "accessCount" | "expiresAt"> & {
   readonly ttlSeconds?: number;

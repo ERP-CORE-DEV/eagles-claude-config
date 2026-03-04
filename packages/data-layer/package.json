@@ -1,5 +1,5 @@
 {
-  "name": "@eagles-advanced/data-layer",
+  "name": "@eagles-ai-platform/data-layer",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -18,7 +18,7 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
-    "@eagles-advanced/shared-utils": "workspace:*",
+    "@eagles-ai-platform/shared-utils": "workspace:*",
     "better-sqlite3": "^11.9.1",
     "hnswlib-node": "^3.0.0"
   },

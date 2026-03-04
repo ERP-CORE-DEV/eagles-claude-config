@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { join } from "node:path";
 import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { SonaLearningStore } from "@eagles-advanced/data-layer";
+import { SonaLearningStore } from "@eagles-ai-platform/data-layer";
 
 describe("SonaStore (SQLite)", () => {
   let store: SonaLearningStore;

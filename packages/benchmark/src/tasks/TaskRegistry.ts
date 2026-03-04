@@ -48,7 +48,7 @@ const memoryStoreSearch = createTask({
       tool: "memory_store",
       arguments: {
         text: "Always use pnpm for monorepo management in EAGLES projects",
-        project: "eagles-advanced",
+        project: "eagles-ai-platform",
         tags: ["pattern"],
         confidence: 0.95,
       },

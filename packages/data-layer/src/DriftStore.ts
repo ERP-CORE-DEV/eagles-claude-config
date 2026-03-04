@@ -1,6 +1,6 @@
 import Database from "better-sqlite3";
 import { randomUUID } from "node:crypto";
-import type { DriftFinding } from "@eagles-advanced/shared-utils";
+import type { DriftFinding } from "@eagles-ai-platform/shared-utils";
 
 // ---------------------------------------------------------------------------
 // Parameter shapes for DriftStore write methods

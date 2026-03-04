@@ -1,9 +1,9 @@
 import { join } from "node:path";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { AgentRegistryStore } from "@eagles-advanced/data-layer";
-import { TaskStore } from "@eagles-advanced/data-layer";
-import { SonaLearningStore } from "@eagles-advanced/data-layer";
+import { AgentRegistryStore } from "@eagles-ai-platform/data-layer";
+import { TaskStore } from "@eagles-ai-platform/data-layer";
+import { SonaLearningStore } from "@eagles-ai-platform/data-layer";
 import { computeHealth } from "./agents/lifecycle.js";
 import { findBestAgent } from "./tasks/coordination.js";
 import type { AgentInfo } from "./agents/types.js";

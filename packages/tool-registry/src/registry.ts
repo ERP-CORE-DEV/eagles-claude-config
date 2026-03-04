@@ -1,5 +1,5 @@
-import { ToolRegistryStore } from "@eagles-advanced/data-layer";
-import type { StoredTool } from "@eagles-advanced/data-layer";
+import { ToolRegistryStore } from "@eagles-ai-platform/data-layer";
+import type { StoredTool } from "@eagles-ai-platform/data-layer";
 import type { ToolDefinition, ToolMetadata, RegisteredTool } from "./types.js";
 import { validateToolName } from "./validation.js";
 

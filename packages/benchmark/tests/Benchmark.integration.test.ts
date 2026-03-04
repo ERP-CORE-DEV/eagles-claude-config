@@ -8,11 +8,11 @@ function randomVector(dims = 384): number[] {
   return Array.from({ length: dims }, () => Math.random());
 }
 
-vi.mock("@eagles-advanced/vector-memory-mcp/server", async () => {
+vi.mock("@eagles-ai-platform/vector-memory-mcp/server", async () => {
   // Re-implement a minimal server with mocked embedding + in-memory vector store.
   const { McpServer } = await import("@modelcontextprotocol/sdk/server/mcp.js");
   const { z } = await import("zod");
-  const { MemoryRepository } = await import("@eagles-advanced/data-layer");
+  const { MemoryRepository } = await import("@eagles-ai-platform/data-layer");
   const nodePath = await import("node:path");
   const nodeFs = await import("node:fs");
 

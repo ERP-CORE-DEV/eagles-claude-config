@@ -1,7 +1,7 @@
 import Database from "better-sqlite3";
 import { randomUUID } from "node:crypto";
-import type { TokenRecord } from "@eagles-advanced/shared-utils";
-import { MODEL_PRICING, CACHE_DISCOUNT } from "@eagles-advanced/shared-utils";
+import type { TokenRecord } from "@eagles-ai-platform/shared-utils";
+import { MODEL_PRICING, CACHE_DISCOUNT } from "@eagles-ai-platform/shared-utils";
 
 export class TokenLedger {
   private readonly db: Database.Database;

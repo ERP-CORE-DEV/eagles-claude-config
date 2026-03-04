@@ -2,7 +2,7 @@
 // When tokenEfficiency is null its weight (0.15) is redistributed
 // proportionally across the remaining four metrics.
 
-import type { DriftTrend } from "@eagles-advanced/shared-utils";
+import type { DriftTrend } from "@eagles-ai-platform/shared-utils";
 
 export type Verdict = "SYNCED" | "WARNING" | "DRIFTING";
 

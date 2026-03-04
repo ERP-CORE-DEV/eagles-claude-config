@@ -2,7 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { DriftStore } from "@eagles-advanced/data-layer";
+import { DriftStore } from "@eagles-ai-platform/data-layer";
 import { parseRequirements } from "./parsing/RequirementsParser.js";
 import {
   scoreRequirementCoverage,
@@ -12,7 +12,7 @@ import {
   scoreScopeCreep,
 } from "./scoring/ScoringAlgorithms.js";
 import { computeCompositeScore, computeTrendWithDecay } from "./scoring/CompositeScorer.js";
-import type { OverallHealth, DriftTrend } from "@eagles-advanced/shared-utils";
+import type { OverallHealth, DriftTrend } from "@eagles-ai-platform/shared-utils";
 
 const DEFAULT_DB_PATH = join(tmpdir(), "eagles-drift.sqlite");
 

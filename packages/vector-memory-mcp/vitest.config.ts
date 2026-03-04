@@ -5,8 +5,8 @@ export default defineConfig({
   resolve: {
     alias: {
       // Map workspace package to source for test resolution without requiring a build
-      "@eagles-advanced/data-layer": resolve(__dirname, "../data-layer/src/index.ts"),
-      "@eagles-advanced/shared-utils": resolve(__dirname, "../shared-utils/src/index.ts"),
+      "@eagles-ai-platform/data-layer": resolve(__dirname, "../data-layer/src/index.ts"),
+      "@eagles-ai-platform/shared-utils": resolve(__dirname, "../shared-utils/src/index.ts"),
     },
   },
   test: {

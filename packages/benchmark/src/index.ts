@@ -4,7 +4,7 @@
 import { BenchmarkOrchestrator } from "./runner/BenchmarkOrchestrator.js";
 
 const OUTPUT_ROOT = process.env["EAGLES_ADVANCED_ROOT"]
-  ?? "C:/RH-OptimERP/eagles-advanced";
+  ?? "C:/RH-OptimERP/eagles-ai-platform";
 
 async function main(): Promise<void> {
   const orchestrator = new BenchmarkOrchestrator(OUTPUT_ROOT);

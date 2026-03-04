@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { join } from "node:path";
 import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { TaskStore } from "@eagles-advanced/data-layer";
+import { TaskStore } from "@eagles-ai-platform/data-layer";
 
 describe("TaskEngine (SQLite)", () => {
   let engine: TaskStore;

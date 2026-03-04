@@ -1,5 +1,5 @@
 {
-  "name": "@eagles-advanced/verification-mcp",
+  "name": "@eagles-ai-platform/verification-mcp",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -18,7 +18,7 @@
     "clean": "rm -rf dist *.tsbuildinfo"
   },
   "dependencies": {
-    "@eagles-advanced/shared-utils": "workspace:*",
+    "@eagles-ai-platform/shared-utils": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.12.1",
     "better-sqlite3": "^11.9.1",
     "zod": "^3.25.0"

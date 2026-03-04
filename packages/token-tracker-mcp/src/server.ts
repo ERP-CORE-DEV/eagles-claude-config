@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { TokenLedger, EventBus, ToolMetricsStore } from "@eagles-advanced/data-layer";
-import { BUDGET_THRESHOLDS, MODEL_PRICING } from "@eagles-advanced/shared-utils";
+import { TokenLedger, EventBus, ToolMetricsStore } from "@eagles-ai-platform/data-layer";
+import { BUDGET_THRESHOLDS, MODEL_PRICING } from "@eagles-ai-platform/shared-utils";
 import { resolveDataPath } from "./config.js";
 
 export function createTokenTrackerServer(): McpServer {

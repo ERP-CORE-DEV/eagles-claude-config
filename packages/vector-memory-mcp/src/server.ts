@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { MEMORY_TAGS } from "@eagles-advanced/shared-utils";
-import { VectorStore, MemoryRepository } from "@eagles-advanced/data-layer";
+import { MEMORY_TAGS } from "@eagles-ai-platform/shared-utils";
+import { VectorStore, MemoryRepository } from "@eagles-ai-platform/data-layer";
 import { EmbeddingService } from "./services/EmbeddingService.js";
 import { resolveDataPath } from "./config.js";
 
