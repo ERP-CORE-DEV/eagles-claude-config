@@ -1,0 +1,104 @@
+# =============================================================
+# EAGLES AI Platform - LiteLLM Config v9 (Optimized)
+# Kimi K2 Thinking as PRIMARY (tool calling verified on Azure)
+# v9: Least-busy routing, extended timeout, cost-aware fallback,
+#     caching, per-dev rate limits (6 devs / 100K TPM)
+# CRITICAL: No drop_params on Kimi entries (drops tools!)
+# Updated: 2026-02-21
+# =============================================================
+
+model_list:
+  # PRIMARY: Kimi K2 Thinking — all Claude model aliases
+  # azure/ provider constructs: {api_base}/openai/deployments/{name}/chat/completions?api-version={ver}
+  - model_name: claude-opus-4-6
+    litellm_params:
+      model: azure/kimi-k2-thinking
+      api_key: os.environ/AZURE_AI_API_KEY
+      api_base: https://ai-services-eagles.openai.azure.com
+      api_version: "2024-10-21"
+      timeout: 600
+    model_info:
+      supports_function_calling: true
+      supports_parallel_function_calling: true
+
+  - model_name: claude-sonnet-4-6
+    litellm_params:
+      model: azure/kimi-k2-thinking
+      api_key: os.environ/AZURE_AI_API_KEY
+      api_base: https://ai-services-eagles.openai.azure.com
+      api_version: "2024-10-21"
+      timeout: 600
+    model_info:
+      supports_function_calling: true
+      supports_parallel_function_calling: true
+
+  - model_name: claude-haiku-4-5-20251001
+    litellm_params:
+      model: azure/kimi-k2-thinking
+      api_key: os.environ/AZURE_AI_API_KEY
+      api_base: https://ai-services-eagles.openai.azure.com
+      api_version: "2024-10-21"
+      timeout: 600
+    model_info:
+      supports_function_calling: true
+
+  # Wildcard: catch any other model names
+  - model_name: "*"
+    litellm_params:
+      model: azure/kimi-k2-thinking
+      api_key: os.environ/AZURE_AI_API_KEY
+      api_base: https://ai-services-eagles.openai.azure.com
+      api_version: "2024-10-21"
+      timeout: 600
+    model_info:
+      supports_function_calling: true
+
+  # Reasoning: DeepSeek-R1 (explicit reasoning tasks)
+  - model_name: deepseek-r1
+    litellm_params:
+      model: azure_ai/DeepSeek-R1
+      api_key: os.environ/DEEPSEEK_R1_API_KEY
+      api_base: os.environ/DEEPSEEK_R1_API_BASE
+      timeout: 120
+      drop_params: true
+
+  # Fast coding: DeepSeek-V3 (background tasks, cheapest fallback)
+  - model_name: deepseek-v3
+    litellm_params:
+      model: azure_ai/DeepSeek-V3-0324
+      api_key: os.environ/DEEPSEEK_V3_API_KEY
+      api_base: os.environ/DEEPSEEK_V3_API_BASE
+      timeout: 120
+      drop_params: true
+
+  # Secondary: Codestral-2501 (tool calling backup)
+  - model_name: codestral
+    litellm_params:
+      model: azure_ai/Codestral-2501
+      api_key: os.environ/CODESTRAL_API_KEY
+      api_base: os.environ/CODESTRAL_API_BASE
+      timeout: 120
+      drop_params: true
+    model_info:
+      supports_function_calling: true
+
+  # NO Claude API fallback — all requests stay on Azure credits
+
+router_settings:
+  routing_strategy: simple-shuffle
+  num_retries: 2
+  timeout: 600
+  fallbacks:
+    - claude-opus-4-6:
+        - codestral
+    - claude-sonnet-4-6:
+        - codestral
+    - claude-haiku-4-5-20251001:
+        - codestral
+
+litellm_settings:
+  drop_params: false
+  request_timeout: 600
+  json_logs: true
+  enable_caching: true
+  cache_ttl: 3600

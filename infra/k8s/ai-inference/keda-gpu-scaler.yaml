@@ -1,0 +1,22 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: vllm-gpu-scaler
+  namespace: ai-inference
+  labels:
+    app.kubernetes.io/part-of: eagles-ai-platform
+spec:
+  scaleTargetRef:
+    name: vllm-server
+  minReplicaCount: 0
+  maxReplicaCount: 2
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: ${PROMETHEUS_QUERY_ENDPOINT}
+        metricName: DCGM_FI_DEV_GPU_UTIL
+        query: avg(DCGM_FI_DEV_GPU_UTIL{deployment="vllm-server"})
+        threshold: "5"
+        activationThreshold: "2"
+      authenticationRef:
+        name: azure-prometheus-auth

@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: litellm-config
+  namespace: ai-inference
+  labels:
+    app: litellm-gateway
+    app.kubernetes.io/part-of: eagles-ai-platform
+data:
+  config.yaml: |
+    # =============================================================
+    # EAGLES AI Platform - LiteLLM Multi-Tier Routing
+    # Tier 1: Managed APIs (instant, no GPU)
+    # Tier 2: RunPod/vast.ai vLLM (5-15 min, your own GPU)
+    # Tier 3: AKS vLLM (when Azure GPU quota approved)
+    # =============================================================
+
+    model_list:
+      # --- TIER 1: Managed APIs (ACTIVE NOW) ---
+
+      # Primary: OpenRouter -> Qwen2.5-Coder-32B ($0.20/M tokens)
+      - model_name: claude-opus-4-6
+        litellm_params:
+          model: openrouter/qwen/qwen-2.5-coder-32b-instruct
+          api_key: os.environ/OPENROUTER_API_KEY
+
+      # Fallback 1: Fireworks AI ($0.20/M tokens)
+      - model_name: qwen-fireworks
+        litellm_params:
+          model: fireworks_ai/accounts/fireworks/models/qwen2p5-coder-32b-instruct
+          api_key: os.environ/FIREWORKS_API_KEY
+
+      # Fallback 2: DeepInfra (cheapest: $0.06 in / $0.15 out)
+      - model_name: qwen-deepinfra
+        litellm_params:
+          model: deepinfra/Qwen/Qwen2.5-Coder-32B-Instruct
+          api_key: os.environ/DEEPINFRA_API_KEY
+
+      # Fallback 3: Claude real (existing Max subscription)
+      - model_name: claude-real
+        litellm_params:
+          model: anthropic/claude-opus-4-6
+          api_key: os.environ/ANTHROPIC_API_KEY
+
+      # --- TIER 2: RunPod vLLM (enable when deployed) ---
+      # - model_name: qwen-runpod
+      #   litellm_params:
+      #     model: openai/Qwen2.5-Coder-32B-AWQ
+      #     api_base: https://api.runpod.ai/v2/YOUR_ENDPOINT_ID/openai/v1
+      #     api_key: os.environ/RUNPOD_API_KEY
+
+      # --- TIER 3: AKS vLLM (enable when GPU quota approved) ---
+      # - model_name: qwen-aks
+      #   litellm_params:
+      #     model: openai/Qwen2.5-Coder-32B-Instruct-AWQ
+      #     api_base: http://vllm-server-svc.ai-inference:8000/v1
+      #     api_key: "none"
+
+      # Wildcard: catch all model names -> route to primary
+      - model_name: "*"
+        litellm_params:
+          model: openrouter/qwen/qwen-2.5-coder-32b-instruct
+          api_key: os.environ/OPENROUTER_API_KEY
+
+    router_settings:
+      routing_strategy: simple-shuffle
+      num_retries: 3
+      timeout: 120
+      fallbacks:
+        - claude-opus-4-6:
+            - qwen-fireworks
+            - qwen-deepinfra
+            - claude-real
+
+    general_settings:
+      master_key: os.environ/LITELLM_MASTER_KEY

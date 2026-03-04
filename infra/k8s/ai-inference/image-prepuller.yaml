@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: vllm-image-prepuller
+  namespace: kube-system
+  labels:
+    app: image-prepuller
+    app.kubernetes.io/part-of: eagles-ai-platform
+spec:
+  selector:
+    matchLabels:
+      app: image-prepuller
+  template:
+    metadata:
+      labels:
+        app: image-prepuller
+    spec:
+      nodeSelector:
+        workload: ai-inference
+      tolerations:
+        - key: "sku"
+          operator: "Equal"
+          value: "gpu"
+          effect: "NoSchedule"
+      initContainers:
+        - name: pull-vllm
+          image: acreaglesinference.azurecr.io/vllm-openai:v0.15.1
+          command: ["echo", "Image pre-pulled"]
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+      containers:
+        - name: pause
+          image: registry.k8s.io/pause:3.9
+          resources:
+            requests:
+              cpu: "1m"
+              memory: "4Mi"

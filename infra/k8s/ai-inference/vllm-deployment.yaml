@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm-server
+  namespace: ai-inference
+  labels:
+    app: vllm-server
+    app.kubernetes.io/part-of: eagles-ai-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vllm-server
+  template:
+    metadata:
+      labels:
+        app: vllm-server
+    spec:
+      tolerations:
+        - key: "sku"
+          operator: "Equal"
+          value: "gpu"
+          effect: "NoSchedule"
+        - key: "kubernetes.azure.com/scalesetpriority"
+          operator: "Equal"
+          value: "spot"
+          effect: "NoSchedule"
+      nodeSelector:
+        workload: ai-inference
+      containers:
+        - name: vllm
+          image: acreaglesinference.azurecr.io/vllm-openai:v0.15.1
+          command: ["python3", "-m", "vllm.entrypoints.openai.api_server"]
+          args:
+            - --model=Qwen/Qwen2.5-Coder-32B-Instruct-AWQ
+            - --quantization=awq_marlin
+            - --max-model-len=32768
+            - --enable-prefix-caching
+            - --gpu-memory-utilization=0.90
+            - --port=8000
+            # --max-num-seqs defaults to 256 (sufficient for 6+ concurrent users)
+          ports:
+            - containerPort: 8000
+              name: http
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
+              memory: "48Gi"
+              cpu: "8"
+            requests:
+              nvidia.com/gpu: "1"
+              memory: "32Gi"
+              cpu: "4"
+          volumeMounts:
+            - name: model-cache
+              mountPath: /root/.cache/huggingface
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 180
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 180
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 5
+      volumes:
+        - name: model-cache
+          persistentVolumeClaim:
+            claimName: vllm-models

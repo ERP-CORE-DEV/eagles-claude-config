@@ -1,0 +1,4 @@
+FROM vllm/vllm-openai:v0.15.1
+# Pin stable version. Check https://hub.docker.com/r/vllm/vllm-openai/tags for updates.
+# v0.16.0 available but pre-release as of 2026-02-19.
+ENV VLLM_ATTENTION_BACKEND=FLASH_ATTN

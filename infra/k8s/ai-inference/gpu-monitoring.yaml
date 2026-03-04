@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: dcgm-exporter
+  namespace: ai-inference
+  labels:
+    app: dcgm-exporter
+    app.kubernetes.io/part-of: eagles-ai-platform
+spec:
+  selector:
+    matchLabels:
+      app: dcgm-exporter
+  template:
+    metadata:
+      labels:
+        app: dcgm-exporter
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9400"
+    spec:
+      nodeSelector:
+        workload: ai-inference
+      tolerations:
+        - key: "sku"
+          operator: "Equal"
+          value: "gpu"
+          effect: "NoSchedule"
+      containers:
+        - name: dcgm-exporter
+          image: nvcr.io/nvidia/k8s/dcgm-exporter:3.3.5-3.4.1-ubuntu22.04
+          ports:
+            - containerPort: 9400
+              name: metrics
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+          volumeMounts:
+            - name: device-dir
+              mountPath: /dev
+      volumes:
+        - name: device-dir
+          hostPath:
+            path: /dev
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dcgm-exporter-svc
+  namespace: ai-inference
+  labels:
+    app: dcgm-exporter
+spec:
+  type: ClusterIP
+  selector:
+    app: dcgm-exporter
+  ports:
+    - port: 9400
+      targetPort: 9400
+      name: metrics

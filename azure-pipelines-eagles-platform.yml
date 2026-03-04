@@ -1,0 +1,168 @@
+# Azure DevOps Pipeline — EAGLES Advanced Platform
+# Triggered on pushes to main branch.
+# 4 stages: Build → Test → Package → Deploy
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - packages/**
+      - pnpm-lock.yaml
+      - package.json
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  NODE_VERSION: "20.x"
+  PNPM_VERSION: "9"
+  ACR_NAME: "acreaglesplatform"
+  AKS_CLUSTER: "aks-eagles-platform"
+  AKS_RESOURCE_GROUP: "rg-eagles-platform"
+  NAMESPACE: "eagles"
+
+stages:
+  # ---------------------------------------------------------------------------
+  # Stage 1 — Build
+  # ---------------------------------------------------------------------------
+  - stage: Build
+    displayName: "Build & Typecheck"
+    jobs:
+      - job: BuildJob
+        displayName: "pnpm install → build → typecheck"
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: "$(NODE_VERSION)"
+            displayName: "Install Node.js $(NODE_VERSION)"
+
+          - script: |
+              corepack enable
+              corepack prepare pnpm@$(PNPM_VERSION) --activate
+            displayName: "Enable pnpm via corepack"
+
+          - script: pnpm install --frozen-lockfile
+            displayName: "pnpm install (frozen lockfile)"
+
+          - script: pnpm run build:ordered
+            displayName: "pnpm build:ordered"
+
+          - script: pnpm run typecheck
+            displayName: "pnpm typecheck"
+
+          - publish: $(System.DefaultWorkingDirectory)
+            artifact: build-output
+            displayName: "Publish build artifacts"
+
+  # ---------------------------------------------------------------------------
+  # Stage 2 — Test
+  # ---------------------------------------------------------------------------
+  - stage: Test
+    displayName: "Test & Coverage"
+    dependsOn: Build
+    jobs:
+      - job: TestJob
+        displayName: "pnpm test + coverage"
+        steps:
+          - download: current
+            artifact: build-output
+
+          - task: NodeTool@0
+            inputs:
+              versionSpec: "$(NODE_VERSION)"
+            displayName: "Install Node.js $(NODE_VERSION)"
+
+          - script: |
+              corepack enable
+              corepack prepare pnpm@$(PNPM_VERSION) --activate
+            displayName: "Enable pnpm via corepack"
+
+          - script: pnpm install --frozen-lockfile
+            displayName: "pnpm install"
+
+          - script: pnpm test -- --reporter=junit --outputFile=test-results.xml
+            displayName: "Run tests with JUnit reporter"
+            continueOnError: false
+
+          - task: PublishTestResults@2
+            condition: always()
+            inputs:
+              testResultsFormat: "JUnit"
+              testResultsFiles: "**/test-results.xml"
+              mergeTestResults: true
+              testRunTitle: "EAGLES Platform Tests"
+            displayName: "Publish test results"
+
+  # ---------------------------------------------------------------------------
+  # Stage 3 — Package
+  # ---------------------------------------------------------------------------
+  - stage: Package
+    displayName: "Docker Build & Push"
+    dependsOn: Test
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - job: DockerJob
+        displayName: "Build & push MCP server images"
+        steps:
+          - task: Docker@2
+            displayName: "Login to ACR"
+            inputs:
+              command: login
+              containerRegistry: "$(ACR_NAME)"
+
+          - script: |
+              TAG=$(Build.BuildId)
+              for pkg in token-tracker-mcp vector-memory-mcp drift-detector-mcp provider-router-mcp verification-mcp orchestrator-mcp; do
+                echo "Building $pkg:$TAG"
+                docker build -f packages/$pkg/Dockerfile -t $(ACR_NAME).azurecr.io/eagles/$pkg:$TAG .
+                docker push $(ACR_NAME).azurecr.io/eagles/$pkg:$TAG
+                docker tag $(ACR_NAME).azurecr.io/eagles/$pkg:$TAG $(ACR_NAME).azurecr.io/eagles/$pkg:latest
+                docker push $(ACR_NAME).azurecr.io/eagles/$pkg:latest
+              done
+            displayName: "Build & push all MCP server images"
+
+  # ---------------------------------------------------------------------------
+  # Stage 4 — Deploy
+  # ---------------------------------------------------------------------------
+  - stage: Deploy
+    displayName: "Deploy to AKS"
+    dependsOn: Package
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: DeployJob
+        displayName: "Helm upgrade to AKS"
+        environment: "eagles-production"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: AzureCLI@2
+                  displayName: "Get AKS credentials"
+                  inputs:
+                    azureSubscription: "azure-service-connection"
+                    scriptType: bash
+                    scriptLocation: inlineScript
+                    inlineScript: |
+                      az aks get-credentials \
+                        --resource-group $(AKS_RESOURCE_GROUP) \
+                        --name $(AKS_CLUSTER) \
+                        --overwrite-existing
+
+                - script: |
+                    helm upgrade --install eagles-platform ./infra/helm/eagles-platform \
+                      --namespace $(NAMESPACE) \
+                      --create-namespace \
+                      --set image.tag=$(Build.BuildId) \
+                      --set image.registry=$(ACR_NAME).azurecr.io \
+                      --wait \
+                      --timeout 10m
+                  displayName: "Helm upgrade with rollback on failure"
+
+                - script: |
+                    echo "Verifying deployment health..."
+                    kubectl rollout status deployment/token-tracker-mcp -n $(NAMESPACE) --timeout=120s
+                    kubectl rollout status deployment/orchestrator-mcp -n $(NAMESPACE) --timeout=120s
+                    echo "All deployments healthy."
+                  displayName: "Verify deployment health"

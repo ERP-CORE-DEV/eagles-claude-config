@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vllm-server-svc
+  namespace: ai-inference
+  labels:
+    app: vllm-server
+    app.kubernetes.io/part-of: eagles-ai-platform
+spec:
+  type: ClusterIP
+  selector:
+    app: vllm-server
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+      name: http
